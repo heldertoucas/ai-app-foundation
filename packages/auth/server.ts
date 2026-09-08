@@ -1,6 +1,9 @@
 import "server-only";
 
-import * as clerkServer from "@clerk/nextjs/server";
+import {
+  auth as clerkAuth,
+  currentUser as clerkCurrentUser,
+} from "@clerk/nextjs/server";
 
 export * from "@clerk/nextjs/server";
 
@@ -13,24 +16,26 @@ const mockUser = {
   emailAddresses: [{ emailAddress: "dev@local.test" }],
 };
 
-export const auth = async () => {
+export const auth = (async () => {
   if (!process.env.CLERK_SECRET_KEY) {
-    return {
+    return Promise.resolve({
       userId: "user_local_dev",
       orgId: "org_local_dev",
       orgRole: "admin",
       orgSlug: "local-dev",
       sessionClaims: null,
       redirectToSignIn: () => null,
-      getToken: async () => "mock-jwt-token",
-    } as any;
+      getToken: async () => Promise.resolve("mock-jwt-token"),
+    } as unknown as Awaited<ReturnType<typeof clerkAuth>>);
   }
-  return clerkServer.auth();
-};
+  return await clerkAuth();
+}) as unknown as typeof clerkAuth;
 
-export const currentUser = async () => {
+export const currentUser = (async () => {
   if (!process.env.CLERK_SECRET_KEY) {
-    return mockUser as any;
+    return Promise.resolve(
+      mockUser as unknown as Awaited<ReturnType<typeof clerkCurrentUser>>
+    );
   }
-  return clerkServer.currentUser();
-};
+  return await clerkCurrentUser();
+}) as unknown as typeof clerkCurrentUser;

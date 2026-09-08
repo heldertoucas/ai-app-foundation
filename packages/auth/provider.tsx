@@ -51,7 +51,7 @@ export const AuthProvider = ({
     organizationPreviewAvatarContainer: "shrink-0",
   };
 
-  const layout: Theme["layout"] = {
+  const _layout: Theme["layout"] = {
     privacyPageUrl: privacyUrl,
     termsPageUrl: termsUrl,
     helpPageUrl: helpUrl,
@@ -60,8 +60,14 @@ export const AuthProvider = ({
   return (
     <ClerkProvider
       {...properties}
+      appearance={
+        {
+          baseTheme,
+          elements,
+          variables,
+        } as any
+      }
       publishableKey={publishableKey}
-      appearance={{ baseTheme, elements, variables } as any}
     >
       {children}
     </ClerkProvider>

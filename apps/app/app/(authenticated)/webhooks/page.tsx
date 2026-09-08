@@ -1,5 +1,4 @@
 import { webhooks } from "@repo/webhooks";
-import { notFound } from "next/navigation";
 
 export const metadata = {
   title: "Webhooks",
@@ -7,7 +6,7 @@ export const metadata = {
 };
 
 const WebhooksPage = async () => {
-  let response = null;
+  let response: { url?: string } | null | undefined = null;
   try {
     response = await webhooks.getAppPortal();
   } catch (_e) {
@@ -18,9 +17,10 @@ const WebhooksPage = async () => {
   if (!response?.url) {
     return (
       <div className="flex h-full flex-col items-center justify-center p-8 text-center">
-        <h2 className="text-xl font-semibold">Webhooks Portal</h2>
-        <p className="mt-2 text-sm text-muted-foreground max-w-md">
-          Webhooks require an active <code>SVIX_TOKEN</code>. In local development, webhooks are disabled by default.
+        <h2 className="font-semibold text-xl">Webhooks Portal</h2>
+        <p className="mt-2 max-w-md text-muted-foreground text-sm">
+          Webhooks require an active <code>SVIX_TOKEN</code>. In local
+          development, webhooks are disabled by default.
         </p>
       </div>
     );

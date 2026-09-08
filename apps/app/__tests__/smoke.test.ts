@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 
 describe("Foundation Smoke Test", () => {
   it("verifies basic environment invariants", () => {

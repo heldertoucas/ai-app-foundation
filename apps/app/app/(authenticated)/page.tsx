@@ -49,14 +49,22 @@ const App = async () => {
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
           {pages.map((page) => (
-            <div className="flex aspect-video items-center justify-center rounded-xl bg-card border border-border p-4 text-center font-medium text-foreground shadow-sm" key={page.id}>
+            <div
+              className="flex aspect-video items-center justify-center rounded-xl border border-border bg-card p-4 text-center font-medium text-foreground shadow-sm"
+              key={page.id}
+            >
               {page.name}
             </div>
           ))}
         </div>
-        <div className="min-h-[50vh] flex-1 rounded-xl border border-dashed border-border p-6 flex flex-col items-center justify-center text-center text-muted-foreground">
-          <p className="text-base font-medium text-foreground">Welcome to your AI App Foundation</p>
-          <p className="text-sm mt-1 max-w-md">Local-first, free-first, and ready for rapid agent development with shadcn/ui and Next.js.</p>
+        <div className="flex min-h-[50vh] flex-1 flex-col items-center justify-center rounded-xl border border-border border-dashed p-6 text-center text-muted-foreground">
+          <p className="font-medium text-base text-foreground">
+            Welcome to your AI App Foundation
+          </p>
+          <p className="mt-1 max-w-md text-sm">
+            Local-first, free-first, and ready for rapid agent development with
+            shadcn/ui and Next.js.
+          </p>
         </div>
       </div>
     </>

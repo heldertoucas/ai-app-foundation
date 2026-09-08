@@ -13,7 +13,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 /**
  * A drawer component for React.
  */
-const meta: Meta<typeof Drawer> = {
+const meta = {
   title: "ui/Drawer",
   component: Drawer,
   tags: ["autodocs"],
@@ -45,7 +45,7 @@ const meta: Meta<typeof Drawer> = {
   parameters: {
     layout: "centered",
   },
-};
+} satisfies Meta<typeof Drawer>;
 
 export default meta;
 
@@ -54,4 +54,6 @@ type Story = StoryObj<typeof meta>;
 /**
  * The default form of the drawer.
  */
-export const Default: Story = {};
+export const Default: Story = {
+  args: {},
+};
