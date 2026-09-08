@@ -15,7 +15,7 @@ export default function proxy(request: NextRequest, event: NextFetchEvent) {
   // If Clerk key is configured, use upstream Clerk middleware
   if (process.env.CLERK_SECRET_KEY) {
     const clerk = authMiddleware(() => securityHeaders());
-    return clerk(request, event);
+    return (clerk as any)(request, event);
   }
 
   // Local-first mode without mandatory Clerk authentication
