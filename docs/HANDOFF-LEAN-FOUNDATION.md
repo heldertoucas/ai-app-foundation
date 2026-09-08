@@ -1,80 +1,107 @@
-# Handoff: Transição para a Lean App Foundation (Auto-Desempacotável)
+# Handoff: Lean App Foundation + Blueprints + Recipes
 
 > **Data**: 2026-09-09  
-> **Objetivo**: Documento orientador para agentes de IA e engenheiros sobre a decisão arquitetural de resetar o repositório, purgando o bloat do `next-forge` e transformando a fundação num molde inteligente ("self-unpacking template").
+> **Objetivo**: Documento orientador para o agente de IA e equipa de desenvolvimento. Define a constituição, a arquitetura e os princípios de execução para transformar este repositório numa fundação "boring, predictable and extremely easy to understand and extend".
 
 ---
 
-## 1. Contexto e Motivação
+## 1. A Decisão Estratégica Fundamental
 
-### O Problema do `next-forge` (Legado)
-O repositório foi inicialmente baseado em `vercel/next-forge`. Embora oferecesse boas práticas visuais, trouxe consigo uma hiper-fragmentação insustentável:
-- **27 pacotes** no monorepo e **7 aplicações paralelas** (`docs`, `email`, `storybook`, `studio`, `api`, etc.).
-- Acoplamento forçado a serviços SaaS comerciais (Clerk, Sentry, Knock, BetterStack, Liveblocks, BaseHub, Svix).
-- Builds e typechecks lentos (> 2 minutos) e frequentes colisões de dependências (`NextRequest`).
-- Inércia e atrito para iniciar novos projetos simples e locais.
+> **Deixar de tratar o `next-forge` como produto-base a preservar integralmente e passar a tratá-lo como fonte de padrões que serviu para chegar a uma foundation própria, lean e single-app.**
 
-### A Nova Visão
-Transformar `ai-app-foundation` numa **fundação maleável, autónoma e livre de bloat**, desenhada para:
-1. Servir de base local-first rápida (<1s de arranque).
-2. Ser clonada para projetos futuros no Development Universe (como `rulesync-explorer` para dashboards internos e `futuro-digital-react` para websites de conteúdo).
-3. **Auto-desempacotar-se** via script (`pnpm init-app`) ou via instruções claras para Agentes de IA (`AGENTS.md`).
+O objetivo é otimizar para **fricção mínima na criação das próximas 10 aplicações reais** no Development Universe (como `rulesync-explorer` e `futuro-digital-react`), e não carregar um monorepo corporativo com 27 pacotes e serviços SaaS desnecessários.
 
 ---
 
-## 2. Decisão Arquitetural Principal
+## 2. A Arquitetura: Core + Blueprints + Recipes
 
-| Dimensão | Antes (next-forge) | Depois (Lean Foundation) |
-| :--- | :--- | :--- |
-| **Estrutura** | Monorepo Turborepo (27 pacotes, 7 apps) | **Single-app Next.js 16 limpa** |
-| **Frontend** | React 19 + Tailwind CSS v4 + shadcn/ui | **React 19 + Tailwind CSS v4 + shadcn/ui canónico** |
-| **Design Assistance** | Storybook isolado e pesado | **shadcn MCP nativo** integrado no agente |
-| **Persistência** | Neon Postgres serverless cloud | **Prisma com SQLite local default (`file:./dev.db`)**, com switch opcional para Postgres |
-| **Observabilidade** | Sentry / BetterStack SaaS | **Pino** (logs estruturados JSON / legíveis locais) |
-| **Templates** | Dispersos por apps secundárias | **2 Blueprints no App Router**: `(dashboard)` e `(site)` |
-| **Reutilização** | Cópia manual de código complexo | **Motor de desempacotamento**: `pnpm init-app` + `AGENTS.md` |
-
----
-
-## 3. Como Funciona o Motor de Auto-Desempacotamento ("Self-Unpacker")
-
-Quando esta fundação for clonada para um novo repositório (ex: `futuro-digital-react` ou `rulesync-explorer`), o agente ou utilizador pode adaptá-la em segundos:
-
-### Modo A: Interativo (Humano)
-```bash
-pnpm init-app
+```text
+                   AI-APP-FOUNDATION
+                           │
+                    Next.js 16 (App Router)
+                           │
+              ┌────────────┼────────────┐
+              │            │            │
+         shadcn/ui       Prisma       Pino
+       (Tailwind v4)    (SQLite)  (Server-only)
+              │            │            │
+              └────────────┼────────────┘
+                           │
+                       AGENTS.md
+                           │
+                       OpenSpec
+                           │
+                    AI coding agent
+                           │
+              ┌────────────┴────────────┐
+              │                         │
+         Blueprints                  Recipes
+      ((dashboard) & (site))    (auth, postgres, ai, vercel)
+              │                         │
+              └────────────┬────────────┘
+                           │
+                    project-specific
+                           │
+                  local → optional Vercel
 ```
-O script pergunta:
-1. Nome da aplicação.
-2. Perfil pretendido: `[1] Dashboard Interno`, `[2] Website de Conteúdo`, ou `[3] Ambos`.
-3. Necessidade de Base de Dados: ativa ou remove o Prisma SQLite.
-O script remove os ficheiros que não pertencem ao perfil escolhido e deixa a aplicação pronta.
 
-### Modo B: Guiado por Agente de IA (Autónomo)
-O ficheiro `AGENTS.md` contém receitas exatas:
-- **Para Dashboard**: Manter a rota `(dashboard)`, ligar a navegação lateral e cartões KPI, ligar o modelo Prisma pretendido.
-- **Para Website**: Manter a rota `(site)`, remover componentes de administração, ajustar a paleta de cores e tipografia acessível.
+### O Core (Enxuto e Previsível)
+- **Framework**: Next.js 16 (App Router, Turbopack, React 19, TypeScript).
+- **Estilo & UI**: Tailwind CSS v4 + primitivas canónicas `shadcn/ui` + `next-themes` (Dark/Light).
+- **Persistência Local**: Prisma ORM com SQLite zero-config (`file:./dev.db`).
+- **Logging**: Pino (server-side apenas, com redação de dados sensíveis; nunca importado em Client Components).
+- **Testes & Qualidade**: Vitest, Playwright, Biome.
+
+### UX Blueprints (Estruturas Construtivas dentro do App Router)
+- **`(dashboard)`**: Layout com sidebar recolhível, cartões KPI, tabelas filtráveis, diálogos de criação e Server Actions (ideal para ferramentas como `rulesync-explorer`).
+- **`(site)`**: Layout público com cabeçalho de navegação, secção hero, grelha de cartões informativos e rodapé acessível (ideal para projetos como `futuro-digital-react`).
+- *Nota importante*: Podem coexistir na mesma app ou ser usados independentemente. **Nunca se remove código por "auto-mutilação"**.
+
+### Recipes (`recipes/` — Extensões Opcionais e Documentadas)
+- `recipes/auth/`: Receita de autenticação simples e modular (quando o projeto precisar de login).
+- `recipes/postgres/`: Instruções claras de transição de SQLite local para PostgreSQL hosted (Neon, Supabase) ao preparar deploy.
+- `recipes/ai/`: Integração modular com Vercel AI SDK ou modelos locais/cloud.
+- `recipes/vercel/`: Configurações de caching, edge e variáveis de ambiente na Vercel.
 
 ---
 
-## 4. Salvaguarda do Código Anterior
-Antes de qualquer alteração destrutiva na branch `main`:
-- O código atual com todo o histórico do `next-forge`, as provas de conceito de workshops e a documentação upstream foi preservado na branch:
+## 3. A Constituição no `AGENTS.md` (Mandamentos para o Agente)
+
+1. **Boring & Predictable**:
+   > *"Your job is not to make this repository feature-rich. Your job is to make it boring, predictable and extremely easy for another AI agent to understand and extend."*
+2. **Construtivo, Nunca Destrutivo**:
+   > *"Never delete foundation files during project customization unless explicitly required by the selected blueprint. Prefer disabling, isolating, or generating the target project from a blueprint."*
+   > *"Never assume that unused code should be removed merely because it is unused."*
+3. **Simplicidade sobre Abstração**:
+   > *"When choosing between a clever abstraction and a simple implementation, choose the simple implementation. When choosing between deleting complexity and isolating complexity, prefer isolation."*
+4. **Foco Pragmático**:
+   > *"Never optimize the foundation for hypothetical future requirements. Optimize it for the next ten real applications we expect to build."*
+5. **Separação de Contextos**:
+   - `file:./dev.db` é para **desenvolvimento local**; em produção na Vercel, segue-se a receita `recipes/postgres`.
+   - Pino é estritamente **server-side**; nunca importar em Client Components nem logar credenciais/headers.
+
+---
+
+## 4. Preservação do Código Anterior
+Antes de iniciar a nova estrutura:
+- O código monorepo atual (`next-forge` v2) é preservado na branch:
   `archive/next-forge-v2`
-- Isto permite consultar ou resgatar qualquer componente visual a qualquer momento.
+- O histórico e as referências visuais mantêm-se 100% intactos e consultáveis.
 
 ---
 
-## 5. Rastreio e Especificação OpenSpec
+## 5. Validação Empírica para Agentes (Acceptance Criteria)
 
-Todas as tarefas e requisitos formais estão rastreados no OpenSpec:
+Após a limpeza e montagem do Core e dos Blueprints, a fundação será submetida a três testes de validação empírica antes de ser declarada pronta:
+- **Teste A (UI)**: Criação de um dashboard polido com KPIs, filtros e tabela responsiva.
+- **Teste B (Dados)**: Operação CRUD funcional com Prisma + SQLite local.
+- **Teste C (Refactor)**: Modificação do dashboard sem adicionar nenhuma nova biblioteca visual nem dependências desnecessárias.
+
+---
+
+## 6. Estado do OpenSpec
 - **Change**: `lean-app-foundation`
 - **Diretório**: `C:\Users\helder.toucas\Dev\openspec\changes\lean-app-foundation\`
-- **Capacidades cobertas**:
-  1. `foundation-core` (Next.js 16 + Tailwind v4 + shadcn/ui)
-  2. `local-persistence` (Prisma SQLite / Postgres)
-  3. `app-blueprints` (`(dashboard)` e `(site)`)
-  4. `open-telemetry-logging` (Pino)
-  5. `self-unpacker` (`pnpm init-app` e protocolo em `AGENTS.md`)
+- **Estado**: Validado e pronto para aplicação (`All planning artifacts complete`).
 
-Para avançar com a execução ordenada das tarefas, o agente deve seguir o workflow do OpenSpec (`/opsx-apply`).
+Para executar: `/opsx-apply` ou dizer **"aplica o openspec"**.
