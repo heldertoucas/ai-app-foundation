@@ -54,3 +54,9 @@ jobs:
 
       - name: Run Unit & Integration Tests
         run: pnpm test
+
+      - name: Install Playwright Browsers
+        run: pnpm --filter app exec playwright install --with-deps chromium
+
+      - name: Run Playwright E2E Tests
+        run: pnpm --filter app test:e2e

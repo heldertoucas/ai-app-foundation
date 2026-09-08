@@ -10,7 +10,7 @@ const I18nMiddleware = createI18nMiddleware({
   locales,
   defaultLocale: "en",
   urlMappingStrategy: "rewriteDefault",
-  resolveLocaleFromRequest: (request: NextRequest) => {
+  resolveLocaleFromRequest: (request: any) => {
     try {
       const headers = Object.fromEntries(request.headers.entries());
       const negotiator = new Negotiator({ headers });
@@ -29,7 +29,7 @@ const I18nMiddleware = createI18nMiddleware({
   },
 });
 
-export const internationalizationMiddleware = (request: NextRequest) =>
+export const internationalizationMiddleware = (request: any) =>
   I18nMiddleware(request);
 
 export const config = {

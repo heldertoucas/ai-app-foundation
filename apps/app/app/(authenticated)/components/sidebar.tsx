@@ -68,6 +68,12 @@ const data = {
   },
   navMain: [
     {
+      title: "Workshops",
+      url: "/workshops",
+      icon: BookOpenIcon,
+      isActive: true,
+    },
+    {
       title: "Playground",
       url: "#",
       icon: SquareTerminalIcon,
