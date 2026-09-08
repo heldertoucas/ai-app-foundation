@@ -1,7 +1,7 @@
-# Handoff: Lean App Foundation (Core + Blueprints + Recipes + Agent Layer)
+# Handoff: Lean App Foundation (Core + Blueprints + Recipes + Agent Development Layer)
 
 > **Data**: 2026-09-09  
-> **Objetivo**: Documento orientador para o agente de IA e equipa de desenvolvimento. Define a constituição, a arquitetura e os princípios de execução para transformar este repositório numa fundação "boring, predictable and extremely easy to understand and extend".
+> **Objetivo**: Documento orientador final para agentes de IA e engenheiros. Define a constituição, a arquitetura e os princípios de execução para transformar este repositório numa fundação "boring, predictable and extremely easy to understand and extend".
 
 ---
 
@@ -13,66 +13,94 @@ O objetivo é otimizar para **fricção mínima na criação das próximas 10 ap
 
 ---
 
-## 2. A Arquitetura Final (10/10)
+## 2. A Arquitetura Final
 
 ```text
-                         AI-APP-FOUNDATION
+                         LEAN APP FOUNDATION
                                   │
-         ┌────────────────────────┼────────────────────────┐
-         │                        │                        │
-        CORE                  BLUEPRINTS                RECIPES
-         │                        │                        │
-   Next.js 16 (App Router)    Dashboard ((dashboard))   Auth
-   TypeScript                 Site ((site))             Postgres
-   Tailwind CSS v4                                      AI
-   shadcn/ui                                            Vercel
-   Prisma (SQLite local)
-   Pino (Server-only)
-   Vitest + Playwright
-   Biome
-         │
-         │
-         ▼
-                 AGENT LAYER
-                     │
-        ┌────────────┼────────────┐
-        │            │            │
-    AGENTS.md    shadcn MCP   next-devtools-mcp
-        │            │            │
-        └────────────┼────────────┘
-                     │
-                 OpenSpec
-                     │
-                     ▼
-                AI CODING AGENT
+       ┌──────────────────────────┼──────────────────────────┐
+       │                          │                          │
+      CORE                    BLUEPRINTS                   RECIPES
+       │                          │                          │
+  Next.js 16 (App Router)     Dashboard ((dashboard))    Auth
+  React 19                    Site ((site))              Postgres
+  TypeScript                                             AI
+  Tailwind CSS v4                                        Vercel
+  shadcn/ui
+  next-themes
+  Prisma (SQLite local)
+  Pino (Server-only)
+  Vitest + Playwright
+  Biome
+       │
+       ▼
+                    AGENT DEVELOPMENT LAYER
+                              │
+        ┌─────────────────────┼──────────────────────┐
+        │                     │                      │
+    AGENTS.md            shadcn Skills          OpenSpec
+        │                     │
+        │                shadcn MCP
+        │
+        └───────────── next-devtools-mcp
+                              │
+                              ▼
+                         AI AGENT
+                              │
+                              ▼
+                     Application changes
+                              │
+                   ┌──────────┴──────────┐
+                   │                     │
+                 LOCAL               PRODUCTION
+                   │                     │
+                SQLite            Postgres / Recipe
 ```
 
 ### O Core (Enxuto e Previsível)
 - **Framework**: Next.js 16 (App Router, Turbopack, React 19, TypeScript).
 - **Estilo & UI**: Tailwind CSS v4 + primitivas canónicas `shadcn/ui` + `next-themes` (Dark/Light).
 - **Persistência Local**: Prisma ORM com SQLite zero-config (`file:./dev.db`).
-- **Logging**: Pino (server-side apenas, com redação de dados sensíveis; nunca importado em Client Components).
+- **Logging**: Pino (server-side apenas; com redação estrita de dados sensíveis; nunca importado em Client Components; **nunca logar passwords, tokens, cookies, auth headers ou API keys**).
 - **Testes & Qualidade**: Vitest, Playwright, Biome.
 
-### UX Blueprints (Estruturas Construtivas dentro do App Router)
-- **`(dashboard)`**: Layout com sidebar recolhível, cartões KPI, tabelas filtráveis, diálogos de criação e Server Actions (ideal para ferramentas como `rulesync-explorer`).
-- **`(site)`**: Layout público com cabeçalho de navegação, secção hero, grelha de cartões informativos e rodapé acessível (ideal para projetos como `futuro-digital-react`).
-- *Regra*: Podem coexistir na mesma app ou ser usados isoladamente. **Nunca se faz self-mutilation de ficheiros**.
+### UX Blueprints (Padrões Composicionais no App Router)
+- **`(dashboard)`**: Sidebar recolhível, cartões KPI, tabelas filtráveis, diálogos de criação e Server Actions (ideal para ferramentas como `rulesync-explorer`).
+- **`(site)`**: Cabeçalho de navegação, hero, grelha de cartões informativos e rodapé acessível (ideal para projetos como `futuro-digital-react`).
+- **Regra**: São composicionais (`Blueprint + Recipe = Application`). Podem coexistir ou ser usados isoladamente. **Sem scripts destrutivos de auto-mutilação**.
 
-### Recipes (`recipes/` — Extensões Opcionais e Documentadas)
-- `recipes/auth/`: Receita de autenticação simples e modular (quando o projeto precisar de login).
-- `recipes/postgres/`: Instruções claras de transição de SQLite local para PostgreSQL hosted (Neon, Supabase) ao preparar deploy na Vercel.
+### Recipes (`recipes/` — Extensões Operáveis para Agentes e Humanos)
+Cada receita é uma **unidade operacional**, executável por um agente e compreensível por um humano (`README.md`, `checklist.md`):
+- `recipes/auth/`: Receita de autenticação simples e modular.
+- `recipes/postgres/`: Receita documentada de persistência em produção (*"Deployments requiring durable/shared production persistence must use the documented production database recipe"*).
 - `recipes/ai/`: Integração modular com Vercel AI SDK ou modelos locais/cloud.
 - `recipes/vercel/`: Configurações de caching, headers e variáveis de ambiente na Vercel.
 
-### Agent Layer (Superpoderes para Agentes sem Bloat em Produção)
-- **`shadcn MCP`**: Ferramenta MCP para o agente descobrir, inspecionar e compor componentes e blocks de registries oficiais ou de repositórios GitHub (`registry.json` futuro).
-- **`next-devtools-mcp`**: Observabilidade em tempo real do dev server (`npx -y next-devtools-mcp@latest`), permitindo ao agente ver o estado real da aplicação em execução, erros e rotas em vez de adivinhar.
-- **Next.js Bundled Docs & Skills**: Respeito pelo ecossistema Next.js; delegamos documentação de versão ao framework.
+### Agent Development Layer (Dev Tooling Estritamente Separado do Runtime)
+- **`shadcn Skills`** (`pnpm dlx skills add shadcn/ui`): Conhecimento e workflows de componentes para o agente.
+- **`shadcn MCP`**: Ferramenta MCP para procurar, inspecionar e adicionar componentes/blocos do registry canónico.
+- **`next-devtools-mcp`**: Ferramenta estritamente de desenvolvimento local (`npx -y next-devtools-mcp@latest`) para o agente inspecionar rotas, erros e estado real do dev server. **Zero pegada no bundle de produção**.
+- **Next.js Bundled Docs & Skills**: Conhecimento do framework versionado no pacote `next`.
+- **`AGENTS.md`**: Constituição concisa (<150 linhas) focada em regras do projeto, com uma matriz `Tool -> Purpose`.
+- **Future Capability (Out of Scope v0.1)**: Eventual publicação de registry GitHub próprio (`registry.json`) é explicitamente para v0.2/v0.3.
 
 ---
 
-## 3. A Constituição no `AGENTS.md` (Mandamentos para o Agente)
+## 3. Matriz de Decisão: "Que Ferramenta Usar para Quê"
+
+| Ferramenta | Quando e Como Usar |
+| :--- | :--- |
+| **`AGENTS.md`** | Constituição e regras específicas deste projeto (*"How WE work"*). |
+| **OpenSpec** | Gestão de mudanças, planeamento e especificação de requisitos formais. |
+| **shadcn Skills** | Conhecimento de padrões, boas práticas e workflows de UI. |
+| **shadcn MCP** | Procurar, inspecionar e instalar componentes e blocos concretos. |
+| **next-devtools-mcp** | Inspecionar a aplicação em execução local para diagnosticar erros e estado. |
+| **Playwright** | Testes de fumo e navegação real no browser. |
+| **Next.js docs/skills**| Conhecimento técnico e APIs versionadas do framework (*"How NEXT works"*). |
+
+---
+
+## 4. A Constituição no `AGENTS.md` (Mandamentos para o Agente)
 
 1. **Boring & Predictable**:
    > *"Your job is not to make this repository feature-rich. Your job is to make it boring, predictable and extremely easy for another AI agent to understand and extend."*
@@ -83,35 +111,35 @@ O objetivo é otimizar para **fricção mínima na criação das próximas 10 ap
    > *"When choosing between a clever abstraction and a simple implementation, choose the simple implementation. When choosing between deleting complexity and isolating complexity, prefer isolation."*
 4. **Foco Pragmático**:
    > *"Never optimize the foundation for hypothetical future requirements. Optimize it for the next ten real applications we expect to build."*
-5. **Separação de Contextos & Segurança**:
-   - `file:./dev.db` é para **desenvolvimento local**; em produção na Vercel, segue-se a receita `recipes/postgres`.
-   - Pino é estritamente **server-side**; nunca importar em Client Components nem logar credenciais/headers.
-6. **Enxuto por Design**:
-   - Manter o `AGENTS.md` conciso (<150 linhas). Regras simples no arquivo; conhecimento versionado delegado às ferramentas do framework.
+5. **Separação de Contextos & Segurança de Logs**:
+   - `file:./dev.db` é para desenvolvimento local. Persistência partilhada/produção exige a receita `recipes/postgres`.
+   - Pino é estritamente **server-side**. Nunca importar em Client Components. Nunca logar passwords, tokens, cookies, auth headers ou chaves.
+6. **Invariantes do Projeto vs Framework**:
+   - O `AGENTS.md` contém as **nossas regras**, não duplicados da documentação do Next.js.
 
 ---
 
-## 4. Preservação do Código Anterior
+## 5. Preservação do Código Anterior
 Antes de iniciar a nova estrutura:
 - O código monorepo atual (`next-forge` v2) é preservado na branch:
   `archive/next-forge-v2`
-- O histórico e as referências visuais mantêm-se 100% intactos e consultáveis.
 
 ---
 
-## 5. Validação Empírica para Agentes (Acceptance Criteria)
+## 6. Validação Empírica para Agentes (Acceptance Criteria)
 
-Após a limpeza e montagem da fundação, executamos 4 testes empíricos:
+Após a limpeza e montagem da fundação, executamos os testes empíricos de validação:
 - **Teste A (UI)**: Criação de um dashboard polido com KPIs, filtros e tabela responsiva.
 - **Teste B (Dados)**: Operação CRUD funcional com Prisma + SQLite local.
 - **Teste C (Refactor)**: Modificação do dashboard sem adicionar nenhuma nova biblioteca visual.
-- **Teste D (Agent Runtime Awareness)**: Ligar o `next-devtools-mcp` + `shadcn MCP`, inspecionar o servidor em execução e validar ajustes de layout em tempo real.
+- **Teste D1 (UI Intelligence)**: O agente pesquisa e adiciona componentes canónicos via `shadcn MCP`.
+- **Teste D2 (Runtime Awareness)**: O agente inspeciona o servidor em execução via `next-devtools-mcp`, diagnostica o estado real e valida o comportamento.
 
 ---
 
-## 6. Estado do OpenSpec
+## 7. Estado do OpenSpec
 - **Change**: `lean-app-foundation`
 - **Diretório**: `C:\Users\helder.toucas\Dev\openspec\changes\lean-app-foundation\`
-- **Estado**: Validado e pronto para aplicação (`Progress: 4/4 artifacts complete`).
+- **Estado**: Validado e aprovado (`Progress: 4/4 artifacts complete`).
 
 Para executar: `/opsx-apply` ou dizer **"aplica o openspec"**.
