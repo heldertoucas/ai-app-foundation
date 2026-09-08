@@ -1,7 +1,8 @@
-# Handoff: Lean App Foundation (Core + Blueprints + Recipes + Agent Development Layer)
+# Handoff: Lean App Foundation (Core + Blueprints + Recipes + Agent Layer)
 
 > **Data**: 2026-09-09  
-> **Objetivo**: Documento orientador final para agentes de IA e engenheiros. Define a constituição, a arquitetura e os princípios de execução para transformar este repositório numa fundação "boring, predictable and extremely easy to understand and extend".
+> **Revisão**: AI Council (Red Teamer, Software Architect, Product & Resilience Engineer)  
+> **Objetivo**: Guia à prova de falhas para qualquer agente de IA (incluindo modelos menores/flash-lite) executar a transição determinística para a Lean Foundation sem alucinações, sem prompts interativos e sem bloqueios de sistema operativo.
 
 ---
 
@@ -13,7 +14,7 @@ O objetivo é otimizar para **fricção mínima na criação das próximas 10 ap
 
 ---
 
-## 2. A Arquitetura Final
+## 2. A Arquitetura Final Auditada pelo AI Council
 
 ```text
                          LEAN APP FOUNDATION
@@ -22,14 +23,14 @@ O objetivo é otimizar para **fricção mínima na criação das próximas 10 ap
        │                          │                          │
       CORE                    BLUEPRINTS                   RECIPES
        │                          │                          │
-  Next.js 16 (App Router)     Dashboard ((dashboard))    Auth
-  React 19                    Site ((site))              Postgres
-  TypeScript                                             AI
-  Tailwind CSS v4                                        Vercel
-  shadcn/ui
+  Next.js 16 (App Router)     Dashboard ((dashboard))    Auth (recipe.json + template)
+  React 19                    Site ((site))              Postgres (recipe.json + template)
+  TypeScript                                             AI (recipe.json + template)
+  Tailwind CSS v4                                        Vercel (recipe.json + template)
+  shadcn/ui (components.json)
   next-themes
-  Prisma (SQLite local)
-  Pino (Server-only)
+  Prisma (SQLite WAL + Singleton)
+  Pino (Server-only sentinel)
   Vitest + Playwright
   Biome
        │
@@ -57,36 +58,33 @@ O objetivo é otimizar para **fricção mínima na criação das próximas 10 ap
                 SQLite            Postgres / Recipe
 ```
 
-### O Core (Enxuto e Previsível)
-- **Framework**: Next.js 16 (App Router, Turbopack, React 19, TypeScript).
-- **Estilo & UI**: Tailwind CSS v4 + primitivas canónicas `shadcn/ui` + `next-themes` (Dark/Light).
-- **Persistência Local**: Prisma ORM com SQLite zero-config (`file:./dev.db`).
-- **Logging**: Pino (server-side apenas; com redação estrita de dados sensíveis; nunca importado em Client Components; **nunca logar passwords, tokens, cookies, auth headers ou API keys**).
-- **Testes & Qualidade**: Vitest, Playwright, Biome.
+---
 
-### UX Blueprints (Padrões Composicionais no App Router)
-- **`(dashboard)`**: Sidebar recolhível, cartões KPI, tabelas filtráveis, diálogos de criação e Server Actions (ideal para ferramentas como `rulesync-explorer`).
-- **`(site)`**: Cabeçalho de navegação, hero, grelha de cartões informativos e rodapé acessível (ideal para projetos como `futuro-digital-react`).
-- **Regra**: São composicionais (`Blueprint + Recipe = Application`). Podem coexistir ou ser usados isoladamente. **Sem scripts destrutivos de auto-mutilação**.
+## 3. Diretrizes Críticas de Execução para Modelos de Menor Capacidade (Low-Cognitive Safe)
 
-### Recipes (`recipes/` — Extensões Operáveis para Agentes e Humanos)
-Cada receita é uma **unidade operacional**, executável por um agente e compreensível por um humano (`README.md`, `checklist.md`):
-- `recipes/auth/`: Receita de autenticação simples e modular.
-- `recipes/postgres/`: Receita documentada de persistência em produção (*"Deployments requiring durable/shared production persistence must use the documented production database recipe"*).
-- `recipes/ai/`: Integração modular com Vercel AI SDK ou modelos locais/cloud.
-- `recipes/vercel/`: Configurações de caching, headers e variáveis de ambiente na Vercel.
+Se fores um modelo menor a executar este plano, deves seguir estas **regras invioláveis**:
 
-### Agent Development Layer (Dev Tooling Estritamente Separado do Runtime)
-- **`shadcn Skills`** (`pnpm dlx skills add shadcn/ui`): Conhecimento e workflows de componentes para o agente.
-- **`shadcn MCP`**: Ferramenta MCP para procurar, inspecionar e adicionar componentes/blocos do registry canónico.
-- **`next-devtools-mcp`**: Ferramenta estritamente de desenvolvimento local (`npx -y next-devtools-mcp@latest`) para o agente inspecionar rotas, erros e estado real do dev server. **Zero pegada no bundle de produção**.
-- **Next.js Bundled Docs & Skills**: Conhecimento do framework versionado no pacote `next`.
-- **`AGENTS.md`**: Constituição concisa (<150 linhas) focada em regras do projeto, com uma matriz `Tool -> Purpose`.
-- **Future Capability (Out of Scope v0.1)**: Eventual publicação de registry GitHub próprio (`registry.json`) é explicitamente para v0.2/v0.3.
+1. **Nunca correr comandos interativos que fiquem à espera de resposta (`stdin`)**:
+   - Para instalar componentes do shadcn, o ficheiro `components.json` já deve estar criado com antecedência.
+   - Usa sempre a flag não-interativa: `pnpm dlx shadcn@latest add ... --yes --overwrite`.
+2. **Resiliência do SQLite no Windows (Bloqueios `EBUSY`)**:
+   - Nunca instancies `new PrismaClient()` solto em Server Actions. Usa o ficheiro `lib/db.ts` com o singleton `globalThis.prisma`.
+   - O SQLite deve correr em modo WAL: `DATABASE_URL="file:./dev.db"`.
+3. **Pino estritamente Server-Only**:
+   - A primeira linha de `lib/logger.server.ts` tem de ser: `import 'server-only';`.
+   - Nunca importes o logger em ficheiros com `'use client'`.
+   - Declara `serverExternalPackages: ['pino']` em `next.config.ts`.
+   - Nunca logues passwords, tokens, cookies, authorization headers ou chaves.
+4. **Hierarquia de Rotas e Layouts (Evitar conflito de tags `<html>`)**:
+   - Apenas `app/layout.tsx` define `<html>`, `<body>` e o `ThemeProvider`.
+   - `app/(site)/layout.tsx` define apenas o cabeçalho público e o rodapé. O ficheiro `app/(site)/page.tsx` é o dono da raiz `/`.
+   - `app/(dashboard)/layout.tsx` define a barra lateral de gestão. As páginas de dashboard ficam sob `app/(dashboard)/dashboard/page.tsx`.
+5. **Cold-Start Num Único Comando**:
+   - `pnpm setup`: copia `.env.example` -> `.env`, corre `prisma db push`, gera o cliente Prisma e valida a tipagem sem qualquer intervenção manual.
 
 ---
 
-## 3. Matriz de Decisão: "Que Ferramenta Usar para Quê"
+## 4. Matriz de Decisão: "Que Ferramenta Usar para Quê"
 
 | Ferramenta | Quando e Como Usar |
 | :--- | :--- |
@@ -94,52 +92,26 @@ Cada receita é uma **unidade operacional**, executável por um agente e compree
 | **OpenSpec** | Gestão de mudanças, planeamento e especificação de requisitos formais. |
 | **shadcn Skills** | Conhecimento de padrões, boas práticas e workflows de UI. |
 | **shadcn MCP** | Procurar, inspecionar e instalar componentes e blocos concretos. |
-| **next-devtools-mcp** | Inspecionar a aplicação em execução local para diagnosticar erros e estado. |
+| **next-devtools-mcp** | Inspecionar a aplicação em execução local para diagnosticar erros e estado (dev-only). |
 | **Playwright** | Testes de fumo e navegação real no browser. |
 | **Next.js docs/skills**| Conhecimento técnico e APIs versionadas do framework (*"How NEXT works"*). |
 
 ---
 
-## 4. A Constituição no `AGENTS.md` (Mandamentos para o Agente)
+## 5. Rastreio e Ordem de Tarefas no OpenSpec
 
-1. **Boring & Predictable**:
-   > *"Your job is not to make this repository feature-rich. Your job is to make it boring, predictable and extremely easy for another AI agent to understand and extend."*
-2. **Construtivo, Nunca Destrutivo**:
-   > *"Never delete foundation files during project customization unless explicitly required by the selected blueprint. Prefer disabling, isolating, or generating the target project from a blueprint."*
-   > *"Never assume that unused code should be removed merely because it is unused."*
-3. **Simplicidade sobre Abstração**:
-   > *"When choosing between a clever abstraction and a simple implementation, choose the simple implementation. When choosing between deleting complexity and isolating complexity, prefer isolation."*
-4. **Foco Pragmático**:
-   > *"Never optimize the foundation for hypothetical future requirements. Optimize it for the next ten real applications we expect to build."*
-5. **Separação de Contextos & Segurança de Logs**:
-   - `file:./dev.db` é para desenvolvimento local. Persistência partilhada/produção exige a receita `recipes/postgres`.
-   - Pino é estritamente **server-side**. Nunca importar em Client Components. Nunca logar passwords, tokens, cookies, auth headers ou chaves.
-6. **Invariantes do Projeto vs Framework**:
-   - O `AGENTS.md` contém as **nossas regras**, não duplicados da documentação do Next.js.
+As tarefas detalhadas em `C:\Users\helder.toucas\Dev\openspec\changes\lean-app-foundation\tasks.md` seguem 7 fases ordenadas:
+
+- **Fase 1**: Arquivo seguro da branch `archive/next-forge-v2` e limpeza do monorepo antigo.
+- **Fase 2**: Scaffolding do Next.js 16 + React 19 + Tailwind v4 + shadcn + Pino server-only.
+- **Fase 3**: Persistência Prisma SQLite com singleton e WAL mode.
+- **Fase 4**: Blueprints composicionais `(site)` e `(dashboard)`.
+- **Fase 5**: Recipes operáveis com `recipe.json`, `checklist.md` e pasta `template/`.
+- **Fase 6**: Agent Layer (`shadcn MCP`, `next-devtools-mcp`, `AGENTS.md` <150 linhas).
+- **Fase 7**: Quality gates (`pnpm setup`, `typecheck`, `test`, `build`) e Testes Empíricos (A, B, C, D1, D2).
 
 ---
 
-## 5. Preservação do Código Anterior
-Antes de iniciar a nova estrutura:
-- O código monorepo atual (`next-forge` v2) é preservado na branch:
-  `archive/next-forge-v2`
-
----
-
-## 6. Validação Empírica para Agentes (Acceptance Criteria)
-
-Após a limpeza e montagem da fundação, executamos os testes empíricos de validação:
-- **Teste A (UI)**: Criação de um dashboard polido com KPIs, filtros e tabela responsiva.
-- **Teste B (Dados)**: Operação CRUD funcional com Prisma + SQLite local.
-- **Teste C (Refactor)**: Modificação do dashboard sem adicionar nenhuma nova biblioteca visual.
-- **Teste D1 (UI Intelligence)**: O agente pesquisa e adiciona componentes canónicos via `shadcn MCP`.
-- **Teste D2 (Runtime Awareness)**: O agente inspeciona o servidor em execução via `next-devtools-mcp`, diagnostica o estado real e valida o comportamento.
-
----
-
-## 7. Estado do OpenSpec
-- **Change**: `lean-app-foundation`
-- **Diretório**: `C:\Users\helder.toucas\Dev\openspec\changes\lean-app-foundation\`
-- **Estado**: Validado e aprovado (`Progress: 4/4 artifacts complete`).
-
-Para executar: `/opsx-apply` ou dizer **"aplica o openspec"**.
+## 6. Como Iniciar a Execução
+Para qualquer agente iniciar a execução ordenada:
+👉 Executar o workflow `/opsx-apply` ou seguir o checklist em `tasks.md`.
