@@ -11,9 +11,20 @@ datasource db {
   relationMode = "prisma"
 }
 
-// This is a stub model.
-// Delete it and add your own Prisma models.
+// Foundation stub model
 model Page {
   id   Int    @id @default(autoincrement())
   name String
+}
+
+// Workshop acceptance test model
+model Workshop {
+  id          String   @id @default(cuid())
+  title       String
+  instructor  String
+  category    String
+  status      String   @default("DRAFT") // DRAFT, PUBLISHED, ARCHIVED
+  capacity    Int      @default(20)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
