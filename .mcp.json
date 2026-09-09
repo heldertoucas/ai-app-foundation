@@ -1,0 +1,13 @@
+{
+  "schemas": ["shadcn", "next-devtools"],
+  "mcpServers": {
+    "shadcn": {
+      "command": "npx",
+      "args": ["-y", @shadcn/mcp-server"]
+    },
+    "next-devtools": {
+      "command": "npx",
+      "args": ["-y", "next-devtools-mcp"]
+    }
+  }
+}
