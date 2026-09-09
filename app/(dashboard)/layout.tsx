@@ -1,39 +1,64 @@
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { AppSidebar } from '@/components/app-sidebar';
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from '@/components/ui/sidebar';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import { Separator } from '@/components/ui/separator';
 
-export default function DashboardLayout(	{
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen">
-      <aside className="w-64 border-r bg-muted/20 px-4 py-6 flex flex-col justify-between">
-        <div className="space-y-6">
-          <Link href="/dashboard" className="font-bold text-lg block">
-            App Dashboard
-          </Link>
-          <nav className="space-y-1">
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center justify-between border-b px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 h-4"
+            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Project Atlas</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+          <div className="flex items-center gap-3">
             <Link
-              href="/dashboard"
-              className="block rounded-md bg-accent px-3 py-2 text-sm font-medium text-accent-foreground"
+              href="/"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
-              Overview
+              Back to Site
             </Link>
-          </nav>
-        </div>
-        <div>
-          <Link href="/" className="text-sm text-muted-foreground hover:underline">
-            Back to Site
-          </Link>
-        </div>
-      </aside>
-      <div className="flex-1 flex flex-col">
-        <header className="h-14 border-b px-6 flex items-center justify-end">
-          <ThemeToggle />
+            <ThemeToggle />
+          </div>
         </header>
-        <main className="flex-1 px-6 py-8">{children}</main>
-      </div>
-    </div>
+        <main className="flex flex-1 flex-col p-4 sm:p-6 lg:p-8">
+          {children}
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
+
