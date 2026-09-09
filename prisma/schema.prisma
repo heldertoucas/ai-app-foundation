@@ -25,3 +25,15 @@ model Workshop {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   @default("Active")
+  progress    Int      @default(0)
+  owner       String   @default("Helder T.")
+  deadline    DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
