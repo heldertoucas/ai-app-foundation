@@ -1,75 +1,110 @@
 import Link from 'next/link';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { ArrowRight, Layers, Database, Sparkles } from 'lucide-react';
 
 export default function HomePage() {
   return (
-    <div className="container mx-auto px-4 py-16 sm:px-8 max-w-6xl space-y-20">
+    <div className="container mx-auto px-4 py-16 sm:px-8 max-w-6xl flex flex-col gap-20">
       {/* Hero Section */}
-      <div className="mx-auto max-w-3xl text-center space-y-6">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full border bg-muted/50 text-xs font-medium">
-          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>Project Atlas — Executive Operating System</span>
-        </div>
-        <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl text-foreground">
-          Orchestrate projects with <span className="bg-gradient-to-r from-indigo-500 via-sky-400 to-emerald-400 bg-clip-text text-transparent">calm precision</span>.
+      <div className="mx-auto max-w-3xl text-center flex flex-col items-center gap-6">
+        <Badge variant="outline" className="px-3 py-1 gap-2 rounded-full border-border/80">
+          <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="font-mono text-[11px] tracking-wide uppercase">
+            Project Atlas — Executive Operating System
+          </span>
+        </Badge>
+        <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl text-foreground leading-[1.1]">
+          Orchestrate projects with{' '}
+          <span className="bg-gradient-to-r from-indigo-500 via-sky-400 to-emerald-400 bg-clip-text text-transparent">
+            calm precision
+          </span>
+          .
         </h1>
-        <p className="text-lg text-muted-foreground leading-relaxed">
-          High visual density, zero noise, and local-first execution. Built on Next.js 16 and SQLite persistence.
+        <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
+          High visual density, zero noise, and local-first execution. Built on Next.js 16,
+          canonical shadcn/ui components, and SQLite persistence.
         </p>
-        <div className="flex justify-center gap-4 pt-2">
-          <Link
-            href="/dashboard"
-            className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-all"
-          >
-            Open Dashboard →
-          </Link>
-          <a
-            href="#features"
-            className="inline-flex items-center justify-center rounded-lg border bg-background px-6 py-3 text-sm font-medium text-foreground hover:bg-accent transition-colors"
-          >
-            Explore Stack
-          </a>
+        <div className="flex items-center justify-center gap-4 pt-2">
+          <Button size="lg" asChild className="gap-2 shadow-sm font-semibold">
+            <Link href="/dashboard">
+              <span>Open Dashboard</span>
+              <ArrowRight className="size-4" />
+            </Link>
+          </Button>
+          <Button variant="outline" size="lg" asChild>
+            <a href="#features">Explore Stack</a>
+          </Button>
         </div>
       </div>
 
       {/* Feature Cards Grid */}
-      <div id="features" className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
-        <div className="rounded-xl border bg-card p-6 space-y-3 shadow-sm hover:border-foreground/20 transition-all">
-          <div className="h-10 w-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary">
-            01
-          </div>
-          <h3 className="font-semibold text-lg">Restrained Visual Hierarchy</h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Designed to minimize cognitive load with clean typography, high-contrast whitespace, and composed shadcn primitives.
-          </p>
-        </div>
+      <div id="features" className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+        <Card className="border-border/60 shadow-xs hover:border-border transition-all">
+          <CardHeader className="flex flex-row items-center gap-3 space-y-0 pb-3">
+            <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+              <Layers className="size-5" />
+            </div>
+            <CardTitle className="text-base font-semibold">Restrained Hierarchy</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Designed to minimize cognitive overhead with clean typography, high-contrast whitespace, and authentic shadcn/ui primitives.
+            </p>
+          </CardContent>
+        </Card>
 
-        <div className="rounded-xl border bg-card p-6 space-y-3 shadow-sm hover:border-foreground/20 transition-all">
-          <div className="h-10 w-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary">
-            02
-          </div>
-          <h3 className="font-semibold text-lg">Local-First Persistence</h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Zero cloud SaaS lock-in. Powered by local SQLite in WAL mode with deterministic execution guarantees.
-          </p>
-        </div>
+        <Card className="border-border/60 shadow-xs hover:border-border transition-all">
+          <CardHeader className="flex flex-row items-center gap-3 space-y-0 pb-3">
+            <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+              <Database className="size-5" />
+            </div>
+            <CardTitle className="text-base font-semibold">Local-First Engine</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Zero cloud SaaS lock-in. Powered by local SQLite in WAL mode with connection limits and deterministic reliability.
+            </p>
+          </CardContent>
+        </Card>
 
-        <div className="rounded-xl border bg-card p-6 space-y-3 shadow-sm hover:border-foreground/20 transition-all">
-          <div className="h-10 w-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary">
-            03
-          </div>
-          <h3 className="font-semibold text-lg">Responsive & Fast</h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Adapts smoothly across mobile, tablet, and desktop viewports with server-rendered efficiency.
-          </p>
-        </div>
+        <Card className="border-border/60 shadow-xs hover:border-border transition-all">
+          <CardHeader className="flex flex-row items-center gap-3 space-y-0 pb-3">
+            <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+              <Sparkles className="size-5" />
+            </div>
+            <CardTitle className="text-base font-semibold">Design System Aligned</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Composed using standard New York style variants, semantic theme tokens, and Tailwind v4 CSS variables.
+            </p>
+          </CardContent>
+        </Card>
       </div>
 
+      <Separator />
+
       {/* Accessible Footer */}
-      <footer className="border-t pt-8 pb-12 flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground gap-4">
+      <footer className="flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground gap-4 pb-8">
         <div>Project Atlas © 2026 — Built on ai-app-foundation</div>
-        <div className="flex space-x-6">
-          <Link href="/dashboard" className="hover:underline">Dashboard</Link>
-          <a href="#" className="hover:underline">Documentation</a>
+        <div className="flex items-center gap-6">
+          <Link href="/dashboard" className="hover:underline">
+            Dashboard
+          </Link>
+          <Link href="/dashboard/workshops" className="hover:underline">
+            Workshops
+          </Link>
+          <a href="#" className="hover:underline">
+            Architecture
+          </a>
         </div>
       </footer>
     </div>
