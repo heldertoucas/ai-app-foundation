@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { MagnifyingGlass, Command, X } from "@phosphor-icons/react";
 
@@ -17,6 +18,7 @@ export interface GlobalCommandPaletteProps {
 }
 
 export function GlobalCommandPalette({ items }: GlobalCommandPaletteProps) {
+  const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState("");
 
@@ -97,7 +99,7 @@ export function GlobalCommandPalette({ items }: GlobalCommandPaletteProps) {
                 type="button"
                 onClick={() => {
                   if (item.onSelect) item.onSelect();
-                  if (item.href) window.location.href = item.href;
+                  if (item.href) router.push(item.href);
                   setOpen(false);
                 }}
                 className="flex items-center justify-between rounded-lg px-3 py-2 text-xs text-foreground hover:bg-muted transition-colors text-left cursor-pointer"

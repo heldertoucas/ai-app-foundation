@@ -4,7 +4,9 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Check, Warning, X, Minus, MagnifyingGlass } from "@phosphor-icons/react";
+import Link from "next/link";
+import { Check, Warning, X, Minus, MagnifyingGlass, ArrowSquareOut } from "@phosphor-icons/react";
+
 
 export type CellStatus = "live" | "drift" | "missing" | "unsupported";
 
@@ -37,6 +39,7 @@ export function CapabilityMatrixHeatmap({
   const [search, setSearch] = React.useState("");
   const [selectedTarget, setSelectedTarget] = React.useState<string | null>(null);
   const [hoveredCell, setHoveredCell] = React.useState<{
+    rowId: string;
     capability: string;
     target: string;
     status: CellStatus;
@@ -44,6 +47,35 @@ export function CapabilityMatrixHeatmap({
     x: number;
     y: number;
   } | null>(null);
+
+  const hideTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const showCell = (
+    rowId: string,
+    capability: string,
+    targetLabel: string,
+    status: CellStatus,
+    detail: string | undefined,
+    rect: DOMRect
+  ) => {
+    if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+    setHoveredCell({
+      rowId,
+      capability,
+      target: targetLabel,
+      status,
+      detail: detail || "Verified compliant",
+      x: rect.left + rect.width / 2,
+      y: rect.top,
+    });
+  };
+
+  const scheduleHide = () => {
+    hideTimeoutRef.current = setTimeout(() => {
+      setHoveredCell(null);
+    }, 150);
+  };
+
 
   const filteredRows = React.useMemo(() => {
     return rows.filter((r) => {
@@ -157,25 +189,21 @@ export function CapabilityMatrixHeatmap({
                         : "bg-muted/60 text-muted-foreground border-border/40";
 
                     return (
-                      <td
-                        key={target.id}
-                        className="py-2 px-3 text-center align-middle"
-                        onMouseEnter={(e) => {
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          setHoveredCell({
-                            capability: row.capability,
-                            target: target.label,
-                            status,
-                            detail: cell?.detail || "No drift logged",
-                            x: rect.left + rect.width / 2,
-                            y: rect.top,
-                          });
-                        }}
-                        onMouseLeave={() => setHoveredCell(null)}
-                      >
-                        <span
+                      <td key={target.id} className="py-2 px-3 text-center align-middle">
+                        <button
+                          type="button"
+                          tabIndex={0}
+                          aria-label={`${row.capability}, ${target.label}: Status ${status}. ${cell?.detail || ""}`}
+                          onMouseEnter={(e) =>
+                            showCell(row.id, row.capability, target.label, status, cell?.detail, e.currentTarget.getBoundingClientRect())
+                          }
+                          onMouseLeave={scheduleHide}
+                          onFocus={(e) =>
+                            showCell(row.id, row.capability, target.label, status, cell?.detail, e.currentTarget.getBoundingClientRect())
+                          }
+                          onBlur={scheduleHide}
                           className={cn(
-                            "inline-flex size-6 items-center justify-center rounded-md border text-xs font-semibold cursor-pointer transition-transform hover:scale-110",
+                            "inline-flex size-6 items-center justify-center rounded-md border text-xs font-semibold cursor-pointer transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-hidden",
                             badgeStyle
                           )}
                         >
@@ -183,7 +211,7 @@ export function CapabilityMatrixHeatmap({
                           {status === "drift" && <Warning className="size-3.5" />}
                           {status === "missing" && <X className="size-3.5" />}
                           {status === "unsupported" && <Minus className="size-3.5" />}
-                        </span>
+                        </button>
                       </td>
                     );
                   })}
@@ -194,10 +222,15 @@ export function CapabilityMatrixHeatmap({
         </table>
       </div>
 
-      {/* Single Delegated Hovercard to avoid 508 discrete popover overhead */}
+      {/* Interactive Delegated Popover with click-through to inspection */}
       {hoveredCell && (
         <div
-          className="fixed z-50 pointer-events-none -translate-x-1/2 -translate-y-full mb-2 rounded-lg border border-border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-xl animate-in fade-in-0 zoom-in-95"
+          role="tooltip"
+          onMouseEnter={() => {
+            if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+          }}
+          onMouseLeave={scheduleHide}
+          className="fixed z-50 pointer-events-auto -translate-x-1/2 -translate-y-full mb-2 rounded-lg border border-border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-xl animate-in fade-in-0 zoom-in-95 max-w-xs"
           style={{ left: hoveredCell.x, top: hoveredCell.y - 8 }}
         >
           <div className="flex items-center gap-1.5 font-semibold">
@@ -218,8 +251,17 @@ export function CapabilityMatrixHeatmap({
             >
               {hoveredCell.status}
             </Badge>
-            <span className="text-[11px] text-muted-foreground">{hoveredCell.detail}</span>
+            <span className="text-[11px] text-muted-foreground truncate max-w-[180px]">
+              {hoveredCell.detail}
+            </span>
           </div>
+          <Link
+            href={`/dashboard/inspection?invariant=${encodeURIComponent(hoveredCell.rowId)}`}
+            className="mt-2 flex items-center justify-between border-t border-border/50 pt-1.5 text-[11px] font-medium text-primary hover:underline"
+          >
+            <span>Inspect Raw Audit Evidence</span>
+            <ArrowSquareOut className="size-3" />
+          </Link>
         </div>
       )}
     </div>

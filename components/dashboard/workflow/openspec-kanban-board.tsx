@@ -40,14 +40,14 @@ export function OpenSpecKanbanBoard({
   className,
 }: OpenSpecKanbanBoardProps) {
   return (
-    <div className={cn("grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4", className)}>
+    <div className={cn("flex lg:grid lg:grid-cols-5 gap-4 overflow-x-auto pb-2 snap-x snap-mandatory", className)}>
       {STAGES.map((stage) => {
         const stageChanges = changes.filter((c) => c.stage === stage.id);
 
         return (
           <div
             key={stage.id}
-            className="flex flex-col gap-3 rounded-xl border border-border/60 bg-muted/20 p-3 min-h-[360px]"
+            className="flex flex-col gap-3 rounded-xl border border-border/60 bg-muted/20 p-3 min-h-[360px] w-[280px] shrink-0 snap-start lg:w-auto"
           >
             {/* Column Header */}
             <div className="flex items-center justify-between pb-1">
