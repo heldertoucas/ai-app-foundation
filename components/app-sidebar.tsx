@@ -15,7 +15,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { TerminalIcon, RobotIcon, BookOpenIcon, GearIcon, LifebuoyIcon, PaperPlaneTiltIcon, CropIcon, ChartPieIcon, MapTrifoldIcon, CommandIcon } from "@phosphor-icons/react"
+import { TerminalIcon, RobotIcon, BookOpenIcon, GearIcon, LifebuoyIcon, PaperPlaneTiltIcon, CropIcon, ChartPieIcon, MapTrifoldIcon, CommandIcon, SquaresFourIcon } from "@phosphor-icons/react"
 
 const data = {
   user: {
@@ -24,6 +24,42 @@ const data = {
     avatar: "/avatars/avatar.jpg",
   },
   navMain: [
+    {
+      title: "Component Library",
+      url: "/dashboard/metrics",
+      icon: <SquaresFourIcon />,
+      isActive: true,
+      items: [
+        {
+          title: "1. Metrics & KPIs",
+          url: "/dashboard/metrics",
+        },
+        {
+          title: "2. Analytical Charts",
+          url: "/dashboard/charts",
+        },
+        {
+          title: "3. 2D Matrix Heatmap",
+          url: "/dashboard/matrix",
+        },
+        {
+          title: "4. Workflow & Kanban",
+          url: "/dashboard/workflow",
+        },
+        {
+          title: "5. Code & Diffs",
+          url: "/dashboard/inspection",
+        },
+        {
+          title: "6. Agent Pipelines",
+          url: "/dashboard/agents",
+        },
+        {
+          title: "7. Developer Actions",
+          url: "/dashboard/actions",
+        },
+      ],
+    },
     {
       title: "Workspace",
       url: "/dashboard",
