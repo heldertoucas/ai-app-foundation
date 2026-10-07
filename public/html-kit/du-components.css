@@ -1,0 +1,175 @@
+/* ==========================================================================
+   DU Specialized Components (Cockpit, Telemetry, Bento Grid)
+   Zero build step / Native HTML first
+   ========================================================================== */
+
+/* 1. KPI STAT CARD */
+.du-kpi-card {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  color: var(--card-foreground);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 150ms ease, border-color 150ms ease;
+}
+
+.du-kpi-card:hover {
+  border-color: var(--ring);
+}
+
+.du-kpi-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.du-kpi-value {
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--foreground);
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.du-kpi-subtext {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+/* 2. TELEMETRY BADGES & PING INDICATORS */
+.du-telemetry-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  color: var(--foreground);
+}
+
+.du-ping-dot {
+  position: relative;
+  display: flex;
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.du-ping-circle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  animation: du-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  opacity: 0.75;
+}
+
+.du-ping-core {
+  position: relative;
+  display: inline-flex;
+  border-radius: 9999px;
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+/* Status variants */
+.du-status-live .du-ping-circle, .du-status-live .du-ping-core { background-color: var(--status-live); }
+.du-status-drift .du-ping-circle, .du-status-drift .du-ping-core { background-color: var(--status-drift); }
+.du-status-missing .du-ping-circle, .du-status-missing .du-ping-core { background-color: var(--status-missing); }
+
+@keyframes du-ping {
+  75%, 100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* 3. BENTO GRID SYSTEM */
+.du-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .du-bento-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.du-bento-span-2 {
+  grid-column: span 1;
+}
+
+@media (min-width: 768px) {
+  .du-bento-span-2 {
+    grid-column: span 2;
+  }
+}
+
+/* 4. SERVICE & PORT CARD */
+.du-service-card {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.du-service-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.du-service-name {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.du-service-port {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+/* 5. QUICK COMMAND / SEARCH BAR */
+.du-command-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+
+.du-command-shortcut {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  border: 1px solid var(--border);
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  padding: 0.1rem 0.35rem;
+  border-radius: calc(var(--radius) * 0.6);
+  margin-left: auto;
+}

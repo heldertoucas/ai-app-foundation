@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DU Mission Control — Zero-Build Cockpit</title>
+  
+  <!-- 1. Tokens Canónicos DU (1:1 com globals.css) -->
+  <link rel="stylesheet" href="../tokens.css">
+  
+  <!-- 2. shadcn-html Core Components Bundle -->
+  <link rel="stylesheet" href="../vendor/shadcn-html.all.css">
+  
+  <!-- 3. Componentes Próprios DU (KPI, Telemetria, Bento) -->
+  <link rel="stylesheet" href="../du-components.css">
+  
+  <!-- 4. Micro-Runtime (<50 LOC) -->
+  <script src="../du-runtime.js" defer></script>
+  
+  <style>
+    /* Estilos de layout estático sem necessidade de Tailwind compiler */
+    .du-container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+    .du-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+    .du-flex-row { display: flex; align-items: center; gap: 0.75rem; }
+    .du-grid-2 { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem; }
+    @media (min-width: 768px) { .du-grid-2 { grid-template-columns: 2fr 1fr; } }
+  </style>
+</head>
+<body class="bg-background text-foreground">
+
+  <div class="du-container">
+    <!-- Top Header -->
+    <header class="du-header">
+      <div class="du-flex-row">
+        <div style="font-size: 1.5rem;">🪽</div>
+        <div>
+          <div class="du-flex-row">
+            <h1 style="margin: 0; font-size: 1.125rem; font-weight: 700;">DU Mission Control</h1>
+            <span class="ui-badge ui-badge-secondary">HTML-First Cockpit</span>
+          </div>
+          <p style="margin: 0; font-size: 0.8rem; color: var(--muted-foreground);">Zero-Build / Latência &lt; 2ms / Standalone Offline</p>
+        </div>
+      </div>
+
+      <div class="du-flex-row">
+        <!-- Telemetry Pill -->
+        <div class="du-telemetry-pill du-status-live">
+          <span class="du-ping-dot">
+            <span class="du-ping-circle"></span>
+            <span class="du-ping-core"></span>
+          </span>
+          <span>4 Services Online</span>
+        </div>
+
+        <!-- Quick Filter Button -->
+        <button class="du-command-bar" onclick="document.getElementById('du-command-dialog').showModal()">
+          <span>Quick Find...</span>
+          <span class="du-command-shortcut">Ctrl+K</span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button class="ui-btn ui-btn-outline ui-btn-sm" onclick="duToggleTheme()" title="Toggle Dark/Light">
+          🌓
+        </button>
+      </div>
+    </header>
+
+    <!-- Bento KPI Stats Row -->
+    <section class="du-bento-grid">
+      <div class="du-kpi-card">
+        <div class="du-kpi-label">
+          <span>Active Services</span>
+          <span class="ui-badge ui-badge-secondary">Fleet</span>
+        </div>
+        <div class="du-kpi-value">
+          4 <span style="font-size: 0.875rem; font-weight: 400; color: var(--status-live);">● 100% OK</span>
+        </div>
+        <div class="du-kpi-subtext">Sentinel, Engine, Dashboard, Vault</div>
+      </div>
+
+      <div class="du-kpi-card">
+        <div class="du-kpi-label">
+          <span>Obsidian Memory</span>
+          <span class="ui-badge ui-badge-outline">Dev/home</span>
+        </div>
+        <div class="du-kpi-value">
+          142 <span style="font-size: 0.875rem; font-weight: 400; color: var(--muted-foreground);">notes</span>
+        </div>
+        <div class="du-kpi-subtext">8 MEM-* candidates pending review</div>
+      </div>
+
+      <div class="du-kpi-card">
+        <div class="du-kpi-label">
+          <span>Render Latency</span>
+          <span class="ui-badge ui-badge-secondary">Instant</span>
+        </div>
+        <div class="du-kpi-value">
+          1.2 <span style="font-size: 0.875rem; font-weight: 400; color: var(--muted-foreground);">ms</span>
+        </div>
+        <div class="du-kpi-subtext">Zero JavaScript Framework overhead</div>
+      </div>
+    </section>
+
+    <!-- Main Workspace Split -->
+    <div class="du-grid-2">
+      <!-- Left Column: Services Table & Tabs -->
+      <div class="ui-card">
+        <div class="ui-card-header">
+          <h2 class="ui-card-title">Port Fleet & Running Processes</h2>
+          <p class="ui-card-description">Passive socket inspection and runtime listeners</p>
+        </div>
+        <div class="ui-card-content">
+          <div class="ui-table-container">
+            <table class="ui-table">
+              <thead>
+                <tr>
+                  <th>Service</th>
+                  <th>Port</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>DU Mission Control</strong></td>
+                  <td><code>:3000</code></td>
+                  <td><span class="ui-badge" style="background-color: var(--status-live); color: #000;">Active</span></td>
+                  <td><button class="ui-btn ui-btn-outline ui-btn-sm" onclick="alert('Port 3000 already running!')">Open</button></td>
+                </tr>
+                <tr>
+                  <td><strong>Sentinel Cockpit</strong></td>
+                  <td><code>:3030</code></td>
+                  <td><span class="ui-badge" style="background-color: var(--status-live); color: #000;">Active</span></td>
+                  <td><button class="ui-btn ui-btn-outline ui-btn-sm" onclick="alert('Port 3030 already running!')">Open</button></td>
+                </tr>
+                <tr>
+                  <td><strong>Development Engine MCP</strong></td>
+                  <td><code>:8765</code></td>
+                  <td><span class="ui-badge ui-badge-secondary">Standby</span></td>
+                  <td><button class="ui-btn ui-btn-outline ui-btn-sm" onclick="alert('Starting Engine MCP...')">Start</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Accordion & Settings -->
+      <div class="ui-card">
+        <div class="ui-card-header">
+          <h2 class="ui-card-title">Cockpit Controls</h2>
+          <p class="ui-card-description">Native HTML Details & Dialogs</p>
+        </div>
+        <div class="ui-card-content">
+          <!-- Native Details Accordion -->
+          <details class="ui-accordion" open>
+            <summary>Invariantes Arquiteturais</summary>
+            <div class="ui-accordion-content">
+              Todos os componentes usam CSS tokens semânticos e APIs nativas sem dependência de build.
+            </div>
+          </details>
+
+          <details class="ui-accordion">
+            <summary>Governação de Memória</summary>
+            <div class="ui-accordion-content">
+              Candidatos a memória são validados via CLI dev.cli session/memory.
+            </div>
+          </details>
+
+          <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <span style="font-size: 0.875rem;">Live Watchdog Mode</span>
+              <label class="ui-switch">
+                <input type="checkbox" checked>
+                <span class="ui-switch-slider"></span>
+              </label>
+            </div>
+
+            <button class="ui-btn ui-btn-secondary" style="width: 100%; margin-top: 0.5rem;" onclick="document.getElementById('du-inspect-dialog').showModal()">
+              🔍 Inspecionar Estado do Vault
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Native Modal Dialog: Inspect State -->
+  <dialog id="du-inspect-dialog" class="ui-dialog">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <h3 style="margin: 0; font-size: 1.125rem;">Estado do Vault — Dev/home</h3>
+      <button class="ui-btn ui-btn-ghost ui-btn-sm" onclick="this.closest('dialog').close()">✕</button>
+    </div>
+    <p style="font-size: 0.875rem; color: var(--muted-foreground); margin-bottom: 1rem;">
+      O repositório canónico de conhecimento encontra-se em sincronização ativa.
+    </p>
+    <div style="background-color: var(--muted); padding: 0.75rem; border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.8rem; margin-bottom: 1.5rem;">
+      SES-2026-10-07-005: OK<br>
+      PRJ-0024: ai-app-foundation<br>
+      LANCEDB: Active (Indexed)
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+      <button class="ui-btn ui-btn-outline" onclick="this.closest('dialog').close()">Fechar</button>
+      <button class="ui-btn" onclick="alert('Snapshot gerado com sucesso!'); this.closest('dialog').close();">Criar Snapshot</button>
+    </div>
+  </dialog>
+
+  <!-- Native Modal Dialog: Quick Command Palette -->
+  <dialog id="du-command-dialog" class="ui-dialog">
+    <div style="margin-bottom: 1rem;">
+      <input type="text" class="ui-input" placeholder="Escreva um comando ou pesquise (ex: /status, /ports, /mem)..." autofocus>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;">
+      <div style="padding: 0.5rem; border-radius: var(--radius); background-color: var(--muted); cursor: pointer;" onclick="alert('Comando /ports executado'); this.closest('dialog').close();">
+        <strong>/ports</strong> — Inspecionar portas abertas
+      </div>
+      <div style="padding: 0.5rem; border-radius: var(--radius); cursor: pointer;" onclick="alert('Comando /session executado'); this.closest('dialog').close();">
+        <strong>/session</strong> — Ver sessão ativa do DU
+      </div>
+    </div>
+    <div style="margin-top: 1rem; text-align: right;">
+      <button class="ui-btn ui-btn-ghost ui-btn-sm" onclick="this.closest('dialog').close()">Fechar (Esc)</button>
+    </div>
+  </dialog>
+
+</body>
+</html>

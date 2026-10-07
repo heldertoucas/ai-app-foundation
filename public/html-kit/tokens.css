@@ -1,0 +1,124 @@
+/**
+ * DU HTML Foundation Kit — Standalone Semantic Tokens
+ * Paridade 1:1 com app/globals.css (OKLCH, Dark/Light, Status Telemetry)
+ * Zero build step / Framework-agnostic
+ */
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.205 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --radius: 0.45rem;
+
+  /* DU Telemetry & Status Tokens */
+  --status-live: oklch(0.72 0.17 150);
+  --status-drift: oklch(0.78 0.16 75);
+  --status-missing: oklch(0.65 0.22 25);
+  --status-unsupported: oklch(0.60 0 0);
+
+  /* Charts */
+  --chart-1: oklch(0.65 0.16 240);
+  --chart-2: oklch(0.72 0.15 160);
+  --chart-3: oklch(0.68 0.17 40);
+  --chart-4: oklch(0.62 0.18 300);
+  --chart-5: oklch(0.58 0.14 85);
+
+  /* Fonts */
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.922 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+
+  /* DU Telemetry & Status Tokens */
+  --status-live: oklch(0.75 0.16 150);
+  --status-drift: oklch(0.80 0.15 75);
+  --status-missing: oklch(0.70 0.20 25);
+  --status-unsupported: oklch(0.65 0 0);
+
+  /* Charts */
+  --chart-1: oklch(0.70 0.15 240);
+  --chart-2: oklch(0.75 0.14 160);
+  --chart-3: oklch(0.72 0.16 40);
+  --chart-4: oklch(0.68 0.17 300);
+  --chart-5: oklch(0.65 0.13 85);
+}
+
+/* Base Body Application */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+code, pre, .font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Utility Fallback Classes (Zero Build / Tailwind-compatible) */
+.bg-background { background-color: var(--background); }
+.text-foreground { color: var(--foreground); }
+.bg-card { background-color: var(--card); }
+.text-card-foreground { color: var(--card-foreground); }
+.bg-popover { background-color: var(--popover); }
+.text-popover-foreground { color: var(--popover-foreground); }
+.bg-primary { background-color: var(--primary); }
+.text-primary-foreground { color: var(--primary-foreground); }
+.bg-secondary { background-color: var(--secondary); }
+.text-secondary-foreground { color: var(--secondary-foreground); }
+.bg-muted { background-color: var(--muted); }
+.text-muted-foreground { color: var(--muted-foreground); }
+.bg-accent { background-color: var(--accent); }
+.text-accent-foreground { color: var(--accent-foreground); }
+.bg-destructive { background-color: var(--destructive); }
+.text-destructive-foreground { color: var(--destructive-foreground); }
+.border-border { border-color: var(--border); }
+.border-input { border-color: var(--input); }
+
+/* DU Telemetry Colors */
+.text-status-live { color: var(--status-live); }
+.bg-status-live { background-color: var(--status-live); }
+.text-status-drift { color: var(--status-drift); }
+.bg-status-drift { background-color: var(--status-drift); }
+.text-status-missing { color: var(--status-missing); }
+.bg-status-missing { background-color: var(--status-missing); }
+.text-status-unsupported { color: var(--status-unsupported); }
+.bg-status-unsupported { background-color: var(--status-unsupported); }
