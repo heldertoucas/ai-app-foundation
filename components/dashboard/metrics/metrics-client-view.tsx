@@ -10,7 +10,7 @@ import {
 } from "@/components/dashboard/metrics";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { FolderKanban, ShieldCheck, Cpu, Clock } from "lucide-react";
+import { Folder, ShieldCheck, Cpu, Clock } from "@phosphor-icons/react";
 import { DuComplianceMatrixData, DuContextTelemetry } from "@/lib/du/types";
 
 interface MetricsClientViewProps {
@@ -83,7 +83,7 @@ export function MetricsClientView({
             value={totalInvariants.toString()}
             change={0}
             changePeriod="DEV-001 Foundation"
-            icon={<FolderKanban className="size-4 text-primary" />}
+            icon={<Folder className="size-4 text-primary" />}
           />
           <KpiStatCard
             title="Ecosystem Health"

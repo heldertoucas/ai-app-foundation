@@ -122,3 +122,39 @@ code, pre, .font-mono {
 .bg-status-missing { background-color: var(--status-missing); }
 .text-status-unsupported { color: var(--status-unsupported); }
 .bg-status-unsupported { background-color: var(--status-unsupported); }
+
+/* Theme Futuro Digital (CML Brand Parity) */
+.theme-futuro-digital, [data-theme="futuro-digital"] {
+  --primary: oklch(0.62 0.21 264); /* #5271FF */
+  --primary-foreground: oklch(1 0 0);
+  --accent: oklch(0.62 0.21 264);
+  --accent-foreground: oklch(1 0 0);
+  --ring: oklch(0.62 0.21 264);
+  --radius: 0.5rem;
+  --font-sans: 'Fira Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Projection Mode (Interactive Classroom & Stage Presentation) */
+body.projection-mode {
+  font-size: 1.25rem;
+  background-color: var(--background);
+}
+body.projection-mode .du-hero h1,
+body.projection-mode .fd-hero h1 {
+  font-size: 3.2rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+body.projection-mode .fd-hero p,
+body.projection-mode .du-lead-text {
+  font-size: 1.5rem;
+  line-height: 1.7;
+  max-width: 900px;
+}
+body.projection-mode .ui-card {
+  padding: 2.25rem !important;
+}
+body.projection-mode .ui-badge {
+  font-size: 1.15rem;
+  padding: 0.4rem 1rem;
+}

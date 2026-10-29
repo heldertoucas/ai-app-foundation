@@ -14,6 +14,7 @@ function check(name, condition, errorMsg) {
   }
 }
 
+// 1. React / Next.js Foundation Checks
 check('Next.js App Router', fs.existsSync(path.join(__dirname, '../app')), 'Missing app directory');
 
 const envPath = path.join(__dirname, '../.env');
@@ -36,9 +37,53 @@ const deps = Object.keys(pkg.dependencies || {}).concat(Object.keys(pkg.devDepen
 const foundProhibited = deps.filter(d => prohibited.some(p => d.includes(p)));
 check('Dependency budget / Zero SaaS', foundProhibited.length === 0, 'Prohibited SaaS dependencies found: ' + foundProhibited.join(', '));
 
+// 2. HTML Foundation Kit Checks (Symmetry & Parity)
+const htmlKitDir = path.join(__dirname, '../public/html-kit');
+check('HTML Kit Core Assets present', 
+  fs.existsSync(path.join(htmlKitDir, 'tokens.css')) &&
+  fs.existsSync(path.join(htmlKitDir, 'du-components.css')) &&
+  fs.existsSync(path.join(htmlKitDir, 'du-runtime.js')) &&
+  fs.existsSync(path.join(htmlKitDir, 'vendor/shadcn-html.all.css')),
+  'Missing core assets in public/html-kit/'
+);
+
+check('HTML Kit Starter Templates present',
+  fs.existsSync(path.join(htmlKitDir, 'templates/du-html-app-template.html')) &&
+  fs.existsSync(path.join(htmlKitDir, 'templates/template-app-shell.html')),
+  'Missing reference templates in public/html-kit/templates/'
+);
+
+check('HTML Kit Recipes present',
+  fs.existsSync(path.join(htmlKitDir, 'recipes/sse-telemetry/recipe.json')),
+  'Missing recipes structure in public/html-kit/recipes/'
+);
+
+// 3. Token Parity Verification (globals.css vs tokens.css)
+const globalsCssPath = path.join(__dirname, '../app/globals.css');
+const tokensCssPath = path.join(htmlKitDir, 'tokens.css');
+if (fs.existsSync(globalsCssPath) && fs.existsSync(tokensCssPath)) {
+  const globalsCss = fs.readFileSync(globalsCssPath, 'utf-8');
+  const tokensCss = fs.readFileSync(tokensCssPath, 'utf-8');
+
+  const requiredTokens = [
+    '--status-live',
+    '--status-drift',
+    '--status-missing',
+    '--status-unsupported'
+  ];
+
+  const missingInGlobals = requiredTokens.filter(t => !globalsCss.includes(t));
+  const missingInTokens = requiredTokens.filter(t => !tokensCss.includes(t));
+
+  check('Token Parity (Status & Telemetry)',
+    missingInGlobals.length === 0 && missingInTokens.length === 0,
+    `Missing tokens: globals.css [${missingInGlobals.join(', ')}], tokens.css [${missingInTokens.join(', ')}]`
+  );
+}
+
 console.log('');
 if (passed) {
-  console.log('✅ All Foundation Health Checks PASSED cleanly!\n');
+  console.log('✅ All Foundation Health Checks (React + HTML) PASSED cleanly!\n');
   process.exit(0);
 } else {
   console.error('❌ Foundation Health Check FAILED!\n');

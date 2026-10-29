@@ -167,3 +167,30 @@
     @apply font-sans;
   }
 }
+
+/* Theme Futuro Digital (CML Brand Parity) */
+[data-theme="futuro-digital"] {
+  --primary: oklch(0.62 0.21 264);
+  --primary-foreground: oklch(1 0 0);
+  --accent: oklch(0.62 0.21 264);
+  --accent-foreground: oklch(1 0 0);
+  --ring: oklch(0.62 0.21 264);
+  --radius: 0.5rem;
+  font-family: var(--font-fira), 'Fira Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+[data-theme="futuro-digital"] .fd-hero-title-exact {
+  font-size: 3.5rem !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  color: #151515 !important;
+}
+
+[data-theme="futuro-digital"] .fd-hero-desc-exact {
+  font-size: 1.2rem !important;
+  line-height: 1.6 !important;
+  color: #575757 !important;
+}
+
+
+

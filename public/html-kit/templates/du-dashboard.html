@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DU Mission Control Dashboard — HTML Foundation Standalone</title>
+  
+  <style>
+    /* 1. Theme Tokens (1:1 with tokens.css) */
+    :root {
+      --background: oklch(1 0 0);
+      --foreground: oklch(0.145 0 0);
+      --card: oklch(1 0 0);
+      --card-foreground: oklch(0.145 0 0);
+      --popover: oklch(1 0 0);
+      --popover-foreground: oklch(0.145 0 0);
+      --primary: oklch(0.205 0 0);
+      --primary-foreground: oklch(0.985 0 0);
+      --secondary: oklch(0.97 0 0);
+      --secondary-foreground: oklch(0.205 0 0);
+      --muted: oklch(0.97 0 0);
+      --muted-foreground: oklch(0.556 0 0);
+      --accent: oklch(0.205 0 0);
+      --accent-foreground: oklch(0.985 0 0);
+      --destructive: oklch(0.577 0.245 27.325);
+      --destructive-foreground: hsl(0, 0%, 98%);
+      --border: oklch(0.922 0 0);
+      --input: oklch(0.922 0 0);
+      --ring: oklch(0.708 0 0);
+      --radius: 0.5rem;
+      --status-live: oklch(0.72 0.17 150);
+      --status-drift: oklch(0.78 0.16 75);
+      --status-missing: oklch(0.65 0.22 25);
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    .dark {
+      --background: oklch(0.145 0 0);
+      --foreground: oklch(0.985 0 0);
+      --card: oklch(0.19 0 0);
+      --card-foreground: oklch(0.985 0 0);
+      --popover: oklch(0.19 0 0);
+      --popover-foreground: oklch(0.985 0 0);
+      --primary: oklch(0.922 0 0);
+      --primary-foreground: oklch(0.205 0 0);
+      --secondary: oklch(0.24 0 0);
+      --secondary-foreground: oklch(0.985 0 0);
+      --muted: oklch(0.24 0 0);
+      --muted-foreground: oklch(0.65 0 0);
+      --accent: oklch(0.922 0 0);
+      --accent-foreground: oklch(0.205 0 0);
+      --destructive: oklch(0.705 0.191 22.216);
+      --border: oklch(0.28 0 0);
+      --input: oklch(0.28 0 0);
+      --ring: oklch(0.556 0 0);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: var(--font-sans);
+      background-color: var(--background);
+      color: var(--foreground);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 2. Responsive App Shell */
+    .du-app-shell {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+      max-width: 100%;
+      overflow: hidden;
+      background: var(--background);
+      color: var(--foreground);
+    }
+    .du-sidebar {
+      width: 16rem;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+      background: var(--card);
+      user-select: none;
+      transition: transform 0.2s ease, width 0.2s ease;
+    }
+    .du-sidebar-header {
+      height: 3.5rem;
+      display: flex;
+      align-items: center;
+      padding: 0 1.25rem;
+      gap: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .du-sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 1rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .du-nav-section-title {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted-foreground);
+      padding: 0 0.5rem;
+      margin-bottom: 0.375rem;
+    }
+    .du-nav-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .du-nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0.625rem;
+      border-radius: calc(var(--radius) * 0.8);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--muted-foreground);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      transition: all 120ms ease;
+      width: 100%;
+      text-decoration: none;
+      gap: 0.5rem;
+    }
+    .du-nav-item:hover { background-color: var(--muted); color: var(--foreground); }
+    .du-nav-item.active { background-color: var(--secondary); color: var(--foreground); font-weight: 600; }
+    .du-nav-item-content { display: flex; align-items: center; gap: 0.625rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; flex: 1; }
+    .du-nav-badge { font-family: var(--font-mono); font-size: 0.6875rem; padding: 0.125rem 0.375rem; border-radius: calc(var(--radius) * 0.6); background-color: var(--muted); color: var(--muted-foreground); white-space: nowrap; flex-shrink: 0; }
+    .du-sidebar-footer { padding: 0.75rem 1rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: var(--muted-foreground); }
+    
+    .du-main-layout {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-width: 0;
+      width: 100%;
+    }
+    .du-top-bar {
+      height: 3.5rem;
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--card);
+      flex-shrink: 0;
+      gap: 1rem;
+    }
+    .du-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8125rem;
+      color: var(--muted-foreground);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .du-breadcrumb-active { font-weight: 600; color: var(--foreground); }
+    .du-view-container {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 1.25rem;
+      max-width: 100%;
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    @media (min-width: 1024px) {
+      .du-view-container { padding: 1.75rem 2rem; }
+    }
+    .du-view {
+      display: none;
+      flex-direction: column;
+      gap: 1.5rem;
+      min-width: 0;
+      width: 100%;
+    }
+    .du-view.active { display: flex; }
+
+    /* 3. Stat Cards & Bento */
+    .du-bento-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      width: 100%;
+      min-width: 0;
+    }
+    .du-stat-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background-color: var(--card);
+      color: var(--card-foreground);
+      padding: 1.125rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+      transition: all 150ms ease;
+      min-width: 0;
+    }
+    .du-stat-card:hover { border-color: var(--ring); }
+    .du-stat-header { display: flex; align-items: center; justify-content: space-between; }
+    .du-stat-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted-foreground); }
+    .du-stat-icon-wrapper { display: flex; align-items: center; justify-content: center; width: 1.875rem; height: 1.875rem; border-radius: calc(var(--radius) * 0.8); background-color: var(--muted); color: var(--foreground); }
+    .du-stat-value { font-family: var(--font-mono); font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+    .du-stat-footer { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--muted-foreground); flex-wrap: wrap; }
+    .du-stat-trend { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.125rem 0.5rem; border-radius: 9999px; font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; border: none; }
+    .du-trend-up { background-color: oklch(0.72 0.17 150 / 0.14); color: oklch(0.72 0.17 150); }
+    .du-trend-down { background-color: oklch(0.65 0.22 25 / 0.14); color: oklch(0.65 0.22 25); }
+    .du-trend-neutral { background-color: var(--muted); color: var(--muted-foreground); }
+
+    /* 4. UI Primitives & Borderless Tags */
+    .ui-badge { display: inline-flex; align-items: center; border-radius: 9999px; padding: 0.15rem 0.5rem; font-size: 0.6875rem; font-weight: 600; border: none; background: var(--muted); color: var(--muted-foreground); }
+    .ui-badge-secondary { background-color: var(--secondary); color: var(--secondary-foreground); border: none; }
+    .ui-badge-status-live { background-color: oklch(0.72 0.17 150 / 0.15); color: var(--status-live); border: none; }
+    .ui-badge-status-drift { background-color: oklch(0.78 0.16 75 / 0.15); color: var(--status-drift); border: none; }
+    .ui-card { border-radius: var(--radius); border: 1px solid var(--border); background-color: var(--card); color: var(--card-foreground); display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+    .ui-card-header { padding: 1.125rem 1.125rem 0.625rem 1.125rem; display: flex; flex-direction: column; gap: 0.25rem; }
+    .ui-card-title { font-size: 0.9375rem; font-weight: 600; margin: 0; }
+    .ui-card-description { font-size: 0.75rem; color: var(--muted-foreground); margin: 0; }
+    .ui-card-content { padding: 1.125rem; flex: 1; min-width: 0; }
+    .ui-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem; border-radius: calc(var(--radius) * 0.8); font-size: 0.75rem; font-weight: 500; padding: 0.375rem 0.75rem; cursor: pointer; border: 1px solid transparent; background: var(--primary); color: var(--primary-foreground); transition: opacity 120ms; }
+    .ui-btn:hover { opacity: 0.9; }
+    .ui-btn-outline { border-color: var(--border); background: transparent; color: var(--foreground); }
+    .ui-btn-outline:hover { background-color: var(--muted); }
+    .ui-btn-ghost { background: transparent; color: var(--foreground); }
+    .ui-btn-sm { padding: 0.25rem 0.5rem; font-size: 0.6875rem; }
+
+    /* 5. Outline Monochromatic Icons */
+    .du-icon {
+      width: 1rem;
+      height: 1rem;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .du-icon-lg { width: 1.25rem; height: 1.25rem; }
+
+    /* 6. Containment Table */
+    .du-table-wrapper {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background-color: var(--card);
+      overflow-x: auto;
+      max-width: 100%;
+      width: 100%;
+    }
+    .du-table-toolbar { padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); gap: 1rem; flex-wrap: wrap; }
+    .du-table-search-input { background-color: var(--background); border: 1px solid var(--border); color: var(--foreground); border-radius: calc(var(--radius) * 0.8); padding: 0.375rem 0.75rem; font-size: 0.75rem; width: 16rem; max-width: 100%; }
+    .du-table-search-input:focus { outline: none; border-color: var(--ring); }
+    .du-table { width: 100%; min-width: 540px; border-collapse: collapse; font-size: 0.75rem; text-align: left; }
+    .du-table th { background-color: var(--muted); color: var(--muted-foreground); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.6875rem; padding: 0.625rem 0.875rem; border-bottom: 1px solid var(--border); }
+    .du-table td { padding: 0.75rem 0.875rem; border-bottom: 1px solid var(--border); color: var(--foreground); }
+    .du-table tr:last-child td { border-bottom: none; }
+    .du-table tbody tr:hover { background-color: var(--muted); }
+
+    /* 7. Status Chips */
+    .du-status-chips-group { display: flex; align-items: center; gap: 0.375rem; flex-wrap: wrap; }
+    .du-status-chip { display: inline-flex; align-items: center; gap: 0.375rem; border-radius: 9999px; padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 500; border: none; background-color: var(--muted); color: var(--muted-foreground); cursor: pointer; transition: all 120ms; }
+    .du-status-chip:hover { color: var(--foreground); }
+    .du-status-chip.active { background-color: var(--primary); color: var(--primary-foreground); font-weight: 600; }
+
+    /* 8. Data Visualizations */
+    .du-radial-gauge-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.5rem; }
+    .du-radial-gauge { position: relative; display: flex; align-items: center; justify-content: center; }
+    .du-gauge-circle-bg { fill: transparent; stroke: var(--muted); }
+    .du-gauge-circle-fill { fill: transparent; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 0.8s ease-in-out; stroke: var(--status-live); }
+    .du-gauge-center { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .du-gauge-val { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; line-height: 1; }
+    .du-gauge-label { font-size: 0.625rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; color: var(--muted-foreground); margin-top: 0.25rem; }
+
+    .du-stacked-bar-container { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; min-width: 0; }
+    .du-stacked-bar-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; }
+    .du-stacked-bar { display: flex; width: 100%; height: 0.625rem; border-radius: 9999px; overflow: hidden; background-color: var(--muted); }
+    .du-bar-segment { height: 100%; }
+    .du-bar-live { background-color: var(--status-live); }
+    .du-bar-drift { background-color: var(--status-drift); }
+    .du-bar-missing { background-color: var(--status-missing); }
+    .du-stacked-legend { display: flex; align-items: center; gap: 1rem; font-size: 0.6875rem; color: var(--muted-foreground); flex-wrap: wrap; }
+    .du-legend-item { display: flex; align-items: center; gap: 0.375rem; }
+    .du-legend-dot { width: 0.5rem; height: 0.5rem; border-radius: 9999px; }
+
+    .du-sparkline { display: block; overflow: visible; }
+    .du-sparkline-line { fill: none; stroke: var(--primary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .du-sparkline-area { fill: var(--primary); opacity: 0.15; }
+
+    .du-linear-meter { display: flex; flex-direction: column; gap: 0.375rem; }
+    .du-meter-track { width: 100%; height: 0.5rem; background-color: var(--muted); border-radius: 9999px; overflow: hidden; }
+    .du-meter-fill { height: 100%; border-radius: 9999px; background-color: var(--primary); }
+
+    /* 9. Master-Detail Layout */
+    .du-master-detail-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      min-height: 480px;
+      width: 100%;
+      min-width: 0;
+    }
+    @media (min-width: 900px) {
+      .du-master-detail-container {
+        grid-template-columns: 340px 1fr;
+      }
+    }
+    .du-master-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      overflow-y: auto;
+      max-height: 600px;
+      min-width: 0;
+    }
+    .du-master-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.375rem;
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background-color: var(--card);
+      color: var(--card-foreground);
+      cursor: pointer;
+      transition: all 120ms ease;
+      text-align: left;
+      user-select: none;
+      width: 100%;
+    }
+    .du-master-item:hover { background-color: var(--muted); }
+    .du-master-item.active { border-color: var(--ring); background-color: var(--secondary); }
+    .du-detail-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      min-width: 0;
+    }
+
+    /* Modal */
+    .du-modal-overlay { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.65); backdrop-filter: blur(2px); z-index: 50; display: none; align-items: center; justify-content: center; padding: 1rem; }
+    .du-modal-overlay.open { display: flex; }
+    .du-modal-card { background-color: var(--card); border: 1px solid var(--border); border-radius: var(--radius); max-width: 36rem; width: 100%; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4); display: flex; flex-direction: column; overflow: hidden; }
+    .du-modal-header { padding: 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .du-modal-body { padding: 1.25rem; overflow-y: auto; max-height: 70vh; font-size: 0.8125rem; display: flex; flex-direction: column; gap: 1rem; }
+    .du-modal-footer { padding: 1rem 1.25rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 0.5rem; }
+
+    .du-command-bar { display: flex; align-items: center; gap: 0.5rem; border: 1px solid var(--border); background-color: var(--card); padding: 0.375rem 0.75rem; border-radius: var(--radius); font-size: 0.8125rem; color: var(--muted-foreground); cursor: pointer; }
+    .du-command-shortcut { font-family: var(--font-mono); font-size: 0.7rem; background-color: var(--muted); color: var(--muted-foreground); padding: 0.1rem 0.35rem; border-radius: calc(var(--radius) * 0.6); margin-left: auto; }
+
+    /* Slide-Over Information Drawer */
+    .du-drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(2px);
+      z-index: 60;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 220ms ease;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .du-drawer-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .du-drawer {
+      background-color: var(--card);
+      border-left: 1px solid var(--border);
+      width: 100%;
+      max-width: 28rem;
+      height: 100vh;
+      box-shadow: -10px 0 25px -5px rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+    .du-drawer-overlay.open .du-drawer {
+      transform: translateX(0);
+    }
+    .du-drawer-header {
+      padding: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-shrink: 0;
+    }
+    .du-drawer-body {
+      padding: 1.25rem;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      font-size: 0.8125rem;
+    }
+    .du-drawer-footer {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      background-color: var(--card);
+    }
+  </style>
+
+  <!-- Micro-Runtime Inlined -->
+  <script>
+    (function() {
+      const THEME_KEY = 'du-theme-preference';
+      const savedTheme = localStorage.getItem(THEME_KEY);
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+
+      window.duToggleTheme = function() {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+      };
+
+      window.duSwitchView = function(viewId, customTitle) {
+        document.querySelectorAll('.du-view').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('.du-nav-item').forEach(btn => btn.classList.remove('active'));
+
+        const targetView = document.getElementById(viewId);
+        if (targetView) targetView.classList.add('active');
+
+        const activeNav = document.querySelector(`[data-du-nav-target="${viewId}"]`);
+        if (activeNav) {
+          activeNav.classList.add('active');
+          const title = customTitle || activeNav.getAttribute('data-du-nav-title') || activeNav.querySelector('.du-nav-label')?.textContent || viewId;
+          const breadcrumbEl = document.getElementById('du-breadcrumb-title');
+          if (breadcrumbEl) breadcrumbEl.textContent = title;
+        }
+      };
+
+      window.duSwitchOverviewMode = function(mode) {
+        const bentoEl = document.getElementById('overview-bento-layout');
+        const masterDetailEl = document.getElementById('overview-master-detail-layout');
+        const bentoBtn = document.getElementById('btn-mode-bento');
+        const mdBtn = document.getElementById('btn-mode-masterdetail');
+
+        if (mode === 'bento') {
+          bentoEl.style.display = 'flex';
+          masterDetailEl.style.display = 'none';
+          bentoBtn.classList.add('active');
+          mdBtn.classList.remove('active');
+        } else {
+          bentoEl.style.display = 'none';
+          masterDetailEl.style.display = 'grid';
+          bentoBtn.classList.remove('active');
+          mdBtn.classList.add('active');
+        }
+      };
+
+      window.duSelectMasterItem = function(itemEl, id, name, domain, status, port, desc, sessions) {
+        document.querySelectorAll('.du-master-item').forEach(el => el.classList.remove('active'));
+        itemEl.classList.add('active');
+
+        document.getElementById('md-detail-id').textContent = id;
+        document.getElementById('md-detail-name').textContent = name;
+        document.getElementById('md-detail-domain').textContent = domain;
+        document.getElementById('md-detail-status').textContent = status;
+        document.getElementById('md-detail-port').textContent = port;
+        document.getElementById('md-detail-desc').textContent = desc;
+        document.getElementById('md-detail-sessions').textContent = sessions;
+      };
+
+      window.duOpenModal = function(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+          if (typeof modal.showModal === 'function') {
+            modal.showModal();
+          } else {
+            modal.classList.add('open');
+          }
+        }
+      };
+
+      window.duCloseModal = function(modalId) {
+        const modal = typeof modalId === 'string' ? document.getElementById(modalId) : modalId.closest('.du-modal-overlay, dialog');
+        if (modal) {
+          if (typeof modal.close === 'function') {
+            modal.close();
+          } else {
+            modal.classList.remove('open');
+          }
+        }
+      };
+
+      window.duOpenDossier = function(id, name, domain, desc, path) {
+        document.getElementById('dossier-id').textContent = id;
+        document.getElementById('dossier-name').textContent = name;
+        document.getElementById('dossier-domain').textContent = domain;
+        document.getElementById('dossier-desc').textContent = desc;
+        document.getElementById('dossier-path').textContent = path;
+        window.duOpenModal('dossier-modal');
+      };
+
+      window.duOpenInfoDrawer = function(title, subtitle, type, detailsHtml) {
+        document.getElementById('drawer-title').textContent = title;
+        document.getElementById('drawer-subtitle').textContent = subtitle || '';
+        document.getElementById('drawer-badge').textContent = type || 'Info';
+        document.getElementById('drawer-content').innerHTML = detailsHtml || '<p>No further information available.</p>';
+        const drawer = document.getElementById('info-drawer');
+        if (drawer) drawer.classList.add('open');
+      };
+
+      window.duCloseInfoDrawer = function() {
+        const drawer = document.getElementById('info-drawer');
+        if (drawer) drawer.classList.remove('open');
+      };
+
+      document.addEventListener('click', (e) => {
+        const navBtn = e.target.closest('[data-du-nav-target]');
+        if (navBtn) {
+          window.duSwitchView(navBtn.getAttribute('data-du-nav-target'));
+          return;
+        }
+
+        const modalOpenBtn = e.target.closest('[data-du-modal-open]');
+        if (modalOpenBtn) {
+          window.duOpenModal(modalOpenBtn.getAttribute('data-du-modal-open'));
+          return;
+        }
+
+        const modalCloseBtn = e.target.closest('[data-du-modal-close]');
+        if (modalCloseBtn) {
+          window.duCloseModal(modalCloseBtn);
+          return;
+        }
+
+        const drawerOpenBtn = e.target.closest('[data-du-drawer-open]');
+        if (drawerOpenBtn) {
+          const drawerId = drawerOpenBtn.getAttribute('data-du-drawer-open');
+          const drawer = document.getElementById(drawerId);
+          if (drawer) drawer.classList.add('open');
+          return;
+        }
+
+        const drawerCloseBtn = e.target.closest('[data-du-drawer-close]');
+        if (drawerCloseBtn) {
+          window.duCloseInfoDrawer();
+          return;
+        }
+
+        // Close drawer when clicking backdrop outside drawer panel
+        if (e.target.classList.contains('du-drawer-overlay')) {
+          e.target.classList.remove('open');
+          return;
+        }
+
+
+        const copyBtn = e.target.closest('[data-du-copy]');
+        if (copyBtn) {
+          const text = copyBtn.getAttribute('data-du-copy');
+          navigator.clipboard.writeText(text).then(() => {
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => { copyBtn.textContent = originalText; }, 1500);
+          });
+          return;
+        }
+
+        const chipBtn = e.target.closest('[data-du-status-filter]');
+        if (chipBtn) {
+          const group = chipBtn.closest('.du-status-chips-group');
+          const tableId = group?.getAttribute('data-du-filter-target') || chipBtn.getAttribute('data-du-filter-target');
+          const statusVal = chipBtn.getAttribute('data-du-status-filter');
+          if (group) group.querySelectorAll('.du-status-chip').forEach(c => c.classList.remove('active'));
+          chipBtn.classList.add('active');
+
+          if (tableId) {
+            const table = document.getElementById(tableId);
+            if (table) {
+              table.querySelectorAll('tbody tr').forEach(row => {
+                const rowStatus = row.getAttribute('data-status');
+                row.style.display = (!statusVal || statusVal === 'all' || rowStatus === statusVal) ? '' : 'none';
+              });
+            }
+          }
+        }
+      });
+
+      document.addEventListener('input', (e) => {
+        const searchInput = e.target.closest('[data-du-filter-target]');
+        if (searchInput && searchInput.tagName === 'INPUT') {
+          const targetTableId = searchInput.getAttribute('data-du-filter-target');
+          const query = searchInput.value.toLowerCase().trim();
+          const table = document.getElementById(targetTableId);
+          if (table) {
+            table.querySelectorAll('tbody tr').forEach(row => {
+              row.style.display = row.textContent.toLowerCase().includes(query) ? '' : 'none';
+            });
+          }
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || (e.key === '/' && document.activeElement.tagName !== 'INPUT')) {
+          e.preventDefault();
+          window.duOpenModal('du-command-dialog');
+          const input = document.getElementById('du-command-input');
+          if (input) input.focus();
+        }
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.du-modal-overlay.open').forEach(m => m.classList.remove('open'));
+          document.querySelectorAll('.du-drawer-overlay.open').forEach(d => d.classList.remove('open'));
+        }
+      });
+    })();
+  </script>
+</head>
+<body>
+
+  <div class="du-app-shell">
+    
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="du-sidebar">
+      <div class="du-sidebar-header">
+        <div class="du-stat-icon-wrapper" style="background-color: var(--primary); color: var(--primary-foreground); font-weight: 700;">
+          <svg class="du-icon du-icon-lg" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div>
+          <div style="font-weight: 600; font-size: 0.8125rem;">Development Universe</div>
+          <div style="font-size: 0.6875rem; color: var(--muted-foreground);">Mission Control Cockpit</div>
+        </div>
+      </div>
+
+      <div class="du-sidebar-nav">
+        <!-- Group 1: Universe Platform -->
+        <div>
+          <div class="du-nav-section-title">Universe Platform</div>
+          <nav class="du-nav-group">
+            <button class="du-nav-item active" data-du-nav-target="view-overview" data-du-nav-title="1. System Overview">
+              <span class="du-nav-item-content">
+                <svg class="du-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                <span class="du-nav-label">1. System Overview</span>
+              </span>
+            </button>
+
+            <button class="du-nav-item" data-du-nav-target="view-analytics" data-du-nav-title="2. Analytics & Visuals">
+              <span class="du-nav-item-content">
+                <svg class="du-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                <span class="du-nav-label">2. Analytics & Visuals</span>
+              </span>
+              <span class="du-nav-badge">Telemetry</span>
+            </button>
+
+            <button class="du-nav-item" data-du-nav-target="view-projects" data-du-nav-title="3. Projects Directory">
+              <span class="du-nav-item-content">
+                <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                <span class="du-nav-label">3. Projects Directory</span>
+              </span>
+              <span class="du-nav-badge">18</span>
+            </button>
+
+            <button class="du-nav-item" data-du-nav-target="view-services" data-du-nav-title="4. Services & Ports Fleet">
+              <span class="du-nav-item-content">
+                <svg class="du-icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                <span class="du-nav-label">4. Services & Ports</span>
+              </span>
+              <span class="du-nav-badge ui-badge-status-live">4 Live</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Group 2: Memory & OpenSpec -->
+        <div>
+          <div class="du-nav-section-title">Memory & OpenSpec</div>
+          <nav class="du-nav-group">
+            <button class="du-nav-item" data-du-nav-target="view-memory" data-du-nav-title="5. Memory Governance">
+              <span class="du-nav-item-content">
+                <svg class="du-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                <span class="du-nav-label">5. Memory Governance</span>
+              </span>
+              <span class="du-nav-badge ui-badge-status-drift">12</span>
+            </button>
+
+            <button class="du-nav-item" data-du-nav-target="view-openspec" data-du-nav-title="6. OpenSpec Dashboard">
+              <span class="du-nav-item-content">
+                <svg class="du-icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                <span class="du-nav-label">6. OpenSpec Changes</span>
+              </span>
+              <span class="du-nav-badge">1 Active</span>
+            </button>
+
+            <button class="du-nav-item" data-du-nav-target="view-vault" data-du-nav-title="7. Vault Explorer">
+              <span class="du-nav-item-content">
+                <svg class="du-icon" viewBox="0 0 24 24"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+                <span class="du-nav-label">7. Vault Explorer</span>
+              </span>
+              <span class="du-nav-badge">Home</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      <div class="du-sidebar-footer">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="display: inline-block; width: 0.5rem; height: 0.5rem; border-radius: 9999px; background-color: var(--status-live);"></span>
+          <span style="font-family: var(--font-mono); font-size: 0.6875rem;">SES-2026-LIVE</span>
+        </div>
+        <button class="ui-btn ui-btn-outline ui-btn-sm" onclick="duToggleTheme()" title="Toggle Dark/Light">
+          <svg class="du-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main class="du-main-layout">
+      
+      <!-- Top Bar -->
+      <header class="du-top-bar">
+        <div class="du-breadcrumb">
+          <span>Universe</span>
+          <span>/</span>
+          <span id="du-breadcrumb-title" class="du-breadcrumb-active">1. System Overview</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div class="ui-badge ui-badge-status-live" style="gap: 0.375rem; padding: 0.25rem 0.625rem;">
+            <span style="display: inline-block; width: 0.45rem; height: 0.45rem; border-radius: 9999px; background-color: var(--status-live);"></span>
+            <span>4 Online</span>
+          </div>
+
+          <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-drawer-open="info-drawer" title="System Info & Telemetry Drawer">
+            <svg class="du-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <span>Telemetry Drawer</span>
+          </button>
+
+          <button class="du-command-bar" data-du-modal-open="du-command-dialog">
+            <svg class="du-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span>Search...</span>
+            <span class="du-command-shortcut">Ctrl+K</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Views Container -->
+      <div class="du-view-container">
+
+        <!-- ==================== VIEW 1: OVERVIEW ==================== -->
+        <section id="view-overview" class="du-view active">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0;">System Overview</h1>
+              <p style="color: var(--muted-foreground); font-size: 0.8125rem; margin-top: 0.25rem;">Central cockpit monitoring your canonical workspace, active apps, knowledge bases, and second brain vault.</p>
+            </div>
+
+            <!-- Layout Switcher: Bento vs Master-Detail -->
+            <div class="du-status-chips-group">
+              <button id="btn-mode-bento" class="du-status-chip active" onclick="duSwitchOverviewMode('bento')">
+                <svg class="du-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                <span>Bento Grid</span>
+              </button>
+              <button id="btn-mode-masterdetail" class="du-status-chip" onclick="duSwitchOverviewMode('masterdetail')">
+                <svg class="du-icon" viewBox="0 0 24 24"><line x1="9" y1="3" x2="9" y2="21"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                <span>Master-Detail</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KPI Cards Row -->
+          <div class="du-bento-grid">
+            <div class="du-stat-card">
+              <div class="du-stat-header">
+                <span class="du-stat-title">Projects</span>
+                <div class="du-stat-icon-wrapper">
+                  <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                </div>
+              </div>
+              <div class="du-stat-value">18</div>
+              <div class="du-stat-footer">
+                <span class="du-stat-trend du-trend-up">↑ 18 Registered</span>
+                <span>4 running locally</span>
+              </div>
+            </div>
+
+            <div class="du-stat-card">
+              <div class="du-stat-header">
+                <span class="du-stat-title">Fleet Ports Probed</span>
+                <div class="du-stat-icon-wrapper">
+                  <svg class="du-icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                </div>
+              </div>
+              <div class="du-stat-value">4</div>
+              <div class="du-stat-footer">
+                <span class="du-stat-trend du-trend-up">100% In-House</span>
+                <span>:3000, :3005, :5173, :8000</span>
+              </div>
+            </div>
+
+            <div class="du-stat-card">
+              <div class="du-stat-header">
+                <span class="du-stat-title">Memory Pipeline</span>
+                <div class="du-stat-icon-wrapper">
+                  <svg class="du-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                </div>
+              </div>
+              <div class="du-stat-value">12</div>
+              <div class="du-stat-footer">
+                <span class="du-stat-trend du-trend-neutral">● Staged</span>
+                <span>Ready for memory digest</span>
+              </div>
+            </div>
+
+            <div class="du-stat-card">
+              <div class="du-stat-header">
+                <span class="du-stat-title">Canonical Storage</span>
+                <div class="du-stat-icon-wrapper">
+                  <svg class="du-icon" viewBox="0 0 24 24"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+                </div>
+              </div>
+              <div class="du-stat-value">Synced</div>
+              <div class="du-stat-footer">
+                <span class="du-stat-trend du-trend-up">Dev/home</span>
+                <span>Obsidian vault active</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- MODE A: BENTO GRID (DEFAULT) -->
+          <div id="overview-bento-layout" style="display: flex; flex-direction: column; gap: 1.25rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem;">
+              
+              <!-- Dev Servers Quick Card -->
+              <div class="ui-card">
+                <div class="ui-card-header" style="flex-direction: row; justify-content: space-between; align-items: center;">
+                  <div>
+                    <h3 class="ui-card-title">Active Local Dev Servers</h3>
+                    <p class="ui-card-description">Zero-overhead port telemetry</p>
+                  </div>
+                  <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-nav-target="view-services">All Services →</button>
+                </div>
+                <div class="ui-card-content" style="display: flex; flex-direction: column; gap: 0.625rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.625rem; border-radius: var(--radius); background: var(--muted);">
+                    <div>
+                      <div style="font-weight: 600; font-size: 0.8125rem;">ai-app-foundation</div>
+                      <div style="font-size: 0.6875rem; color: var(--muted-foreground);">Port 3000 • Next.js 16</div>
+                    </div>
+                    <a href="http://localhost:3000" target="_blank" class="ui-btn ui-btn-outline ui-btn-sm" style="text-decoration: none;">Open :3000 ↗</a>
+                  </div>
+
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.625rem; border-radius: var(--radius); background: var(--muted);">
+                    <div>
+                      <div style="font-weight: 600; font-size: 0.8125rem;">du-dashboard</div>
+                      <div style="font-size: 0.6875rem; color: var(--muted-foreground);">Port 3005 • Mission Control</div>
+                    </div>
+                    <a href="http://localhost:3005" target="_blank" class="ui-btn ui-btn-outline ui-btn-sm" style="text-decoration: none;">Open :3005 ↗</a>
+                  </div>
+
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.625rem; border-radius: var(--radius); background: var(--muted);">
+                    <div>
+                      <div style="font-weight: 600; font-size: 0.8125rem;">newsletter-app (PRJ-0011)</div>
+                      <div style="font-size: 0.6875rem; color: var(--muted-foreground);">Port 5173 • Vite React</div>
+                    </div>
+                    <a href="http://localhost:5173" target="_blank" class="ui-btn ui-btn-outline ui-btn-sm" style="text-decoration: none;">Open :5173 ↗</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Staged Memory Quick Card -->
+              <div class="ui-card">
+                <div class="ui-card-header" style="flex-direction: row; justify-content: space-between; align-items: center;">
+                  <div>
+                    <h3 class="ui-card-title">Memory Governance Candidates</h3>
+                    <p class="ui-card-description">Pending review in 08-system/governance</p>
+                  </div>
+                  <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-nav-target="view-memory">Review All →</button>
+                </div>
+                <div class="ui-card-content" style="display: flex; flex-direction: column; gap: 0.625rem;">
+                  <div style="padding: 0.625rem; border-radius: var(--radius); background: var(--muted);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                      <span style="font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; color: oklch(0.78 0.16 75);">MEM-2026-09-04-001</span>
+                      <span class="ui-badge">pattern</span>
+                    </div>
+                    <div style="font-weight: 500; font-size: 0.75rem;">SQLite WAL Single Connection Lock Handling</div>
+                  </div>
+
+                  <div style="padding: 0.625rem; border-radius: var(--radius); background: var(--muted);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                      <span style="font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; color: oklch(0.78 0.16 75);">MEM-2026-09-03-002</span>
+                      <span class="ui-badge">constraint</span>
+                    </div>
+                    <div style="font-weight: 500; font-size: 0.75rem;">Zero Docker requirement across municipal nodes</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- MODE B: MASTER-DETAIL SPLIT VIEW (TOGGLEABLE) -->
+          <div id="overview-master-detail-layout" class="du-master-detail-container" style="display: none;">
+            
+            <!-- MASTER LIST -->
+            <div class="ui-card">
+              <div class="ui-card-header">
+                <h3 class="ui-card-title">Initiatives Master</h3>
+                <p class="ui-card-description">Select to inspect in detail</p>
+              </div>
+              <div class="ui-card-content du-master-list">
+                
+                <div class="du-master-item active" onclick="duSelectMasterItem(this, 'DEV-001', 'ai-app-foundation', 'system', 'Active', ':3000', 'Next.js 16 base foundation with shadcn/ui and SQLite WAL.', '34')">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 600; font-size: 0.8125rem;">ai-app-foundation</span>
+                    <span class="ui-badge ui-badge-status-live">:3000</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.6875rem; color: var(--muted-foreground); font-family: var(--font-mono);">
+                    <span>DEV-001</span>
+                    <span class="ui-badge">system</span>
+                  </div>
+                </div>
+
+                <div class="du-master-item" onclick="duSelectMasterItem(this, 'PRJ-0021', 'du-dashboard', 'system', 'Active', ':3005', 'Central multi-page cockpit and telemetry platform for Development Universe.', '18')">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 600; font-size: 0.8125rem;">du-dashboard</span>
+                    <span class="ui-badge ui-badge-status-live">:3005</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.6875rem; color: var(--muted-foreground); font-family: var(--font-mono);">
+                    <span>PRJ-0021</span>
+                    <span class="ui-badge">system</span>
+                  </div>
+                </div>
+
+                <div class="du-master-item" onclick="duSelectMasterItem(this, 'PRJ-0005', 'app-avaliacao', 'professional', 'Active', ':8000', 'Plataforma Formação CML com rubric engine e relatórios pedagógicos.', '27')">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 600; font-size: 0.8125rem;">app-avaliacao</span>
+                    <span class="ui-badge ui-badge-status-live">:8000</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.6875rem; color: var(--muted-foreground); font-family: var(--font-mono);">
+                    <span>PRJ-0005</span>
+                    <span class="ui-badge">professional</span>
+                  </div>
+                </div>
+
+                <div class="du-master-item" onclick="duSelectMasterItem(this, 'PRJ-0011', 'newsletter-app', 'professional', 'Active', ':5173', 'React + Vite client for municipal newsletter publishing.', '12')">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 600; font-size: 0.8125rem;">newsletter-app</span>
+                    <span class="ui-badge ui-badge-status-live">:5173</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.6875rem; color: var(--muted-foreground); font-family: var(--font-mono);">
+                    <span>PRJ-0011</span>
+                    <span class="ui-badge">professional</span>
+                  </div>
+                </div>
+
+                <div class="du-master-item" onclick="duSelectMasterItem(this, 'PRJ-0022', 'agente-futurodigital', 'professional', 'Active', 'Copilot Studio', 'Agente de IA e orquestração Copilot Studio para Futuro Digital CML.', '41')">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 600; font-size: 0.8125rem;">agente-futurodigital</span>
+                    <span class="ui-badge">M365</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.6875rem; color: var(--muted-foreground); font-family: var(--font-mono);">
+                    <span>PRJ-0022</span>
+                    <span class="ui-badge">professional</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- DETAIL PANE -->
+            <div class="ui-card du-detail-pane">
+              <div class="ui-card-header" style="flex-direction: row; justify-content: space-between; align-items: flex-start;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                    <h3 id="md-detail-name" class="ui-card-title" style="font-size: 1.125rem;">ai-app-foundation</h3>
+                    <span id="md-detail-domain" class="ui-badge">system</span>
+                  </div>
+                  <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted-foreground);" id="md-detail-id">DEV-001</div>
+                </div>
+                <span id="md-detail-status" class="ui-badge ui-badge-status-live">Active</span>
+              </div>
+
+              <div class="ui-card-content" style="display: flex; flex-direction: column; gap: 1.25rem;">
+                <div>
+                  <div style="font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 0.25rem;">Mission & Context</div>
+                  <p id="md-detail-desc" style="font-size: 0.8125rem; line-height: 1.5;">Next.js 16 base foundation with shadcn/ui and SQLite WAL.</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem;">
+                  <div style="padding: 0.75rem; border-radius: var(--radius); background: var(--muted);">
+                    <div style="font-size: 0.6875rem; color: var(--muted-foreground);">Telemetry Port</div>
+                    <div id="md-detail-port" style="font-family: var(--font-mono); font-size: 1.125rem; font-weight: 700; color: var(--status-live);">:3000</div>
+                  </div>
+                  <div style="padding: 0.75rem; border-radius: var(--radius); background: var(--muted);">
+                    <div style="font-size: 0.6875rem; color: var(--muted-foreground);">Historical Sessions</div>
+                    <div id="md-detail-sessions" style="font-family: var(--font-mono); font-size: 1.125rem; font-weight: 700;">34</div>
+                  </div>
+                </div>
+
+                <div>
+                  <div style="font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 0.5rem;">Associated Repository Actions</div>
+                  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="pnpm dev">Copy Dev Command</button>
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="dev project show DEV-001">Show DU Project</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ==================== VIEW 2: ANALYTICS & VISUALIZATIONS ==================== -->
+        <section id="view-analytics" class="du-view">
+          <div>
+            <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0;">Analytics & Data Visualizations</h1>
+            <p style="color: var(--muted-foreground); font-size: 0.8125rem; margin-top: 0.25rem;">Zero-dependency SVG gauges, sparklines, and stacked capability meters.</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+            
+            <!-- Radial Health Gauge -->
+            <div class="ui-card">
+              <div class="ui-card-header">
+                <h3 class="ui-card-title">System Invariant Health</h3>
+                <p class="ui-card-description">Zero-Dependency SVG Gauge</p>
+              </div>
+              <div class="ui-card-content du-radial-gauge-container">
+                <div class="du-radial-gauge" style="width: 140px; height: 140px;">
+                  <svg width="140" height="140" viewBox="0 0 140 140">
+                    <circle class="du-gauge-circle-bg" cx="70" cy="70" r="58" stroke-width="12"></circle>
+                    <circle class="du-gauge-circle-fill" cx="70" cy="70" r="58" stroke-width="12" stroke-dasharray="364.4" stroke-dashoffset="36.4"></circle>
+                  </svg>
+                  <div class="du-gauge-center">
+                    <span class="du-gauge-val">90%</span>
+                    <span class="du-gauge-label">Optimal</span>
+                  </div>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 1rem;">14 Invariants Checked • 0 Violations</div>
+              </div>
+            </div>
+
+            <!-- Stacked Rule Capability Bar -->
+            <div class="ui-card">
+              <div class="ui-card-header">
+                <h3 class="ui-card-title">Target Capability Distribution</h3>
+                <p class="ui-card-description">Live vs Drift vs Missing Rules</p>
+              </div>
+              <div class="ui-card-content" style="display: flex; flex-direction: column; justify-content: center; gap: 1.5rem;">
+                <div class="du-stacked-bar-container">
+                  <div class="du-stacked-bar-header">
+                    <span style="font-weight: 600;">Overall Target Coverage</span>
+                    <span style="font-family: var(--font-mono); color: var(--muted-foreground);">42 Total</span>
+                  </div>
+                  <div class="du-stacked-bar">
+                    <div class="du-bar-segment du-bar-live" style="width: 80%;" title="Live: 34"></div>
+                    <div class="du-bar-segment du-bar-drift" style="width: 15%;" title="Drift: 6"></div>
+                    <div class="du-bar-segment du-bar-missing" style="width: 5%;" title="Missing: 2"></div>
+                  </div>
+                  <div class="du-stacked-legend">
+                    <div class="du-legend-item"><span class="du-legend-dot" style="background-color: var(--status-live);"></span>Live (34)</div>
+                    <div class="du-legend-item"><span class="du-legend-dot" style="background-color: var(--status-drift);"></span>Drift (6)</div>
+                    <div class="du-legend-item"><span class="du-legend-dot" style="background-color: var(--status-missing);"></span>Missing (2)</div>
+                  </div>
+                </div>
+
+                <div class="du-linear-meter">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                    <span>Context Capsule Headroom</span>
+                    <span style="font-family: var(--font-mono); font-weight: 600;">72% Headroom</span>
+                  </div>
+                  <div class="du-meter-track">
+                    <div class="du-meter-fill" style="width: 28%; background-color: var(--primary);"></div>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.6875rem; color: var(--muted-foreground);">
+                    <span>28,450 tokens used</span>
+                    <span>100,000 budget</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Operational Velocity Sparkline -->
+            <div class="ui-card">
+              <div class="ui-card-header">
+                <h3 class="ui-card-title">DU Operational Velocity</h3>
+                <p class="ui-card-description">7-Day Session Progression</p>
+              </div>
+              <div class="ui-card-content" style="display: flex; flex-direction: column; justify-content: space-between; gap: 1rem;">
+                <div>
+                  <div style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700;">24 <span style="font-size: 0.8125rem; font-weight: 400; color: var(--muted-foreground);">sessions</span></div>
+                  <div style="font-size: 0.75rem; color: var(--status-live); margin-top: 0.25rem;">+14% vs previous week</div>
+                </div>
+                <svg class="du-sparkline" width="100%" height="70" viewBox="0 0 200 70" preserveAspectRatio="none">
+                  <polygon class="du-sparkline-area" points="0,70 0,55 30,60 60,45 90,50 120,30 150,20 180,12 200,70"></polygon>
+                  <polyline class="du-sparkline-line" points="0,55 30,60 60,45 90,50 120,30 150,20 180,12"></polyline>
+                </svg>
+                <div style="font-size: 0.75rem; color: var(--muted-foreground); display: flex; justify-content: space-between; font-family: var(--font-mono);">
+                  <span>09-05</span>
+                  <span>09-08</span>
+                  <span>Today</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 3: PROJECTS DIRECTORY ==================== -->
+        <section id="view-projects" class="du-view">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0;">Projects Directory</h1>
+              <p style="color: var(--muted-foreground); font-size: 0.8125rem; margin-top: 0.25rem;">Canonical initiatives registered in <code>08-system/registry/projects.json</code>.</p>
+            </div>
+
+            <!-- Status Filter Chips -->
+            <div class="du-status-chips-group" data-du-filter-target="projects-table">
+              <button class="du-status-chip active" data-du-status-filter="all">All (18)</button>
+              <button class="du-status-chip" data-du-status-filter="system">System</button>
+              <button class="du-status-chip" data-du-status-filter="professional">Professional</button>
+            </div>
+          </div>
+
+          <div class="du-table-wrapper">
+            <div class="du-table-toolbar">
+              <input type="text" placeholder="Search projects by name, ID, domain..." class="du-table-search-input" data-du-filter-target="projects-table">
+            </div>
+
+            <table id="projects-table" class="du-table">
+              <thead>
+                <tr>
+                  <th>Project / Repository</th>
+                  <th>Domain</th>
+                  <th>Status</th>
+                  <th>Telemetry Port</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-status="system">
+                  <td>
+                    <div style="font-weight: 600;">ai-app-foundation</div>
+                    <div style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted-foreground);">DEV-001 • C:\Users\helder.toucas\Dev\ai-app-foundation</div>
+                  </td>
+                  <td><span class="ui-badge">system</span></td>
+                  <td><span class="ui-badge ui-badge-status-live">Active</span></td>
+                  <td style="font-family: var(--font-mono); color: var(--status-live);">:3000</td>
+                  <td style="text-align: right;">
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" onclick="duOpenDossier('DEV-001', 'ai-app-foundation', 'system', 'Next.js 16 base foundation with shadcn/ui and SQLite WAL.', 'C:\\Users\\helder.toucas\\Dev\\ai-app-foundation')">Dossier</button>
+                  </td>
+                </tr>
+
+                <tr data-status="system">
+                  <td>
+                    <div style="font-weight: 600;">du-dashboard</div>
+                    <div style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted-foreground);">PRJ-0021 • C:\Users\helder.toucas\Dev\du-dashboard</div>
+                  </td>
+                  <td><span class="ui-badge">system</span></td>
+                  <td><span class="ui-badge ui-badge-status-live">Active</span></td>
+                  <td style="font-family: var(--font-mono); color: var(--status-live);">:3005</td>
+                  <td style="text-align: right;">
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" onclick="duOpenDossier('PRJ-0021', 'du-dashboard', 'system', 'Central multi-page cockpit and telemetry platform for Development Universe.', 'C:\\Users\\helder.toucas\\Dev\\du-dashboard')">Dossier</button>
+                  </td>
+                </tr>
+
+                <tr data-status="professional">
+                  <td>
+                    <div style="font-weight: 600;">app-avaliacao</div>
+                    <div style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted-foreground);">PRJ-0005 • C:\Users\helder.toucas\Dev\app-avaliacao</div>
+                  </td>
+                  <td><span class="ui-badge">professional</span></td>
+                  <td><span class="ui-badge ui-badge-status-live">Active</span></td>
+                  <td style="font-family: var(--font-mono); color: var(--status-live);">:8000</td>
+                  <td style="text-align: right;">
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" onclick="duOpenDossier('PRJ-0005', 'app-avaliacao', 'professional', 'Plataforma Formação CML com rubric engine e relatórios pedagógicos.', 'C:\\Users\\helder.toucas\\Dev\\app-avaliacao')">Dossier</button>
+                  </td>
+                </tr>
+
+                <tr data-status="professional">
+                  <td>
+                    <div style="font-weight: 600;">newsletter-app</div>
+                    <div style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted-foreground);">PRJ-0011 • C:\Users\helder.toucas\Dev\newsletter-app</div>
+                  </td>
+                  <td><span class="ui-badge">professional</span></td>
+                  <td><span class="ui-badge ui-badge-status-live">Active</span></td>
+                  <td style="font-family: var(--font-mono); color: var(--status-live);">:5173</td>
+                  <td style="text-align: right;">
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" onclick="duOpenDossier('PRJ-0011', 'newsletter-app', 'professional', 'React + Vite client for municipal newsletter publishing.', 'C:\\Users\\helder.toucas\\Dev\\newsletter-app')">Dossier</button>
+                  </td>
+                </tr>
+
+                <tr data-status="professional">
+                  <td>
+                    <div style="font-weight: 600;">agente-futurodigital</div>
+                    <div style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted-foreground);">PRJ-0022 • C:\Users\helder.toucas\Dev\agente-futurodigital</div>
+                  </td>
+                  <td><span class="ui-badge">professional</span></td>
+                  <td><span class="ui-badge ui-badge-status-live">Active</span></td>
+                  <td style="font-family: var(--font-mono); color: var(--muted-foreground);">M365</td>
+                  <td style="text-align: right;">
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" onclick="duOpenDossier('PRJ-0022', 'agente-futurodigital', 'professional', 'Agente de IA e orquestração Copilot Studio para Futuro Digital CML.', 'C:\\Users\\helder.toucas\\Dev\\agente-futurodigital')">Dossier</button>
+                  </td>
+                </tr>
+
+                <tr data-status="system">
+                  <td>
+                    <div style="font-weight: 600;">paperclip</div>
+                    <div style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted-foreground);">PRJ-0013 • C:\Users\helder.toucas\Dev\paperclip</div>
+                  </td>
+                  <td><span class="ui-badge">system</span></td>
+                  <td><span class="ui-badge ui-badge-status-drift">Standby</span></td>
+                  <td style="font-family: var(--font-mono); color: var(--muted-foreground);">:3100</td>
+                  <td style="text-align: right;">
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" onclick="duOpenDossier('PRJ-0013', 'paperclip', 'system', 'Municipal utility toolkit service.', 'C:\\Users\\helder.toucas\\Dev\\paperclip')">Dossier</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 4: SERVICES & PORTS ==================== -->
+        <section id="view-services" class="du-view">
+          <div>
+            <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0;">Services & Ports Fleet</h1>
+            <p style="color: var(--muted-foreground); font-size: 0.8125rem; margin-top: 0.25rem;">Realtime zero-overhead socket detection of local dev servers running across workspaces.</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+            
+            <!-- Port 3000 -->
+            <div class="ui-card">
+              <div class="ui-card-header" style="flex-direction: row; justify-content: space-between; align-items: center;">
+                <span class="ui-badge ui-badge-status-live" style="font-family: var(--font-mono);">:3000 Online</span>
+                <a href="http://localhost:3000" target="_blank" class="ui-btn ui-btn-outline ui-btn-sm" style="text-decoration: none;">Open ↗</a>
+              </div>
+              <div class="ui-card-content" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.875rem;">ai-app-foundation</div>
+                  <div style="font-size: 0.75rem; color: var(--muted-foreground);">Next.js 16 Foundation Workspace</div>
+                </div>
+                <div style="padding: 0.5rem; background: var(--muted); border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                  <span>pnpm dev</span>
+                  <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-copy="pnpm dev">Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Port 3005 -->
+            <div class="ui-card">
+              <div class="ui-card-header" style="flex-direction: row; justify-content: space-between; align-items: center;">
+                <span class="ui-badge ui-badge-status-live" style="font-family: var(--font-mono);">:3005 Online</span>
+                <a href="http://localhost:3005" target="_blank" class="ui-btn ui-btn-outline ui-btn-sm" style="text-decoration: none;">Open ↗</a>
+              </div>
+              <div class="ui-card-content" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.875rem;">du-dashboard</div>
+                  <div style="font-size: 0.75rem; color: var(--muted-foreground);">Next.js Mission Control Server</div>
+                </div>
+                <div style="padding: 0.5rem; background: var(--muted); border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                  <span>pnpm dev -p 3005</span>
+                  <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-copy="pnpm dev -p 3005">Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Port 5173 -->
+            <div class="ui-card">
+              <div class="ui-card-header" style="flex-direction: row; justify-content: space-between; align-items: center;">
+                <span class="ui-badge ui-badge-status-live" style="font-family: var(--font-mono);">:5173 Online</span>
+                <a href="http://localhost:5173" target="_blank" class="ui-btn ui-btn-outline ui-btn-sm" style="text-decoration: none;">Open ↗</a>
+              </div>
+              <div class="ui-card-content" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.875rem;">newsletter-app</div>
+                  <div style="font-size: 0.75rem; color: var(--muted-foreground);">PRJ-0011 Vite Frontend</div>
+                </div>
+                <div style="padding: 0.5rem; background: var(--muted); border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                  <span>npm run dev</span>
+                  <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-copy="npm run dev">Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Port 8000 -->
+            <div class="ui-card">
+              <div class="ui-card-header" style="flex-direction: row; justify-content: space-between; align-items: center;">
+                <span class="ui-badge ui-badge-status-live" style="font-family: var(--font-mono);">:8000 Online</span>
+                <a href="http://localhost:8000" target="_blank" class="ui-btn ui-btn-outline ui-btn-sm" style="text-decoration: none;">Open ↗</a>
+              </div>
+              <div class="ui-card-content" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.875rem;">app-avaliacao</div>
+                  <div style="font-size: 0.75rem; color: var(--muted-foreground);">PRJ-0005 FastAPI / Uvicorn Server</div>
+                </div>
+                <div style="padding: 0.5rem; background: var(--muted); border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                  <span>uvicorn main:app --reload</span>
+                  <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-copy="uvicorn main:app --reload">Copy</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 5: MEMORY GOVERNANCE ==================== -->
+        <section id="view-memory" class="du-view">
+          <div>
+            <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0;">Second Brain Memory Governance</h1>
+            <p style="color: var(--muted-foreground); font-size: 0.8125rem; margin-top: 0.25rem;">Candidate proposals awaiting review and promotion into the canonical Obsidian vault.</p>
+          </div>
+
+          <div class="ui-card">
+            <div class="ui-card-header" style="flex-direction: row; justify-content: space-between; align-items: center;">
+              <div>
+                <h3 class="ui-card-title">12 Staged Candidates</h3>
+                <p class="ui-card-description">Path: 08-system/governance/candidates/</p>
+              </div>
+              <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="dev memory digest">Copy Promotion Command</button>
+            </div>
+            <div class="ui-card-content" style="display: flex; flex-direction: column; gap: 0.875rem;">
+              
+              <div style="padding: 0.875rem; border-radius: var(--radius); background: var(--muted); display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-family: var(--font-mono); font-weight: 700; color: oklch(0.78 0.16 75); font-size: 0.75rem;">MEM-2026-09-04-001</span>
+                    <span class="ui-badge">pattern</span>
+                  </div>
+                  <div style="font-weight: 600; font-size: 0.875rem;">SQLite WAL Single-Connection Lock Handling</div>
+                  <div style="font-size: 0.75rem; color: var(--muted-foreground); line-height: 1.4;">Mandatory connection_limit=1&busy_timeout=10000 in Next.js Server Components to prevent database table locked exceptions.</div>
+                </div>
+                <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="dev memory review MEM-2026-09-04-001">Review</button>
+              </div>
+
+              <div style="padding: 0.875rem; border-radius: var(--radius); background: var(--muted); display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-family: var(--font-mono); font-weight: 700; color: oklch(0.78 0.16 75); font-size: 0.75rem;">MEM-2026-09-03-002</span>
+                    <span class="ui-badge">constraint</span>
+                  </div>
+                  <div style="font-weight: 600; font-size: 0.875rem;">Zero Docker requirement across municipal nodes</div>
+                  <div style="font-size: 0.75rem; color: var(--muted-foreground); line-height: 1.4;">Strict architectural invariant forbidding Docker dependencies so applications run bare-metal or on low-spec hardware.</div>
+                </div>
+                <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="dev memory review MEM-2026-09-03-002">Review</button>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 6: OPENSPEC DASHBOARD ==================== -->
+        <section id="view-openspec" class="du-view">
+          <div>
+            <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0;">OpenSpec Changes Tracker</h1>
+            <p style="color: var(--muted-foreground); font-size: 0.8125rem; margin-top: 0.25rem;">Active specifications and tasks across Development Universe workspaces.</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+            
+            <div class="ui-card">
+              <div class="ui-card-header">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span class="ui-badge ui-badge-status-live">In Progress</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted-foreground);">PRJ-0022</span>
+                </div>
+                <h3 class="ui-card-title" style="margin-top: 0.5rem;">verify-staged-knowledge-sources</h3>
+                <p class="ui-card-description">agente-futurodigital knowledge base pipeline</p>
+              </div>
+              <div class="ui-card-content" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="du-linear-meter">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                    <span>Task Completion</span>
+                    <span style="font-family: var(--font-mono); font-weight: 600;">0 / 5 Tasks (0%)</span>
+                  </div>
+                  <div class="du-meter-track">
+                    <div class="du-meter-fill" style="width: 5%;"></div>
+                  </div>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--muted-foreground);">
+                  Artifacts: <code>proposal.md</code>, <code>specs/</code>, <code>design.md</code>, <code>tasks.md</code>
+                </div>
+              </div>
+            </div>
+
+            <div class="ui-card">
+              <div class="ui-card-header">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span class="ui-badge ui-badge-status-live">Completed</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted-foreground);">PRJ-0024</span>
+                </div>
+                <h3 class="ui-card-title" style="margin-top: 0.5rem;">du-html-foundation-kit</h3>
+                <p class="ui-card-description">Zero-build offline HTML/CSS/JS foundation kit</p>
+              </div>
+              <div class="ui-card-content" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="du-linear-meter">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                    <span>Task Completion</span>
+                    <span style="font-family: var(--font-mono); font-weight: 600;">5 / 5 Tasks (100%)</span>
+                  </div>
+                  <div class="du-meter-track">
+                    <div class="du-meter-fill" style="width: 100%; background-color: var(--status-live);"></div>
+                  </div>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--muted-foreground);">
+                  Deployed in <code>public/html-kit/</code> with starter templates.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 7: VAULT EXPLORER ==================== -->
+        <section id="view-vault" class="du-view">
+          <div>
+            <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0;">Second Brain Vault Explorer</h1>
+            <p style="color: var(--muted-foreground); font-size: 0.8125rem; margin-top: 0.25rem;">Direct navigation of the canonical Obsidian Second Brain vault tree.</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 240px 1fr; gap: 1.25rem; min-height: 480px;">
+            <!-- Tree Navigation -->
+            <div class="ui-card">
+              <div class="ui-card-header">
+                <h3 class="ui-card-title">Vault Folders</h3>
+              </div>
+              <div class="ui-card-content" style="display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.8125rem;">
+                <button class="du-nav-item active">
+                  <span class="du-nav-item-content">
+                    <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>00-inbox</span>
+                  </span>
+                </button>
+                <button class="du-nav-item">
+                  <span class="du-nav-item-content">
+                    <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>01-daily</span>
+                  </span>
+                </button>
+                <button class="du-nav-item">
+                  <span class="du-nav-item-content">
+                    <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>02-projects</span>
+                  </span>
+                </button>
+                <button class="du-nav-item">
+                  <span class="du-nav-item-content">
+                    <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>03-knowledge</span>
+                  </span>
+                </button>
+                <button class="du-nav-item">
+                  <span class="du-nav-item-content">
+                    <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>04-decisions</span>
+                  </span>
+                </button>
+                <button class="du-nav-item">
+                  <span class="du-nav-item-content">
+                    <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>08-system</span>
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Note Reader Mockup -->
+            <div class="ui-card">
+              <div class="ui-card-header" style="flex-direction: row; justify-content: space-between; align-items: center;">
+                <div>
+                  <h3 class="ui-card-title">08-system/constraints/CON-0009.md</h3>
+                  <p class="ui-card-description">Status: ACTIVE • Scope: global</p>
+                </div>
+                <span class="ui-badge ui-badge-status-live">Canonical</span>
+              </div>
+              <div class="ui-card-content" style="font-size: 0.8125rem; line-height: 1.6; display: flex; flex-direction: column; gap: 1rem;">
+                <h2 style="font-size: 1.125rem; font-weight: 700;">Subagent Zero Direct Mutation Invariant</h2>
+                <p>No subagent or delegated process may perform ungrounded filesystem writes outside its designated workspace boundary.</p>
+                <div style="padding: 0.75rem; background: var(--muted); border-radius: var(--radius); border-left: 3px solid var(--primary); font-size: 0.75rem;">
+                  <strong>Provenance:</strong> Originated from session <code>SES-2026-08-29-022</code> via memory candidate <code>MEM-0094</code>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Command Palette Modal -->
+  <dialog id="du-command-dialog" class="ui-dialog" style="max-width: 32rem; padding: 1.25rem; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); color: var(--foreground); margin: auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <h3 style="font-weight: 600; font-size: 0.9375rem; margin: 0;">Quick Navigation Palette</h3>
+      <button class="ui-btn ui-btn-ghost ui-btn-sm" onclick="this.closest('dialog').close()">✕</button>
+    </div>
+    <input id="du-command-input" type="text" placeholder="Type a destination..." class="du-table-search-input" style="width: 100%; margin-bottom: 1rem;">
+    <div style="display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
+      <button class="du-nav-item" data-du-nav-target="view-overview" onclick="document.getElementById('du-command-dialog').close()">
+        <span class="du-nav-item-content">
+          <svg class="du-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          <span>1. System Overview</span>
+        </span>
+      </button>
+      <button class="du-nav-item" data-du-nav-target="view-analytics" onclick="document.getElementById('du-command-dialog').close()">
+        <span class="du-nav-item-content">
+          <svg class="du-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span>2. Analytics & Visuals</span>
+        </span>
+      </button>
+      <button class="du-nav-item" data-du-nav-target="view-projects" onclick="document.getElementById('du-command-dialog').close()">
+        <span class="du-nav-item-content">
+          <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span>3. Projects Directory</span>
+        </span>
+      </button>
+      <button class="du-nav-item" data-du-nav-target="view-services" onclick="document.getElementById('du-command-dialog').close()">
+        <span class="du-nav-item-content">
+          <svg class="du-icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+          <span>4. Services & Ports</span>
+        </span>
+      </button>
+    </div>
+  </dialog>
+
+  <!-- Project Dossier Modal -->
+  <div id="dossier-modal" class="du-modal-overlay">
+    <div class="du-modal-card">
+      <div class="du-modal-header">
+        <div>
+          <h3 id="dossier-name" style="font-weight: 700; margin: 0; font-size: 1rem;">Project Dossier</h3>
+          <span id="dossier-id" style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted-foreground);">DEV-001</span>
+        </div>
+        <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-modal-close>✕</button>
+      </div>
+      <div class="du-modal-body">
+        <div>
+          <span class="ui-badge" id="dossier-domain">system</span>
+        </div>
+        <div>
+          <div style="font-weight: 600; font-size: 0.75rem; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 0.25rem;">Description</div>
+          <p id="dossier-desc" style="color: var(--foreground); line-height: 1.5;"></p>
+        </div>
+        <div>
+          <div style="font-weight: 600; font-size: 0.75rem; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 0.25rem;">Local Path</div>
+          <code id="dossier-path" style="font-family: var(--font-mono); font-size: 0.75rem; background: var(--muted); padding: 0.25rem 0.5rem; border-radius: calc(var(--radius) * 0.6); display: block; word-break: break-all;"></code>
+        </div>
+      </div>
+      <div class="du-modal-footer">
+        <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-modal-close>Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide-Over Information Drawer -->
+  <div id="info-drawer" class="du-drawer-overlay">
+    <div class="du-drawer">
+      <div class="du-drawer-header">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <h3 id="drawer-title" style="font-weight: 700; margin: 0; font-size: 1rem;">System Telemetry</h3>
+            <span id="drawer-badge" class="ui-badge ui-badge-status-live">Live</span>
+          </div>
+          <div id="drawer-subtitle" style="font-size: 0.6875rem; color: var(--muted-foreground); margin-top: 0.25rem;">Live Fleet & Second Brain Status</div>
+        </div>
+        <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-drawer-close>✕</button>
+      </div>
+
+      <div id="drawer-content" class="du-drawer-body">
+        
+        <!-- Live Services Health Section -->
+        <div style="display: flex; flex-direction: column; gap: 0.625rem;">
+          <div style="font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; color: var(--muted-foreground); letter-spacing: 0.05em;">Probed Fleet Sockets</div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <div style="padding: 0.625rem; border-radius: var(--radius); background: var(--muted); display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-weight: 600; font-size: 0.75rem;">ai-app-foundation</div>
+                <div style="font-size: 0.6875rem; color: var(--muted-foreground); font-family: var(--font-mono);">Port 3000 • HTTP 200 OK</div>
+              </div>
+              <span class="ui-badge ui-badge-status-live">Live</span>
+            </div>
+            <div style="padding: 0.625rem; border-radius: var(--radius); background: var(--muted); display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-weight: 600; font-size: 0.75rem;">du-dashboard</div>
+                <div style="font-size: 0.6875rem; color: var(--muted-foreground); font-family: var(--font-mono);">Port 3005 • HTTP 200 OK</div>
+              </div>
+              <span class="ui-badge ui-badge-status-live">Live</span>
+            </div>
+            <div style="padding: 0.625rem; border-radius: var(--radius); background: var(--muted); display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-weight: 600; font-size: 0.75rem;">newsletter-app</div>
+                <div style="font-size: 0.6875rem; color: var(--muted-foreground); font-family: var(--font-mono);">Port 5173 • HTTP 200 OK</div>
+              </div>
+              <span class="ui-badge ui-badge-status-live">Live</span>
+            </div>
+            <div style="padding: 0.625rem; border-radius: var(--radius); background: var(--muted); display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-weight: 600; font-size: 0.75rem;">app-avaliacao</div>
+                <div style="font-size: 0.6875rem; color: var(--muted-foreground); font-family: var(--font-mono);">Port 8000 • HTTP 200 OK</div>
+              </div>
+              <span class="ui-badge ui-badge-status-live">Live</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- System Invariants Section -->
+        <div style="display: flex; flex-direction: column; gap: 0.625rem;">
+          <div style="font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; color: var(--muted-foreground); letter-spacing: 0.05em;">Canonical Invariants</div>
+          <div style="display: flex; flex-direction: column; gap: 0.375rem; font-size: 0.75rem;">
+            <div style="padding: 0.5rem; background: var(--muted); border-radius: var(--radius);">
+              <span style="font-family: var(--font-mono); font-weight: 700; color: var(--primary);">CON-0009</span>
+              <div style="color: var(--muted-foreground); margin-top: 0.15rem;">Subagent Zero Direct Mutation Invariant</div>
+            </div>
+            <div style="padding: 0.5rem; background: var(--muted); border-radius: var(--radius);">
+              <span style="font-family: var(--font-mono); font-weight: 700; color: var(--primary);">CON-0012</span>
+              <div style="color: var(--muted-foreground); margin-top: 0.15rem;">Continuous Dogfooding & Operational Feedback Policy</div>
+            </div>
+            <div style="padding: 0.5rem; background: var(--muted); border-radius: var(--radius);">
+              <span style="font-family: var(--font-mono); font-weight: 700; color: var(--primary);">PAT-0078</span>
+              <div style="color: var(--muted-foreground); margin-top: 0.15rem;">Tier-1 Repository Bootstrap & Architecture Invariants</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Terminal Shortcuts -->
+        <div style="display: flex; flex-direction: column; gap: 0.625rem;">
+          <div style="font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; color: var(--muted-foreground); letter-spacing: 0.05em;">DU Commands</div>
+          <div style="display: flex; flex-direction: column; gap: 0.375rem;">
+            <button class="ui-btn ui-btn-outline ui-btn-sm" style="justify-content: space-between;" data-du-copy="dev memory digest">
+              <span style="font-family: var(--font-mono);">dev memory digest</span>
+              <span>Copy</span>
+            </button>
+            <button class="ui-btn ui-btn-outline ui-btn-sm" style="justify-content: space-between;" data-du-copy="dev session audit">
+              <span style="font-family: var(--font-mono);">dev session audit</span>
+              <span>Copy</span>
+            </button>
+            <button class="ui-btn ui-btn-outline ui-btn-sm" style="justify-content: space-between;" data-du-copy="dev project list">
+              <span style="font-family: var(--font-mono);">dev project list</span>
+              <span>Copy</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="du-drawer-footer">
+        <span style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted-foreground);">SES-2026-LIVE • Dev/home</span>
+        <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-drawer-close>Close</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
+

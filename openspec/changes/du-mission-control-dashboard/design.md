@@ -1,38 +1,52 @@
-## Context
+﻿## Context
 
-See proposal.md - Why.
-The Development Universe consists of canonical persistent memory located at `Dev/home` (Obsidian Second Brain) and execution repositories in `Dev/`. In accordance with `AGENTS.md` and DU invariants, this feature resides cleanly within `ai-app-foundation` (Next.js 16, App Router, SQLite WAL, shadcn/ui) without requiring any paid cloud dependencies or external background daemons.
+The Development Universe (DU) consists of canonical memory located at Dev/home (Obsidian Second Brain) and execution repositories in Dev/.
+Rather than inflating i-app-foundation (which is intended as a reusable template/scaffold), we will instantiate a dedicated project and repository:
+- Project ID: PRJ-0021 (DU Mission Control Dashboard)
+- Repository ID: REP-0020 (du-dashboard at C:\Users\helder.toucas\Dev\du-dashboard)
+- Sourced from: i-app-foundation (cloned/copied baseline)
 
 ## Goals / Non-Goals
 
 **Goals:**
-- Provide a responsive, high-performance UI cockpit for browsing and inspecting all DU projects.
-- Implement server-side reading of canonical registry files (`Dev/home/08-ystem/registry/projects.json` & `repositories.json`) and project folders (`02-projects/`).
-- Provide port connectivity probing (HTTP HEAD / TCP connect) to detect running local dev servers without hanging.
-- Provide a slide-out drawer displaying markdown formatted `current-state.md` and project details.
-- Provide a Second Brain health widget tracking pending `MEM-*` candidates and session telemetry.
+- Bootstrap a standalone Next.js 16 application workspace at Dev/du-dashboard initialized from i-app-foundation.
+- Register the new project and repository under canonical DU governance (Dev/home/08-system/registry/).
+- Provide a clean, readable multi-page experience using standard shadcn/ui cards, tables, and dialogs.
+- Provide direct, token-free server-side filesystem reading of canonical registry files (Dev/home/08-system/registry/projects.json) with graceful fallback fixtures for isolated CI/build environments (lib/du/env.ts).
+- Deliver safe, passive socket connectivity probing (
+et.Socket with 150ms timeout) and 1-click sanitized terminal launch command copying (ACT-01), avoiding orphaned Windows background processes.
+- Provide a clear project dossier viewer showing current-state.md and priorities.
+- Provide a read-only memory governance view showing pending MEM-* candidates.
 
 **Non-Goals:**
-- Mutating canonical vault memory directly from the dashboard (mutations adhere to DU Memory Governance via CLI/MCP).
-- Managing remote Git operations or pushing branches.
-- Introducing external microservices, Docker, or Redis.
+- Convoluted single-page dashboards with nested drawers and excessive information density.
+- Spawning background child processes inside Next.js that leave orphaned zombie 
+ode.exe processes on Windows.
+- Mutating canonical vault memory directly from the web UI (mutations adhere to DU Memory Governance via CLI mem propose / i-review-memory).
 
 ## Decisions
 
-1. **Local Vault Data Access Layer**:
-   - *Decision*: Read canonical metadata directly from `Dev/home/08-ystem/registry/projects.json` using Node.js filesystem APIs in Next.js Server Components / Route Handlers, caching in memory with a short revalidation interval (SWR / React Cache).
-   - *Alternative Considered*: Querying via Python DU Engine MCP API. Rejected as primary dependency so the dashboard runs independently even if Python engine daemon is stopped.
+1. **Standalone Repository (du-dashboard) vs. Embedding into i-app-foundation**:
+   - *Decision*: Instantiate du-dashboard as a distinct DU project (PRJ-0021) and repository (REP-0020) at C:\Users\helder.toucas\Dev\du-dashboard. It inherits the robust Next.js 16 + shadcn + SQLite foundation while keeping i-app-foundation pristine as a reusable starter template.
 
-2. **Local Dev Server Port Detection**:
-   - *Decision*: Node.js `net.Socket` quick probe (with 250ms timeout) for known local ports (3000, 3001, 3002, 3003, 3004, 5173, 8000).
-   - *Alternative Considered*: Client-side `fetch()` polling. Rejected due to CORS restrictions and browser console spam when ports are closed.
+2. **Multi-Page AppSidebar Architecture vs. Monolithic Cockpit**:
+   - *Decision*: Integrate a collapsible Universe Platform group directly into components/app-sidebar.tsx with 4 discrete pages. Keep the landing page (/dashboard/du) concise and executive.
 
-3. **UI Composition & Component System**:
-   - *Decision*: Use shadcn/ui `Card`, `Badge`, `Sheet`, `Tabs`, `Command` dialog, and Lucide React icons.
-   - *Alternative Considered*: Heavy third-party admin dashboard template. Rejected to keep the bundle lean and compliant with `ai-app-foundation` standards.
+3. **Process Execution Safety (Council Finding ACT-01)**:
+   - *Decision*: Avoid spawning long-running dev servers inside the Next.js process on Windows. Use passive socket probing + 1-click sanitized command copy (pnpm dev, 
+pm run dev) for the operator terminal.
 
-## Risks / Trade-offs
+4. **Filesystem Isolation & Fallback (RES-01)**:
+   - *Decision*: Implement lib/du/env.ts with auto-detection of Dev/home. When absent (e.g. during CI or Docker-less builds), fall back gracefully to bundled static fixtures (FALLBACK_PROJECTS) so 
+ext build never crashes.
 
-- [Risk: Vault path resolution across machines] -> *Mitigation*: Resolve vault path dynamically from environment variable `DEV_HOME_PATH` or default relative path `../home`.
-- [Risk: Port scanning blocking server thread] -> *Mitigation*: Run socket probes asynchronously in parallel with strict 250ms timeouts.
-- [Risk: Large markdown current-state files slowing drawer] -> *Mitigation*: Fetch `current-state.md` lazily on demand when the drawer is triggered for a specific project.
+5. **Component Primitives**:
+   - *Decision*: Use existing shadcn UI primitives (Card, Badge, Button, Table, Dialog, Progress).
+
+## Architecture & Data Flow
+
+- Project du-dashboard at C:\Users\helder.toucas\Dev\du-dashboard.
+- Server Data Layer reads Dev/home/08-system/registry/projects.json directly or falls back to bundled fixtures.
+- Port probe performs lightweight 
+et.Socket checks with 150ms timeout.
+- Next.js Server Components render each of the 4 routes under pp/(dashboard)/dashboard/du/.

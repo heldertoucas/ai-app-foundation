@@ -1,0 +1,7 @@
+{
+  "name": "datatable-fetch",
+  "version": "1.0.0",
+  "description": "Zero-dependency dynamic JSON/REST loader for shadcn-html tables with client-side pagination, search debounce, and error states",
+  "dependencies": {},
+  "env": {}
+}

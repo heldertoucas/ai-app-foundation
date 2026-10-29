@@ -1,33 +1,35 @@
-# AGENTS.md —  I0P ai-app-foundation
+# Additional Conventions Beyond the Built-in Functions
 
-## Non-Negotiable Constraints
-- No Docker prerequisites.
-- Single Next.js 16 application workspace (zero monorepo infrastructure).
-- "shadcn/ui" is the exclusive UI component system.
-- SQLite is the default local database in WAL mode.
-- Pino logger is strictly server-only with automatic secret redaction.
-- No unnecessary or mandatory paid Cloud SaaS dependencies.
-- No destructive project cleanup or self-mutilation of files.
-- "pnpm setup", "pnpm typecheck", "pnpm test", and "pnpm build" are mandatory quality gates.
+As this project's AI coding tool, you must follow the additional conventions below, in addition to the built-in functions.
 
-## 1. Project Mission & Identity
-ai-app-foundation is a reusable, local-first, free-first Next.js 16 foundation for AI agents. It provides sensible defaults without mandatory paid cloud subscriptions.
+# Project Instructions: ai-app-foundation
 
-## 2. Core Operational Protocol for AI Agents
-1. Local-First / Free-First Default:
-   - Database: SQLite via Prisma (local `dev.db`) in WAL mode with "connection_limit=1&busy_timeout=10000".
-   - Logging: Pino server-only logger with automatic secret redaction.
-2. Deterministic Quality Gates:
-   Before committing, the agent MUST run:
-   - `pnpm typecheck`
-   - `pnpm test`
-   - `pnpm build`
+## Product Vision
+Canonical UI Foundation Kit for the Development Universe (`/ai-react-foundation` & `/ai-html-foundation`). Full-stack enterprise starter and reusable component catalog integrating Next.js 16, React 19, Tailwind CSS v4, Prisma 6, and shadcn/ui.
 
-## 3. Tool -> Purpose Dispatch Matrix
-| Ferramenta | Quando e Como Usar |
-| :--- | :--- |
-| **AGENTS.md** | Constituição e regras específicas deste projeto. |
-| **FOUNDATION.md** | 10 invariantes arquiteturais inegociáveis. |
-| **OpenSpec** | Gestão de mudanças e especificação de requisitos. |
-| **shadcn MCP / Skills** | Inspecionar, procurar e adicionar componentes ui. |
-| **next-devtools-mcp** | Inspecionar a aplicação em execução local para diagnóstico. |
+## Tech Stack
+- **Framework**: Next.js 16 (App Router)
+- **UI & Runtime**: React 19, TypeScript 5
+- **Styling**: Tailwind CSS v4 (`@tailwindcss/postcss`), Radix UI, Lucide / Phosphor Icons
+- **Database & ORM**: Prisma 6 (`@prisma/client`, SQLite for dev/test)
+- **Testing**: Vitest (unit/integration), Playwright (E2E)
+- **Package Manager**: `pnpm`
+
+## Architecture
+- `app/`: Next.js App Router pages, layouts, and server actions.
+- `components/`: Modular shadcn/ui components adhering to DU design standards.
+- `prisma/`: Prisma schema and migration scripts.
+- `scripts/`: Foundation compliance checkers (`foundation-check.js`).
+
+## Build & Verification Commands
+- **Environment Setup**: `pnpm setup` (copies `.env.example`, runs prisma push/generate, typechecks)
+- **Dev Server**: `pnpm dev`
+- **Build**: `pnpm build`
+- **Type Check & Lint**: `pnpm lint` (or `pnpm typecheck`)
+- **Unit Tests**: `pnpm test`
+- **E2E Tests**: `pnpm test:e2e`
+- **Foundation Health Check**: `pnpm foundation:check`
+
+## Quality Gates & Invariants
+- **React 19 & Tailwind v4 Compliance**: Utilize modern React 19 hooks and CSS theme variables.
+- **Component Reusability**: Components must remain accessible (WCAG AA), responsive, and themeable (dark/light via `next-themes`).

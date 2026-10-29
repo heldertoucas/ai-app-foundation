@@ -1,0 +1,7 @@
+{
+  "name": "auth-pin-lock",
+  "version": "1.0.0",
+  "description": "Zero-dependency local PIN / passphrase barrier modal for kiosk cockpits and local sensitive dashboards",
+  "dependencies": {},
+  "env": {}
+}

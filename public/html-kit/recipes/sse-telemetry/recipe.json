@@ -1,0 +1,7 @@
+{
+  "name": "sse-telemetry",
+  "version": "1.0.0",
+  "description": "Zero-dependency Server-Sent Events client for real-time telemetry updates (radial gauges, sparklines, live pills)",
+  "dependencies": {},
+  "env": {}
+}

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Futuro Digital CMLisboa</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../vendor/shadcn-html.all.css">
+  <link rel="stylesheet" href="../du-components.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="../du-runtime.js" defer></script>
+  <style>
+    :root {
+      --primary-blue: #5271FF;
+      --heading-color: #151515;
+      --text-color: #575757;
+      --dark-blue: #1b1b1b;
+      --light-gray: #f4f4f4;
+    }
+    body {
+      font-family: var(--font-sans);
+      margin: 0;
+      padding: 0;
+      color: var(--text-color);
+      background-color: #ffffff;
+      line-height: 1.6;
+    }
+    .fd-container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+    
+    /* HEADER FAC-SÍMILE */
+    .fd-header {
+      background-color: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+    }
+    .fd-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+    .fd-logo-link {
+      height: 50px;
+      display: block;
+    }
+    .fd-logo-img {
+      height: 50px;
+      width: auto;
+      display: block;
+    }
+    .fd-nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .fd-nav-link {
+      color: var(--heading-color);
+      font-weight: 500;
+      text-decoration: none;
+      position: relative;
+      padding: 4px 0;
+    }
+    .fd-nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-blue);
+      transition: width 0.3s ease-out;
+    }
+    .fd-nav-link:hover::after {
+      width: 100%;
+    }
+    .fd-btn-pill {
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 9999px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    .fd-btn-pill:hover {
+      background-color: #3a5de0;
+      transform: translateY(-2px);
+    }
+    .fd-btn-outline-pill {
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 9999px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      background-color: transparent;
+      color: var(--primary-blue);
+      border: 2px solid var(--primary-blue);
+      cursor: pointer;
+    }
+    .fd-btn-outline-pill:hover {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    /* HERO FAC-SÍMILE */
+    .fd-hero-section {
+      padding: 100px 0;
+      background-color: #ffffff;
+    }
+    .fd-hero-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .fd-hero-grid { flex-direction: row; }
+    }
+    .fd-hero-text { flex: 1; }
+    .fd-hero-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--heading-color);
+      margin: 0 0 16px;
+    }
+    .fd-hero-desc {
+      font-size: 1.2rem;
+      margin: 20px 0 30px;
+      line-height: 1.6;
+      color: var(--text-color);
+    }
+    .fd-hero-img-wrap {
+      flex: 1;
+      text-align: center;
+    }
+    .fd-hero-img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* ÁLBUM DE CURSOS FAC-SÍMILE */
+    .fd-courses-section {
+      background-color: #fafbff;
+      padding: 80px 0;
+    }
+    .fd-section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--heading-color);
+      margin: 0 0 16px;
+      text-align: center;
+      line-height: 1.2;
+    }
+    .fd-section-desc {
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 50px;
+      color: var(--text-color);
+      text-align: center;
+    }
+    .fd-course-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    @media (min-width: 992px) {
+      .fd-course-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .fd-course-card-facsimile {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+    }
+    @media (min-width: 768px) {
+      .fd-course-card-facsimile { flex-direction: row; }
+    }
+    .fd-course-card-facsimile:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    }
+    .fd-card-thumb-wrap {
+      flex: none;
+      width: 100%;
+      min-height: 200px;
+      position: relative;
+    }
+    @media (min-width: 768px) {
+      .fd-card-thumb-wrap { width: 40%; }
+    }
+    .fd-card-thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .fd-card-body {
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .fd-card-pill {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 15px;
+      color: #ffffff;
+      width: fit-content;
+    }
+    .fd-tag-blue { background-color: var(--primary-blue); }
+    .fd-tag-green { background-color: #35B729; }
+    .fd-card-heading {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--heading-color);
+      margin: 0 0 10px;
+      line-height: 1.2;
+    }
+    .fd-card-desc-text {
+      font-size: 1rem;
+      flex-grow: 1;
+      margin: 0 0 16px;
+      line-height: 1.6;
+      color: var(--text-color);
+    }
+    .fd-card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: auto;
+    }
+    .fd-btn-saber-mais {
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 9999px;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid #e0e0e0;
+      background-color: #ffffff;
+      color: var(--heading-color);
+      transition: all 0.3s ease;
+    }
+    .fd-btn-saber-mais:hover {
+      background-color: #f4f4f4;
+    }
+
+    /* ABOUT PROGRAM FAC-SÍMILE */
+    .fd-about-section {
+      background-color: #ffffff;
+      padding: 80px 0;
+    }
+    .fd-about-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .fd-about-grid { flex-direction: row; }
+    }
+
+    /* TESTIMONIALS SLIDER */
+    .fd-testimonials-section {
+      background-color: #fafbff;
+      padding: 80px 0;
+    }
+    .fd-testimonial-card {
+      text-align: center;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .fd-stars {
+      color: #f39c12;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+    .fd-review-quote {
+      font-size: 1.2rem;
+      font-style: italic;
+      margin-bottom: 15px;
+      color: var(--text-color);
+    }
+    .fd-author-name {
+      font-weight: 700;
+      color: var(--heading-color);
+    }
+
+    /* REGISTRATION CARDS */
+    .fd-registration-section {
+      background-color: #f4f4f4;
+      padding: 80px 0;
+    }
+    .fd-reg-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+      margin-top: 40px;
+    }
+    @media (min-width: 768px) {
+      .fd-reg-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .fd-reg-card {
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    /* FOOTER FAC-SÍMILE */
+    .fd-footer-facsimile {
+      background-color: var(--dark-blue);
+      color: #a9a9a9;
+      padding-top: 60px;
+    }
+    .fd-footer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding-bottom: 40px;
+    }
+    @media (min-width: 768px) {
+      .fd-footer-grid { grid-template-columns: 2fr 1fr 1fr 1.5fr; }
+    }
+    .fd-footer-logo {
+      height: 45px;
+      width: auto;
+      margin-bottom: 20px;
+    }
+    .fd-footer-heading {
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0 0 20px;
+    }
+    .fd-footer-links {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .fd-footer-links li {
+      margin-bottom: 10px;
+    }
+    .fd-footer-links a {
+      color: #a9a9a9;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .fd-footer-links a:hover {
+      color: #ffffff;
+    }
+    .fd-footer-bottom {
+      border-top: 1px solid #333333;
+      padding: 24px 0;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body class="theme-futuro-digital" data-theme="futuro-digital">
+
+  <!-- CABEÇALHO FAC-SÍMILE -->
+  <header class="fd-header">
+    <div class="fd-container">
+      <nav class="fd-nav">
+        <a href="#" class="fd-logo-link">
+          <img
+            src="https://ik.imagekit.io/htuazpop/banco-de-imagens/L7wNgqt_Fqk0iAmk2.png"
+            alt="Futuro Digital CMLisboa Logo"
+            class="fd-logo-img"
+          />
+        </a>
+
+        <ul class="fd-nav-menu">
+          <li><a href="#courses" class="fd-nav-link">Cursos</a></li>
+          <li><a href="#about-program" class="fd-nav-link">O Programa</a></li>
+          <li><a href="#testimonials" class="fd-nav-link">Testemunhos</a></li>
+          <li><a href="du-futuro-digital-galeria.html" class="fd-nav-link" style="color: var(--primary-blue);">Galeria Pedagógica</a></li>
+          <li>
+            <a href="#inscricao" class="fd-btn-pill">Inscrever-me</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO COMPONENT FAC-SÍMILE -->
+  <section class="fd-hero-section">
+    <div class="fd-container">
+      <div class="fd-hero-grid">
+        <div class="fd-hero-text">
+          <h1 class="fd-hero-title">A sua jornada de capacitação digital começa aqui.</h1>
+          <p class="fd-hero-desc">
+            Conheça os cursos do programa Futuro Digital e transforme a forma como trabalha em equipa na CMLisboa com as ferramentas Microsoft.
+          </p>
+          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <a href="#courses" class="fd-btn-pill">Explorar Cursos</a>
+            <a href="#about-program" class="fd-btn-outline-pill">Primeiro Acesso</a>
+          </div>
+        </div>
+        <div class="fd-hero-img-wrap">
+          <img
+            src="https://ik.imagekit.io/htuazpop/banco-de-imagens/ZJvakeb_HxbQeePGQ.png"
+            alt="Ilustração de uma pessoa a interagir com elementos digitais"
+            class="fd-hero-img"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÁLBUM DE CURSOS FAC-SÍMILE -->
+  <section id="courses" class="fd-courses-section">
+    <div class="fd-container">
+      <h2 class="fd-section-title">Cursos Disponíveis</h2>
+      <p class="fd-section-desc">
+        Formações práticas e focadas nas ferramentas que potenciam a colaboração e produtividade da sua equipa no dia a dia.
+      </p>
+
+      <div class="fd-course-grid">
+        <!-- Curso 1: Microsoft Word -->
+        <div class="fd-course-card-facsimile">
+          <div class="fd-card-thumb-wrap">
+            <img
+              src="https://ik.imagekit.io/htuazpop/banco-de-imagens/HODzPjK_dKyC9Ajn1.png"
+              alt="Ilustração Microsoft Word"
+              class="fd-card-thumb-img"
+            />
+          </div>
+          <div class="fd-card-body">
+            <span class="fd-card-pill fd-tag-blue">Trabalhar em equipa</span>
+            <h3 class="fd-card-heading">Microsoft Word</h3>
+            <p class="fd-card-desc-text">
+              Domine a criação e redação de documentos profissionais com o poder da coautoria em tempo real.
+            </p>
+            <div class="fd-card-actions">
+              <a href="du-futuro-digital-galeria.html" class="fd-btn-saber-mais">Saber mais</a>
+              <a href="#inscricao" class="fd-btn-pill">Inscrever</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Curso 2: Microsoft Excel -->
+        <div class="fd-course-card-facsimile">
+          <div class="fd-card-thumb-wrap">
+            <img
+              src="https://ik.imagekit.io/htuazpop/banco-de-imagens/T4rwgD6_U3ezS0_hw.png"
+              alt="Ilustração Microsoft Excel"
+              class="fd-card-thumb-img"
+            />
+          </div>
+          <div class="fd-card-body">
+            <span class="fd-card-pill fd-tag-green">Trabalhar em equipa</span>
+            <h3 class="fd-card-heading">Microsoft Excel</h3>
+            <p class="fd-card-desc-text">
+              Analise dados de forma poderosa e colabore em folhas de cálculo complexas com a sua equipa na nuvem.
+            </p>
+            <div class="fd-card-actions">
+              <a href="du-futuro-digital-galeria.html" class="fd-btn-saber-mais">Saber mais</a>
+              <a href="#inscricao" class="fd-btn-pill">Inscrever</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Curso 3: Microsoft Loop -->
+        <div class="fd-course-card-facsimile">
+          <div class="fd-card-thumb-wrap">
+            <img
+              src="https://ik.imagekit.io/htuazpop/banco-de-imagens/RlBJMf0_0A2NcKXIp.png"
+              alt="Ilustração Microsoft Loop"
+              class="fd-card-thumb-img"
+            />
+          </div>
+          <div class="fd-card-body">
+            <span class="fd-card-pill fd-tag-blue">Trabalhar em equipa</span>
+            <h3 class="fd-card-heading">Microsoft Loop</h3>
+            <p class="fd-card-desc-text">
+              Trabalhe de forma colaborativa com o Microsoft Loop. Centralize informações, crie listas de tarefas e organize projetos em tempo real.
+            </p>
+            <div class="fd-card-actions">
+              <a href="du-futuro-digital-galeria.html" class="fd-btn-saber-mais">Saber mais</a>
+              <a href="#inscricao" class="fd-btn-pill">Inscrever</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Curso 4: Microsoft Excel e Forms -->
+        <div class="fd-course-card-facsimile">
+          <div class="fd-card-thumb-wrap">
+            <img
+              src="https://ik.imagekit.io/htuazpop/banco-de-imagens/T4rwgD6_U3ezS0_hw.png"
+              alt="Ilustração Microsoft Excel e Forms"
+              class="fd-card-thumb-img"
+            />
+          </div>
+          <div class="fd-card-body">
+            <span class="fd-card-pill fd-tag-green">Trabalhar em equipa</span>
+            <h3 class="fd-card-heading">Microsoft Excel e Forms</h3>
+            <p class="fd-card-desc-text">
+              Crie inquéritos, recolha respostas automaticamente e analise resultados em tempo real com o Excel na nuvem.
+            </p>
+            <div class="fd-card-actions">
+              <a href="du-futuro-digital-galeria.html" class="fd-btn-saber-mais">Saber mais</a>
+              <a href="#inscricao" class="fd-btn-pill">Inscrever</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT PROGRAM FAC-SÍMILE -->
+  <section id="about-program" class="fd-about-section">
+    <div class="fd-container">
+      <div class="fd-about-grid">
+        <div style="flex: 1;">
+          <img
+            src="https://ik.imagekit.io/htuazpop/banco-de-imagens/9U2GzTP_0KMHhaNrD.png"
+            alt="Equipa a colaborar num projeto digital"
+            style="max-width: 100%; border-radius: 8px; height: auto;"
+          />
+        </div>
+        <div style="flex: 1;">
+          <h2 class="fd-section-title" style="text-align: left;">Sobre o Programa Futuro Digital</h2>
+          <p class="fd-hero-desc" style="font-size: 1.1rem; margin: 16px 0 24px;">
+            O Programa para a Inclusão e Literacia Digital da Câmara Municipal de Lisboa tem como missão capacitar os seus colaboradores e todos os cidadãos com as competências digitais essenciais para os desafios do presente e do futuro, promovendo uma cidade mais conectada, eficiente e inclusiva.
+          </p>
+          <a href="https://lisbon.cityoflearning.eu/pt/activities/21650" target="_blank" rel="noopener noreferrer" class="fd-btn-pill">
+            Conheça os Cursos
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTEMUNHOS SLIDER -->
+  <section id="testimonials" class="fd-testimonials-section">
+    <div class="fd-container">
+      <h2 class="fd-section-title">O Que Dizem os Nossos Formandos</h2>
+      <p class="fd-section-desc">Testemunhos reais de participantes que melhoraram a sua forma de trabalhar.</p>
+      
+      <div class="fd-testimonial-card">
+        <div class="fd-stars">★★★★★</div>
+        <p class="fd-review-quote">
+          “Excelente formação! Muito prática e com impacto direto no meu trabalho diário. Consegui automatizar relatórios que me demoravam horas.”
+        </p>
+        <p class="fd-author-name">- Maria Silva, Departamento de Ação Social</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSCRIÇÃO CARDS -->
+  <section id="inscricao" class="fd-registration-section">
+    <div class="fd-container">
+      <h2 class="fd-section-title">Pronto para Começar?</h2>
+      <p class="fd-section-desc">O curso está aberto a todos os cidadãos maiores de 18 anos e trabalhadores da CMLisboa.</p>
+
+      <div class="fd-reg-grid">
+        <div class="fd-reg-card">
+          <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--heading-color); margin: 0 0 15px;">Trabalhadores CMLisboa</h3>
+          <p style="color: var(--text-color); margin: 0 0 30px; line-height: 1.6;">
+            A inscrição é feita através da aplicação do Departamento de Desenvolvimento de Formação (disponível na rede interna) ou descarregando a ficha de inscrição.
+          </p>
+          <button class="fd-btn-pill" onclick="alert('Acesso à aplicação interna da CML ou contacto com o Departamento de Formação.')">Inscrição Trabalhador/a</button>
+        </div>
+
+        <div class="fd-reg-card">
+          <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--heading-color); margin: 0 0 15px;">Cidadãos</h3>
+          <p style="color: var(--text-color); margin: 0 0 30px; line-height: 1.6;">
+            Todos os cidadãos com mais de 18 anos podem inscrever-se diretamente através do formulário de inscrição online. Garanta a sua vaga!
+          </p>
+          <a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx" target="_blank" class="fd-btn-pill">Inscrição Cidadãos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RODAPÉ FAC-SÍMILE -->
+  <footer class="fd-footer-facsimile">
+    <div class="fd-container">
+      <div class="fd-footer-grid">
+        <div>
+          <img
+            src="https://ik.imagekit.io/htuazpop/banco-de-imagens/tYc9GgI_Dl4bUtSCi.png"
+            alt="Câmara Municipal de Lisboa Logo"
+            class="fd-footer-logo"
+          />
+          <p style="margin: 0; line-height: 1.6;">
+            Programa para a Inclusão e Literacia Digital da Câmara Municipal de Lisboa.
+          </p>
+        </div>
+        <div>
+          <h4 class="fd-footer-heading">Navegação</h4>
+          <ul class="fd-footer-links">
+            <li><a href="#courses">Cursos</a></li>
+            <li><a href="#about-program">O Programa</a></li>
+            <li><a href="#testimonials">Testemunhos</a></li>
+            <li><a href="#inscricao">Inscrição</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="fd-footer-heading">Cursos</h4>
+          <ul class="fd-footer-links">
+            <li><a href="#courses">Word e Loop</a></li>
+            <li><a href="#courses">Excel e Forms</a></li>
+            <li><a href="#courses">OneDrive</a></li>
+            <li><a href="#courses">Teams & SharePoint</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="fd-footer-heading">Contacto</h4>
+          <p style="margin: 0 0 10px; line-height: 1.6;">
+            Departamento de Formação CMLisboa<br>
+            Email: formacao@cm-lisboa.pt
+          </p>
+          <p style="margin: 0; line-height: 1.6;">
+            Apoio ao participante e tutoria ativa.
+          </p>
+        </div>
+      </div>
+      <div class="fd-footer-bottom">
+        <p style="margin: 0;">© 2026 Futuro Digital — Câmara Municipal de Lisboa. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function duToggleProjection() {
+      document.body.classList.toggle('projection-mode');
+      const isProj = document.body.classList.contains('projection-mode');
+      const label = document.querySelector('.projection-label');
+      if (label) {
+        label.textContent = isProj ? 'Sair da Sala' : 'Modo Sala';
+      }
+    }
+  </script>
+</body>
+</html>

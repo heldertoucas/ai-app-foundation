@@ -23,15 +23,15 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { KpiStatCard, HealthGauge } from '@/components/dashboard/metrics';
 import {
-  FolderKanban,
-  CheckCircle2,
-  TrendingUp,
+  Folder,
+  CheckCircle,
+  TrendUp,
   Clock,
   Plus,
-  Trash2,
-  ExternalLink,
-  Activity,
-} from 'lucide-react';
+  Trash,
+  ArrowSquareOut,
+  Pulse,
+} from '@phosphor-icons/react/dist/ssr';
 
 export default async function DashboardPage({
   searchParams,
@@ -58,9 +58,9 @@ export default async function DashboardPage({
     orderBy: { createdAt: 'desc' },
   });
 
-  const activeCount = projects.filter((p) => p.status === 'Active').length;
+  const activeCount = projects.filter((p: any) => p.status === 'Active').length;
   const totalCount = projects.length;
-  const completedCount = projects.filter((p) => p.status === 'Completed').length;
+  const completedCount = projects.filter((p: any) => p.status === 'Completed').length;
   const completionRate = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 100;
 
   return (
@@ -69,7 +69,7 @@ export default async function DashboardPage({
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex flex-col gap-1">
           <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-2.5">
-            <FolderKanban className="size-7 text-primary" />
+            <Folder className="size-7 text-primary" />
             Project Atlas
           </h1>
           <p className="text-sm text-muted-foreground">
@@ -80,7 +80,7 @@ export default async function DashboardPage({
           <Button variant="outline" size="sm" asChild>
             <Link href="/dashboard/workshops" className="flex items-center gap-1.5">
               <span>Workshops</span>
-              <ExternalLink className="size-3.5" />
+              <ArrowSquareOut className="size-3.5" />
             </Link>
           </Button>
         </div>
@@ -96,7 +96,7 @@ export default async function DashboardPage({
           description={`${totalCount} total initiatives tracked`}
           change={14.2}
           changePeriod="vs last sprint"
-          icon={<FolderKanban className="size-4 text-primary" />}
+          icon={<Folder className="size-4 text-primary" />}
         />
         <KpiStatCard
           title="Completed"
@@ -104,14 +104,14 @@ export default async function DashboardPage({
           description="Verified in SQLite WAL"
           change={8.5}
           changePeriod="velocity"
-          icon={<CheckCircle2 className="size-4 text-emerald-500" />}
+          icon={<CheckCircle className="size-4 text-emerald-500" />}
         />
         <KpiStatCard
           title="Completion Rate"
           value={`${completionRate}%`}
           description={`${completedCount} of ${totalCount} finished`}
           trend={completionRate >= 80 ? "up" : "neutral"}
-          icon={<TrendingUp className="size-4 text-primary" />}
+          icon={<TrendUp className="size-4 text-primary" />}
         />
         <div className="flex items-center justify-center rounded-[min(var(--radius-4xl),24px)] bg-card border border-border/60 p-2 shadow-xs">
           <HealthGauge value={completionRate} size={110} strokeWidth={9} label="Delivery Health" />
@@ -199,7 +199,7 @@ export default async function DashboardPage({
                       </TableCell>
                     </TableRow>
                   ) : (
-                    projects.map((project) => (
+                    projects.map((project: any) => (
                       <TableRow key={project.id} className="hover:bg-muted/40 transition-colors">
                         <TableCell className="font-medium">
                           <div className="flex flex-col gap-0.5">
@@ -247,7 +247,7 @@ export default async function DashboardPage({
                               size="icon"
                               className="size-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
                             >
-                              <Trash2 className="size-4" />
+                              <Trash className="size-4" />
                             </Button>
                           </form>
                         </TableCell>
@@ -265,7 +265,7 @@ export default async function DashboardPage({
           <Card className="border-border/60 shadow-xs">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
-                <Activity className="size-4 text-primary" />
+                <Pulse className="size-4 text-primary" />
                 <CardTitle className="text-base font-semibold">Recent Activity</CardTitle>
               </div>
             </CardHeader>

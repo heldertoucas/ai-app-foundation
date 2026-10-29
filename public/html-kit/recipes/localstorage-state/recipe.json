@@ -1,0 +1,7 @@
+{
+  "name": "localstorage-state",
+  "version": "1.0.0",
+  "description": "Zero-dependency automatic state persistence for tabs, table filters, and UI toggles using localStorage",
+  "dependencies": {},
+  "env": {}
+}

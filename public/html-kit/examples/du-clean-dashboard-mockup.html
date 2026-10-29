@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DU Universe - App Foundation Clean Multi-Page Mockup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            background: 'hsl(240 10% 3.9%)',
+            foreground: 'hsl(0 0% 98%)',
+            card: 'hsl(240 10% 4.9%)',
+            'card-foreground': 'hsl(0 0% 98%)',
+            popover: 'hsl(240 10% 4.9%)',
+            'popover-foreground': 'hsl(0 0% 98%)',
+            primary: 'hsl(217 91% 60%)',
+            'primary-foreground': 'hsl(222 47% 11%)',
+            muted: 'hsl(240 3.7% 15.9%)',
+            'muted-foreground': 'hsl(240 5% 64.9%)',
+            border: 'hsl(240 3.7% 15.9%)',
+            sidebar: {
+              DEFAULT: 'hsl(240 5.9% 10%)',
+              foreground: 'hsl(240 4.8% 95.9%)',
+              primary: 'hsl(217 91% 60%)',
+              'primary-foreground': 'hsl(0 0% 100%)',
+              accent: 'hsl(240 3.7% 15.9%)',
+              'accent-foreground': 'hsl(240 4.8% 95.9%)',
+              border: 'hsl(240 3.7% 15.9%)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .page-view { display: none; }
+    .page-view.active { display: block; }
+  </style>
+</head>
+<body class="bg-background text-foreground flex h-screen overflow-hidden text-sm">
+
+  <!-- ==================== SIDEBAR (Current App Foundation Tree View) ==================== -->
+  <aside class="w-64 border-r border-sidebar-border bg-sidebar flex flex-col shrink-0 select-none">
+    <!-- Header -->
+    <div class="h-14 border-b border-sidebar-border flex items-center px-4 gap-3">
+      <div class="size-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center font-bold text-sm">
+        DU
+      </div>
+      <div>
+        <div class="font-semibold text-xs tracking-tight text-sidebar-foreground">Development Universe</div>
+        <div class="text-[10px] text-muted-foreground">ai-app-foundation</div>
+      </div>
+    </div>
+
+    <!-- Tree Navigation (AppSidebar format) -->
+    <div class="flex-1 overflow-y-auto px-3 py-4 space-y-6">
+      <!-- Group 1: Development Universe -->
+      <div>
+        <div class="text-[11px] font-medium text-muted-foreground px-2 mb-1.5 uppercase tracking-wider">Universe Platform</div>
+        <nav class="space-y-1">
+          <!-- Page 1: Overview & Digest -->
+          <button onclick="switchTab('overview')" id="nav-overview" class="nav-btn w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-sidebar-foreground bg-sidebar-accent transition-colors text-left">
+            <svg class="size-4 text-primary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            <span class="truncate">1. Overview & Digest</span>
+          </button>
+          
+          <!-- Page 2: Projects Directory -->
+          <button onclick="switchTab('projects')" id="nav-projects" class="nav-btn w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs font-medium text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors text-left">
+            <div class="flex items-center gap-2.5 truncate">
+              <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+              <span class="truncate">2. Projects Directory</span>
+            </div>
+            <span class="text-[10px] bg-muted px-1.5 py-0.5 rounded text-muted-foreground font-mono ml-2">18</span>
+          </button>
+
+          <!-- Page 3: Services & Ports Fleet -->
+          <button onclick="switchTab('services')" id="nav-services" class="nav-btn w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs font-medium text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors text-left">
+            <div class="flex items-center gap-2.5 truncate">
+              <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              <span class="truncate">3. Services & Ports Fleet</span>
+            </div>
+            <span class="size-2 rounded-full bg-emerald-500 animate-pulse ml-2 shrink-0"></span>
+          </button>
+
+          <!-- Page 4: Second Brain / Memory -->
+          <button onclick="switchTab('memory')" id="nav-memory" class="nav-btn w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs font-medium text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors text-left">
+            <div class="flex items-center gap-2.5 truncate">
+              <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+              <span class="truncate">4. Memory Governance</span>
+            </div>
+            <span class="text-[10px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded font-mono ml-2">12</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Group 2: Existing App Foundation Sections -->
+      <div>
+        <div class="text-[11px] font-medium text-muted-foreground px-2 mb-1.5 uppercase tracking-wider">Foundation Library</div>
+        <nav class="space-y-1">
+          <div class="px-2.5 py-1.5 text-xs text-muted-foreground flex items-center gap-2 opacity-70">
+            <span class="size-1.5 rounded-full bg-muted-foreground"></span>
+            <span>Project Atlas</span>
+          </div>
+          <div class="px-2.5 py-1.5 text-xs text-muted-foreground flex items-center gap-2 opacity-70">
+            <span class="size-1.5 rounded-full bg-muted-foreground"></span>
+            <span>Workshops CRUD</span>
+          </div>
+          <div class="px-2.5 py-1.5 text-xs text-muted-foreground flex items-center gap-2 opacity-70">
+            <span class="size-1.5 rounded-full bg-muted-foreground"></span>
+            <span>Metrics & Charts</span>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="p-3 border-t border-sidebar-border flex items-center justify-between text-xs text-muted-foreground">
+      <div class="flex items-center gap-2">
+        <span class="size-2 rounded-full bg-emerald-500"></span>
+        <span class="font-mono text-[11px]">SES-2026-09-11-001</span>
+      </div>
+      <span class="text-[10px]">ai-app</span>
+    </div>
+  </aside>
+
+  <!-- ==================== MAIN CONTENT AREA ==================== -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    
+    <!-- Top Header -->
+    <header class="h-14 border-b border-border px-8 flex items-center justify-between bg-card/40 shrink-0">
+      <div class="flex items-center gap-2 text-xs">
+        <span class="text-muted-foreground">Universe</span>
+        <span class="text-muted-foreground">/</span>
+        <span id="breadcrumb-title" class="font-semibold text-foreground text-sm">1. Overview & Digest</span>
+      </div>
+      <div class="flex items-center gap-4 text-xs text-muted-foreground">
+        <div class="flex items-center gap-1.5">
+          <span class="size-2 rounded-full bg-emerald-500"></span>
+          <span>4 Ports Probed Online</span>
+        </div>
+        <div class="font-mono text-[11px] bg-muted px-2 py-0.5 rounded border border-border">
+          Dev/home
+        </div>
+      </div>
+    </header>
+
+    <!-- Content View Area -->
+    <main class="flex-1 overflow-y-auto p-8 max-w-6xl mx-auto w-full">
+
+      <!-- ======================================================== -->
+      <!-- PAGE 1: OVERVIEW & DIGEST (Clean, Summarized, Relaxed)     -->
+      <!-- ======================================================== -->
+      <div id="view-overview" class="page-view active space-y-8">
+        
+        <!-- Header Section -->
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight text-foreground">Universe Overview</h1>
+          <p class="text-sm text-muted-foreground mt-1">High-level executive summary of active initiatives, runtime health, and memory governance.</p>
+        </div>
+
+        <!-- KPI Summary Cards (Identical to app-foundation KpiStatCard style) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-card p-5 rounded-xl border border-border shadow-sm">
+            <div class="text-xs font-medium text-muted-foreground">Active Projects</div>
+            <div class="text-3xl font-bold mt-2">18</div>
+            <div class="text-xs text-emerald-400 mt-2 flex items-center gap-1.5">
+              <span class="size-1.5 rounded-full bg-emerald-400"></span>
+              <span>4 services running locally</span>
+            </div>
+          </div>
+
+          <div class="bg-card p-5 rounded-xl border border-border shadow-sm">
+            <div class="text-xs font-medium text-muted-foreground">Memory Candidates</div>
+            <div class="text-3xl font-bold mt-2">12</div>
+            <div class="text-xs text-amber-400 mt-2 flex items-center gap-1.5">
+              <span class="size-1.5 rounded-full bg-amber-400"></span>
+              <span>Pending review for promotion</span>
+            </div>
+          </div>
+
+          <div class="bg-card p-5 rounded-xl border border-border shadow-sm">
+            <div class="text-xs font-medium text-muted-foreground">Active Session</div>
+            <div class="text-sm font-mono font-semibold mt-3 text-primary truncate">SES-2026-09-11-001</div>
+            <div class="text-xs text-muted-foreground mt-2">ai-app-foundation</div>
+          </div>
+
+          <div class="bg-card p-5 rounded-xl border border-border shadow-sm">
+            <div class="text-xs font-medium text-muted-foreground">Canonical Storage</div>
+            <div class="text-3xl font-bold mt-2 text-emerald-400">Synced</div>
+            <div class="text-xs text-muted-foreground mt-2">Dev/home connected</div>
+          </div>
+        </div>
+
+        <!-- High-level Summarized Sections (2 columns) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          <!-- Card 1: Active Dev Servers Summary -->
+          <div class="bg-card rounded-xl border border-border p-6 space-y-4 shadow-sm">
+            <div class="flex items-center justify-between border-b border-border pb-3">
+              <div class="flex items-center gap-2">
+                <span class="size-2 rounded-full bg-emerald-500"></span>
+                <h2 class="font-semibold text-sm">Active Local Dev Servers</h2>
+              </div>
+              <button onclick="switchTab('services')" class="text-xs text-primary hover:underline font-medium">All Services →</button>
+            </div>
+            
+            <div class="space-y-3">
+              <div class="flex items-center justify-between p-2.5 rounded-lg bg-muted/40 border border-border/50 text-xs">
+                <div>
+                  <div class="font-semibold text-foreground">ai-app-foundation</div>
+                  <div class="text-muted-foreground text-[11px]">Port 3000 • Next.js 16</div>
+                </div>
+                <a href="http://localhost:3000" target="_blank" class="px-2.5 py-1 rounded bg-card hover:bg-muted text-foreground border border-border text-[11px] font-mono">Open :3000 ↗</a>
+              </div>
+
+              <div class="flex items-center justify-between p-2.5 rounded-lg bg-muted/40 border border-border/50 text-xs">
+                <div>
+                  <div class="font-semibold text-foreground">PRJ-0011 Newsletter App</div>
+                  <div class="text-muted-foreground text-[11px]">Port 5173 • Vite React</div>
+                </div>
+                <a href="http://localhost:5173" target="_blank" class="px-2.5 py-1 rounded bg-card hover:bg-muted text-foreground border border-border text-[11px] font-mono">Open :5173 ↗</a>
+              </div>
+
+              <div class="flex items-center justify-between p-2.5 rounded-lg bg-muted/40 border border-border/50 text-xs">
+                <div>
+                  <div class="font-semibold text-foreground">PRJ-0005 App Avaliação CML</div>
+                  <div class="text-muted-foreground text-[11px]">Port 8000 • FastAPI</div>
+                </div>
+                <a href="http://localhost:8000" target="_blank" class="px-2.5 py-1 rounded bg-card hover:bg-muted text-foreground border border-border text-[11px] font-mono">Open :8000 ↗</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Memory Digest Summary -->
+          <div class="bg-card rounded-xl border border-border p-6 space-y-4 shadow-sm">
+            <div class="flex items-center justify-between border-b border-border pb-3">
+              <div class="flex items-center gap-2">
+                <svg class="size-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                <h2 class="font-semibold text-sm">Memory Candidates</h2>
+              </div>
+              <button onclick="switchTab('memory')" class="text-xs text-primary hover:underline font-medium">Review All →</button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <div class="p-2.5 rounded-lg bg-muted/40 border border-border/50">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-mono text-amber-400 font-semibold text-[11px]">MEM-2026-09-04-001</span>
+                  <span class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-1.5 py-0.5 rounded">pattern</span>
+                </div>
+                <div class="font-medium text-foreground">SQLite WAL Single Connection lock handling</div>
+              </div>
+
+              <div class="p-2.5 rounded-lg bg-muted/40 border border-border/50">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-mono text-amber-400 font-semibold text-[11px]">MEM-2026-09-03-002</span>
+                  <span class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-1.5 py-0.5 rounded">constraint</span>
+                </div>
+                <div class="font-medium text-foreground">Zero Docker requirement across municipal nodes</div>
+              </div>
+            </div>
+            
+            <p class="text-[11px] text-muted-foreground pt-1">
+              Candidates are safe-buffered. Review and promote when ready.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Quick Jump: Active Focus Initiatives -->
+        <div class="bg-card rounded-xl border border-border p-6 space-y-4 shadow-sm">
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-sm">Core Active Initiatives</h2>
+            <button onclick="switchTab('projects')" class="text-xs text-primary hover:underline font-medium">Open full directory (18) →</button>
+          </div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div onclick="switchTab('projects')" class="p-4 rounded-lg border border-border bg-muted/20 hover:border-primary/50 transition cursor-pointer">
+              <div class="text-xs font-mono text-muted-foreground mb-1">DEV-001</div>
+              <div class="font-semibold text-xs text-foreground">ai-app-foundation</div>
+              <div class="text-[11px] text-muted-foreground mt-1 line-clamp-2">Next.js 16 base foundation with shadcn/ui and SQLite WAL.</div>
+            </div>
+
+            <div onclick="switchTab('projects')" class="p-4 rounded-lg border border-border bg-muted/20 hover:border-primary/50 transition cursor-pointer">
+              <div class="text-xs font-mono text-muted-foreground mb-1">PRJ-0005</div>
+              <div class="font-semibold text-xs text-foreground">app-avaliacao</div>
+              <div class="text-[11px] text-muted-foreground mt-1 line-clamp-2">Plataforma Formação CML com rubric engine e relatórios pedagógicos.</div>
+            </div>
+
+            <div onclick="switchTab('projects')" class="p-4 rounded-lg border border-border bg-muted/20 hover:border-primary/50 transition cursor-pointer">
+              <div class="text-xs font-mono text-muted-foreground mb-1">PRJ-0011</div>
+              <div class="font-semibold text-xs text-foreground">newsletter-app</div>
+              <div class="text-[11px] text-muted-foreground mt-1 line-clamp-2">React + Vite client for municipal newsletter publishing.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- PAGE 2: PROJECTS DIRECTORY (Dedicated, Clean Table)       -->
+      <!-- ======================================================== -->
+      <div id="view-projects" class="page-view space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold tracking-tight">Projects Directory</h1>
+            <p class="text-sm text-muted-foreground mt-0.5">Canonical initiatives registered in <code class="text-xs bg-muted px-1.5 py-0.5 rounded border border-border">08-system/registry/projects.json</code>.</p>
+          </div>
+          <input type="text" placeholder="Search projects by name, id, or path..." class="bg-card border border-border px-3 py-1.5 rounded-lg text-xs w-72 focus:outline-none focus:border-primary">
+        </div>
+
+        <div class="bg-card rounded-xl border border-border overflow-hidden shadow-sm">
+          <table class="w-full text-xs text-left">
+            <thead class="bg-muted/40 border-b border-border text-muted-foreground uppercase text-[10px] font-semibold tracking-wider">
+              <tr>
+                <th class="px-5 py-3">Project / Repository</th>
+                <th class="px-5 py-3">Domain</th>
+                <th class="px-5 py-3">Status</th>
+                <th class="px-5 py-3">Telemetry</th>
+                <th class="px-5 py-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-border">
+              <tr class="hover:bg-muted/20 transition">
+                <td class="px-5 py-4">
+                  <div class="font-semibold text-sm text-foreground">ai-app-foundation</div>
+                  <div class="text-[11px] text-muted-foreground font-mono mt-0.5">DEV-001 • C:\Users\helder.toucas\Dev\ai-app-foundation</div>
+                </td>
+                <td class="px-5 py-4"><span class="px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px]">System</span></td>
+                <td class="px-5 py-4"><span class="text-emerald-400 flex items-center gap-1.5 font-medium"><span class="size-1.5 rounded-full bg-emerald-400"></span> Active</span></td>
+                <td class="px-5 py-4 font-mono text-emerald-400">:3000 (Online)</td>
+                <td class="px-5 py-4 text-right">
+                  <button onclick="openModal('DEV-001', 'ai-app-foundation')" class="px-3 py-1.5 rounded-md bg-muted hover:bg-border text-foreground font-medium text-xs">View Dossier</button>
+                </td>
+              </tr>
+              <tr class="hover:bg-muted/20 transition">
+                <td class="px-5 py-4">
+                  <div class="font-semibold text-sm text-foreground">app-avaliacao</div>
+                  <div class="text-[11px] text-muted-foreground font-mono mt-0.5">PRJ-0005 • C:\Users\helder.toucas\Dev\app-avaliacao</div>
+                </td>
+                <td class="px-5 py-4"><span class="px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px]">Formação</span></td>
+                <td class="px-5 py-4"><span class="text-emerald-400 flex items-center gap-1.5 font-medium"><span class="size-1.5 rounded-full bg-emerald-400"></span> Active</span></td>
+                <td class="px-5 py-4 font-mono text-emerald-400">:8000 (Online)</td>
+                <td class="px-5 py-4 text-right">
+                  <button onclick="openModal('PRJ-0005', 'app-avaliacao')" class="px-3 py-1.5 rounded-md bg-muted hover:bg-border text-foreground font-medium text-xs">View Dossier</button>
+                </td>
+              </tr>
+              <tr class="hover:bg-muted/20 transition">
+                <td class="px-5 py-4">
+                  <div class="font-semibold text-sm text-foreground">newsletter-app</div>
+                  <div class="text-[11px] text-muted-foreground font-mono mt-0.5">PRJ-0011 • C:\Users\helder.toucas\Dev\newsletter-app</div>
+                </td>
+                <td class="px-5 py-4"><span class="px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px]">Formação</span></td>
+                <td class="px-5 py-4"><span class="text-emerald-400 flex items-center gap-1.5 font-medium"><span class="size-1.5 rounded-full bg-emerald-400"></span> Active</span></td>
+                <td class="px-5 py-4 font-mono text-emerald-400">:5173 (Online)</td>
+                <td class="px-5 py-4 text-right">
+                  <button onclick="openModal('PRJ-0011', 'newsletter-app')" class="px-3 py-1.5 rounded-md bg-muted hover:bg-border text-foreground font-medium text-xs">View Dossier</button>
+                </td>
+              </tr>
+              <tr class="hover:bg-muted/20 transition">
+                <td class="px-5 py-4">
+                  <div class="font-semibold text-sm text-foreground">paperclip</div>
+                  <div class="text-[11px] text-muted-foreground font-mono mt-0.5">PRJ-0013 • C:\Users\helder.toucas\Dev\paperclip</div>
+                </td>
+                <td class="px-5 py-4"><span class="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px]">Personal</span></td>
+                <td class="px-5 py-4"><span class="text-muted-foreground flex items-center gap-1.5"><span class="size-1.5 rounded-full bg-muted-foreground"></span> Standby</span></td>
+                <td class="px-5 py-4 font-mono text-muted-foreground">:3100 (Offline)</td>
+                <td class="px-5 py-4 text-right">
+                  <button onclick="openModal('PRJ-0013', 'paperclip')" class="px-3 py-1.5 rounded-md bg-muted hover:bg-border text-foreground font-medium text-xs">View Dossier</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- PAGE 3: SERVICES & PORTS (Dedicated Fleet Screen)         -->
+      <!-- ======================================================== -->
+      <div id="view-services" class="page-view space-y-6">
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight">Services & Ports Fleet</h1>
+          <p class="text-sm text-muted-foreground mt-0.5">Zero-overhead socket detection of localhost dev servers running across your projects.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Port 3000 -->
+          <div class="bg-card p-5 rounded-xl border border-border space-y-4 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xs font-semibold px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
+                <span class="size-1.5 rounded-full bg-emerald-400"></span>
+                :3000 Online
+              </span>
+              <a href="http://localhost:3000" target="_blank" class="text-xs text-primary hover:underline font-medium">Open Browser ↗</a>
+            </div>
+            <div>
+              <div class="font-semibold text-sm">ai-app-foundation</div>
+              <div class="text-muted-foreground text-xs mt-0.5">Next.js 16 Foundation Workspace</div>
+            </div>
+            <div class="bg-muted/50 p-2.5 rounded-lg text-xs font-mono text-muted-foreground flex items-center justify-between border border-border">
+              <span>pnpm dev</span>
+              <button onclick="navigator.clipboard.writeText('pnpm dev')" class="text-xs text-primary hover:underline">Copy</button>
+            </div>
+          </div>
+
+          <!-- Port 5173 -->
+          <div class="bg-card p-5 rounded-xl border border-border space-y-4 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xs font-semibold px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
+                <span class="size-1.5 rounded-full bg-emerald-400"></span>
+                :5173 Online
+              </span>
+              <a href="http://localhost:5173" target="_blank" class="text-xs text-primary hover:underline font-medium">Open Browser ↗</a>
+            </div>
+            <div>
+              <div class="font-semibold text-sm">newsletter-app</div>
+              <div class="text-muted-foreground text-xs mt-0.5">PRJ-0011 Vite Frontend</div>
+            </div>
+            <div class="bg-muted/50 p-2.5 rounded-lg text-xs font-mono text-muted-foreground flex items-center justify-between border border-border">
+              <span>npm run dev</span>
+              <button onclick="navigator.clipboard.writeText('npm run dev')" class="text-xs text-primary hover:underline">Copy</button>
+            </div>
+          </div>
+
+          <!-- Port 8000 -->
+          <div class="bg-card p-5 rounded-xl border border-border space-y-4 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xs font-semibold px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
+                <span class="size-1.5 rounded-full bg-emerald-400"></span>
+                :8000 Online
+              </span>
+              <a href="http://localhost:8000" target="_blank" class="text-xs text-primary hover:underline font-medium">Open Browser ↗</a>
+            </div>
+            <div>
+              <div class="font-semibold text-sm">app-avaliacao</div>
+              <div class="text-muted-foreground text-xs mt-0.5">PRJ-0005 Uvicorn / FastAPI Backend</div>
+            </div>
+            <div class="bg-muted/50 p-2.5 rounded-lg text-xs font-mono text-muted-foreground flex items-center justify-between border border-border">
+              <span>uvicorn main:app --reload</span>
+              <button onclick="navigator.clipboard.writeText('uvicorn main:app --reload')" class="text-xs text-primary hover:underline">Copy</button>
+            </div>
+          </div>
+
+          <!-- Port 3100 Offline -->
+          <div class="bg-card p-5 rounded-xl border border-border space-y-4 opacity-50 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xs font-semibold px-2.5 py-1 rounded-md bg-muted text-muted-foreground border border-border">
+                :3100 Standby
+              </span>
+            </div>
+            <div>
+              <div class="font-semibold text-sm">paperclip</div>
+              <div class="text-muted-foreground text-xs mt-0.5">PRJ-0013 Node Service</div>
+            </div>
+            <div class="bg-muted/50 p-2.5 rounded-lg text-xs font-mono text-muted-foreground flex items-center justify-between border border-border">
+              <span>pnpm start</span>
+              <button onclick="navigator.clipboard.writeText('pnpm start')" class="text-xs text-primary hover:underline">Copy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- PAGE 4: SECOND BRAIN / MEMORY GOVERNANCE                  -->
+      <!-- ======================================================== -->
+      <div id="view-memory" class="page-view space-y-6">
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight">Second Brain Governance</h1>
+          <p class="text-sm text-muted-foreground mt-0.5">Pending memory proposals staged in <code class="text-xs bg-muted px-1.5 py-0.5 rounded border border-border">Dev/home/08-system/governance/candidates/</code>.</p>
+        </div>
+
+        <div class="bg-card rounded-xl border border-border p-6 space-y-4 shadow-sm">
+          <div class="flex items-center justify-between border-b border-border pb-3">
+            <h2 class="font-semibold text-sm">12 Staged Candidates</h2>
+            <span class="text-xs text-muted-foreground">Run <code class="font-mono text-[11px] bg-muted px-1.5 py-0.5 rounded border border-border">dev memory digest</code> to promote</span>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div class="p-4 rounded-lg border border-border bg-muted/20 flex items-start justify-between">
+              <div class="space-y-1 max-w-xl">
+                <div class="flex items-center gap-2">
+                  <span class="font-mono font-bold text-amber-400">MEM-2026-09-04-001</span>
+                  <span class="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px]">pattern</span>
+                </div>
+                <div class="font-semibold text-sm text-foreground">SQLite WAL Single-Connection Lock Handling</div>
+                <div class="text-muted-foreground text-xs leading-relaxed">Mandatory connection_limit=1&busy_timeout=10000 in Next.js Server Components to prevent database table locked exceptions on concurrent reads.</div>
+              </div>
+              <span class="text-[10px] text-muted-foreground font-mono">3d ago</span>
+            </div>
+
+            <div class="p-4 rounded-lg border border-border bg-muted/20 flex items-start justify-between">
+              <div class="space-y-1 max-w-xl">
+                <div class="flex items-center gap-2">
+                  <span class="font-mono font-bold text-amber-400">MEM-2026-09-03-002</span>
+                  <span class="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px]">constraint</span>
+                </div>
+                <div class="font-semibold text-sm text-foreground">Zero Docker requirement across municipal nodes</div>
+                <div class="text-muted-foreground text-xs leading-relaxed">Strict architectural invariant forbidding Docker dependencies so apps run bare-metal or on low-spec hardware without virtualization layers.</div>
+              </div>
+              <span class="text-[10px] text-muted-foreground font-mono">4d ago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Slide/Modal for Project Dossier -->
+  <div id="dossier-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center p-4 z-50">
+    <div class="bg-card border border-border rounded-xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-border pb-3">
+        <div>
+          <h3 id="modal-title" class="font-bold text-base text-foreground">Project Dossier</h3>
+          <div id="modal-id" class="text-xs font-mono text-muted-foreground">DEV-001</div>
+        </div>
+        <button onclick="closeModal()" class="text-muted-foreground hover:text-foreground text-sm font-bold p-1">✕</button>
+      </div>
+      <div class="space-y-4 text-xs">
+        <div>
+          <div class="font-semibold text-muted-foreground uppercase text-[10px] tracking-wider mb-1">Mission & Context</div>
+          <p class="text-foreground leading-relaxed">Reusable, local-first Next.js 16 foundation for agentic apps with zero paid cloud dependencies and SQLite WAL.</p>
+        </div>
+        <div>
+          <div class="font-semibold text-muted-foreground uppercase text-[10px] tracking-wider mb-1">Current Objectives (current-state.md)</div>
+          <ul class="list-disc list-inside text-muted-foreground space-y-1 leading-relaxed">
+            <li>Refactor DU Dashboard into clean multi-page tree view.</li>
+            <li>Maintain zero Docker and strict SQLite WAL mode.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-border pt-4 flex justify-end">
+        <button onclick="closeModal()" class="px-4 py-2 rounded-lg bg-muted hover:bg-border text-xs font-medium text-foreground transition">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(pageId) {
+      document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => {
+        el.classList.remove('bg-sidebar-accent', 'text-sidebar-foreground');
+        el.classList.add('text-muted-foreground');
+      });
+
+      document.getElementById('view-' + pageId).classList.add('active');
+      const btn = document.getElementById('nav-' + pageId);
+      if (btn) {
+        btn.classList.add('bg-sidebar-accent', 'text-sidebar-foreground');
+        btn.classList.remove('text-muted-foreground');
+      }
+
+      const titles = {
+        overview: '1. Overview & Digest',
+        projects: '2. Projects Directory',
+        services: '3. Services & Ports Fleet',
+        memory: '4. Memory Governance'
+      };
+      document.getElementById('breadcrumb-title').textContent = titles[pageId] || 'Overview';
+    }
+
+    function openModal(id, name) {
+      document.getElementById('modal-id').textContent = id;
+      document.getElementById('modal-title').textContent = name;
+      const modal = document.getElementById('dossier-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('dossier-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  </script>
+</body>
+</html>

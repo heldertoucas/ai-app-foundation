@@ -5,14 +5,27 @@ export default defineConfig({
   test: {
     environment: 'node',
     fileParallelism: false,
-    pool: 'forks',
+    pool: 'threads',
     poolOptions: {
-      forks: {
-        singleFork: true,
+      threads: {
+        singleThread: true,
       },
     },
-    exclude: ['**/node_modules/**', '**/tests/e2e/**', '**/.next/**'],
-    include: ['tests/**/*.test.ts', 'lib/**/__tests__/**/*.test.ts'],
+
+    exclude: [
+      '**/node_modules/**',
+      '**/tests/e2e/**',
+      '**/.next/**',
+      '**/docs/**',
+      '**/scratch/**',
+      '**/graphify-out/**',
+    ],
+    include: [
+      'tests/**/*.test.{ts,tsx}',
+      'lib/**/__tests__/**/*.test.{ts,tsx}',
+      'components/**/__tests__/**/*.test.{ts,tsx}',
+    ],
+
 
     alias: {
       '@': path.resolve(__dirname, './'),

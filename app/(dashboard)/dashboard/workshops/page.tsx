@@ -81,7 +81,7 @@ export default async function WorkshopsPage({
                 </td>
               </tr>
             ) : (
-              workshops.map((w) => (
+              workshops.map((w: any) => (
                 <tr key={w.id}>
                   <td className="p-4 font-medium">{w.title}</td>
                   <td className="p-4 text-muted-foreground">{new Date(w.date).toLocaleString()}</td>

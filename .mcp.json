@@ -4,6 +4,16 @@
       "command": "npx",
       "args": ["-y", "@shadcn/mcp-server"]
     },
+    "shadcnspace": {
+      "command": "npx",
+      "args": ["-y", "shadcnspace-mcp@latest"]
+    },
+    "shadcnspace-cloud": {
+      "url": "https://mcp.shadcnspace.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${SHADCNSPACE_TOKEN}"
+      }
+    },
     "next-devtools": {
       "command": "npx",
       "args": ["-y", "next-devtools-mcp"]

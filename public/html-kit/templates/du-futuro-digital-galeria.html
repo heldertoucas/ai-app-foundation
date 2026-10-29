@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Futuro Digital — Catálogo & Galeria Canónica</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../vendor/shadcn-html.all.css">
+  <link rel="stylesheet" href="../du-components.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="../du-runtime.js" defer></script>
+  <style>
+    :root {
+      --primary-blue: #5271FF;
+      --heading-color: #151515;
+      --text-color: #575757;
+      --dark-blue: #1b1b1b;
+      --light-gray: #f4f4f4;
+    }
+    body {
+      font-family: var(--font-sans);
+      margin: 0;
+      padding: 0;
+      color: var(--text-color);
+      background-color: #ffffff;
+      line-height: 1.6;
+    }
+    .fd-container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+    
+    /* CABEÇALHO IDÊNTICO AO INDEX */
+    .fd-header {
+      background-color: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+    }
+    .fd-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+    .fd-logo-link {
+      height: 50px;
+      display: block;
+    }
+    .fd-logo-img {
+      height: 50px;
+      width: auto;
+      display: block;
+    }
+    .fd-nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .fd-nav-link {
+      color: var(--heading-color);
+      font-weight: 500;
+      text-decoration: none;
+      position: relative;
+      padding: 4px 0;
+    }
+    .fd-nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-blue);
+      transition: width 0.3s ease-out;
+    }
+    .fd-nav-link:hover::after {
+      width: 100%;
+    }
+    .fd-btn-pill {
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 9999px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    .fd-btn-pill:hover {
+      background-color: #3a5de0;
+      transform: translateY(-2px);
+    }
+    .fd-btn-outline-pill {
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 9999px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      background-color: transparent;
+      color: var(--primary-blue);
+      border: 2px solid var(--primary-blue);
+      cursor: pointer;
+    }
+    .fd-btn-outline-pill:hover {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    /* GALERIA LAYOUT */
+    .fd-galeria-header {
+      padding: 3.5rem 0 2rem;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .fd-component-section {
+      padding: 3rem 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .fd-component-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--heading-color);
+      margin: 0 0 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .fd-component-desc {
+      color: var(--text-color);
+      font-size: 1rem;
+      margin: 0 0 2rem;
+    }
+    .fd-showcase-box {
+      border: 1px dashed #d0d7de;
+      border-radius: 8px;
+      padding: 2rem;
+      background: #fafbff;
+    }
+
+    /* ESCALONAMENTO CONTÍNUO EM 2 COLUNAS (HERO, ABOUT & COURSECARD) */
+    .fd-responsive-split {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: clamp(20px, 4vw, 50px);
+      width: 100%;
+    }
+    .fd-responsive-split > .fd-col-text {
+      flex: 1 1 50%;
+      min-width: 0;
+    }
+    .fd-responsive-split > .fd-col-media {
+      flex: 1 1 50%;
+      min-width: 0;
+      text-align: center;
+    }
+    .fd-responsive-split img {
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+    .fd-course-grid-galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 24px;
+      width: 100%;
+    }
+    .fd-course-card-galeria {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      display: flex;
+      flex-direction: row;
+      transition: all 0.3s ease;
+      min-height: 220px;
+    }
+    .fd-course-card-galeria:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    }
+    .fd-course-card-galeria .fd-card-thumb-wrap {
+      flex: 0 0 40%;
+      width: 40%;
+      position: relative;
+    }
+    .fd-course-card-galeria .fd-card-thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .fd-course-card-galeria .fd-card-body {
+      flex: 1 1 60%;
+      padding: clamp(16px, 2.5vw, 28px);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+
+    /* RODAPÉ IDÊNTICO AO INDEX */
+    .fd-footer-facsimile {
+      background-color: var(--dark-blue);
+      color: #a9a9a9;
+      padding-top: 60px;
+      margin-top: 4rem;
+    }
+    .fd-footer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding-bottom: 40px;
+    }
+    @media (min-width: 768px) {
+      .fd-footer-grid { grid-template-columns: 2fr 1fr 1fr 1.5fr; }
+    }
+    .fd-footer-logo {
+      height: 45px;
+      width: auto;
+      margin-bottom: 20px;
+    }
+    .fd-footer-heading {
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0 0 20px;
+    }
+    .fd-footer-links {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .fd-footer-links li {
+      margin-bottom: 10px;
+    }
+    .fd-footer-links a {
+      color: #a9a9a9;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .fd-footer-links a:hover {
+      color: #ffffff;
+    }
+    .fd-footer-bottom {
+      border-top: 1px solid #333333;
+      padding: 24px 0;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body class="theme-futuro-digital" data-theme="futuro-digital">
+
+  <!-- 1. CABEÇALHO IDÊNTICO AO INDEX -->
+  <header class="fd-header">
+    <div class="fd-container">
+      <nav class="fd-nav">
+        <a href="du-futuro-digital.html" class="fd-logo-link">
+          <img
+            src="https://ik.imagekit.io/htuazpop/banco-de-imagens/L7wNgqt_Fqk0iAmk2.png"
+            alt="Futuro Digital CMLisboa Logo"
+            class="fd-logo-img"
+          />
+        </a>
+
+        <ul class="fd-nav-menu">
+          <li><a href="du-futuro-digital.html#courses" class="fd-nav-link">Cursos</a></li>
+          <li><a href="du-futuro-digital.html#about-program" class="fd-nav-link">O Programa</a></li>
+          <li><a href="du-futuro-digital.html#testimonials" class="fd-nav-link">Testemunhos</a></li>
+          <li><a href="#" class="fd-nav-link" style="color: var(--primary-blue); font-weight: 700;">Galeria Pedagógica</a></li>
+          <li>
+            <a href="du-futuro-digital.html#inscricao" class="fd-btn-pill">Inscrever-me</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="fd-container">
+    <!-- TITULO DA GALERIA -->
+    <div class="fd-galeria-header">
+      <h1 style="font-size: 2.75rem; font-weight: 800; color: var(--heading-color); margin: 0 0 0.5rem;">
+        Catálogo & Galeria Canónica de Componentes
+      </h1>
+      <p style="color: var(--text-color); font-size: 1.15rem; margin: 0;">
+        Todos os componentes visuais, pedagógicos e de layout do ecossistema Futuro Digital (CMLisboa), prontos a usar e em perfeita paridade.
+      </p>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- PARTE 1: COMPONENTES DA PÁGINA INDEX       -->
+    <!-- ========================================== -->
+
+    <!-- COMPONENTE: HERO -->
+    <section class="fd-component-section" style="padding: 2rem 0;">
+      <h2 class="fd-component-title">Componente: Hero Principal (Landing Page)</h2>
+      <p class="fd-component-desc">O cabeçalho de abertura da página inicial com chamada para ação, tipografia fluida e escalamento em 2 colunas proporcional ao viewport.</p>
+      <div style="background: #ffffff; padding: 30px 0;">
+        <div class="fd-responsive-split">
+          <div class="fd-col-text">
+            <h1 style="font-size: clamp(1.8rem, 4vw, 3.5rem); font-weight: 800; line-height: 1.2; color: var(--heading-color); margin: 0 0 16px;">
+              A sua jornada de capacitação digital começa aqui.
+            </h1>
+            <p style="font-size: clamp(0.95rem, 1.5vw, 1.2rem); color: var(--text-color); line-height: 1.6; margin: 0 0 24px;">
+              Conheça os cursos do programa Futuro Digital e transforme a forma como trabalha em equipa na CMLisboa com as ferramentas Microsoft.
+            </p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href="#" class="fd-btn-pill">Explorar Cursos</a>
+              <a href="#" class="fd-btn-outline-pill">Primeiro Acesso</a>
+            </div>
+          </div>
+          <div class="fd-col-media">
+            <img src="https://ik.imagekit.io/htuazpop/banco-de-imagens/ZJvakeb_HxbQeePGQ.png" alt="Hero Illustration" style="max-width: 100%; width: 500px; height: auto;" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPONENTE: COURSECARD (ÁLBUM HORIZONTAL) -->
+    <section class="fd-component-section">
+      <h2 class="fd-component-title">Componente: CourseCard (Álbum de Cursos 2 Colunas)</h2>
+      <p class="fd-component-desc">Cartão horizontal do catálogo de cursos com imagem lateral (40%), título 1.5rem, tag de categoria e botões de ação.</p>
+      <div class="fd-course-grid-galeria">
+        <!-- Course Card Loop -->
+        <div class="fd-course-card-galeria">
+          <div class="fd-card-thumb-wrap">
+            <img src="https://ik.imagekit.io/htuazpop/banco-de-imagens/RlBJMf0_0A2NcKXIp.png" alt="Loop" class="fd-card-thumb-img" />
+          </div>
+          <div class="fd-card-body">
+            <span class="fd-card-pill fd-tag-blue">Trabalhar em equipa</span>
+            <h3 class="fd-card-heading">Microsoft Loop</h3>
+            <p class="fd-card-desc-text">Trabalhe de forma colaborativa com o Microsoft Loop. Centralize informações, crie listas de tarefas e organize projetos em tempo real.</p>
+            <div class="fd-card-actions">
+              <a href="#" class="fd-btn-saber-mais">Saber mais</a>
+              <a href="#" class="fd-btn-pill">Inscrever</a>
+            </div>
+          </div>
+        </div>
+        <!-- Course Card Excel -->
+        <div class="fd-course-card-galeria">
+          <div class="fd-card-thumb-wrap">
+            <img src="https://ik.imagekit.io/htuazpop/banco-de-imagens/T4rwgD6_U3ezS0_hw.png" alt="Excel" class="fd-card-thumb-img" />
+          </div>
+          <div class="fd-card-body">
+            <span class="fd-card-pill fd-tag-green">Trabalhar em equipa</span>
+            <h3 class="fd-card-heading">Microsoft Excel</h3>
+            <p class="fd-card-desc-text">Analise dados de forma poderosa e colabore em folhas de cálculo complexas com a sua equipa na nuvem.</p>
+            <div class="fd-card-actions">
+              <a href="#" class="fd-btn-saber-mais">Saber mais</a>
+              <a href="#" class="fd-btn-pill">Inscrever</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPONENTE: SOBRE O PROGRAMA -->
+    <section class="fd-component-section" style="padding: 2rem 0;">
+      <h2 class="fd-component-title">Componente: AboutProgram (Duas Colunas Institucional)</h2>
+      <p class="fd-component-desc">Secção de apresentação institucional com imagem descritiva (555x425px) e texto explicativo em 2 colunas proporcionais.</p>
+      <div style="background: #ffffff; padding: 30px 0;">
+        <div class="fd-responsive-split">
+          <div class="fd-col-media">
+            <img src="https://ik.imagekit.io/htuazpop/banco-de-imagens/9U2GzTP_0KMHhaNrD.png" alt="About Program" style="max-width: 100%; border-radius: 8px; width: 500px; height: auto;" />
+          </div>
+          <div class="fd-col-text">
+            <h2 style="font-size: clamp(1.6rem, 3.5vw, 2.5rem); font-weight: 700; color: var(--heading-color); margin: 0 0 16px; line-height: 1.2;">
+              Sobre o Programa Futuro Digital
+            </h2>
+            <p style="font-size: clamp(0.95rem, 1.4vw, 1.1rem); color: var(--text-color); line-height: 1.6; margin: 0 0 24px;">
+              O Programa para a Inclusão e Literacia Digital da Câmara Municipal de Lisboa tem como missão capacitar os seus colaboradores e todos os cidadãos com as competências digitais essenciais para os desafios do presente e do futuro, promovendo uma cidade mais conectada, eficiente e inclusiva.
+            </p>
+            <a href="https://lisbon.cityoflearning.eu/pt/activities/21650" target="_blank" rel="noopener noreferrer" class="fd-btn-pill">
+              Conheça os Cursos
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPONENTE: TESTEMUNHOS & REGISTO -->
+    <section class="fd-component-section">
+      <h2 class="fd-component-title">Componente: TestimonialCard & RegistrationCards</h2>
+      <p class="fd-component-desc">Cartão de prova social de formando e opções de inscrição para trabalhadores ou cidadãos.</p>
+      <div class="fd-showcase-box">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+          <!-- Testemunho -->
+          <div style="background: #ffffff; padding: 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;">
+            <div style="color: #f39c12; font-size: 1.25rem; margin-bottom: 10px;">★★★★★</div>
+            <p style="font-style: italic; color: var(--text-color); margin: 0 0 12px;">“Excelente formação! Muito prática e com impacto direto no meu trabalho diário.”</p>
+            <p style="font-weight: 700; color: var(--heading-color); margin: 0;">- Formando/a Municipal</p>
+          </div>
+          <!-- Inscrição Trabalhador -->
+          <div style="background: #ffffff; padding: 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+            <h4 style="font-size: 1.25rem; font-weight: 700; color: var(--heading-color); margin: 0 0 8px;">Trabalhadores CMLisboa</h4>
+            <p style="font-size: 0.9rem; color: var(--text-color); margin: 0 0 16px;">Inscrição direta através da aplicação do DDF ou ficha interna.</p>
+            <button class="fd-btn-pill" style="padding: 8px 18px; font-size: 0.9rem;">Inscrição Trabalhador/a</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PARTE 2: COMPONENTES PEDAGÓGICOS DE CURSOS -->
+    <!-- ========================================== -->
+
+    <!-- COMPONENTE: ATIVIDADE CARD COM GRADIENTE E NÚMERO GIGANTE -->
+    <section class="fd-component-section">
+      <h2 class="fd-component-title">Componente: AtividadeCard (Recursos & Desafios Digitais)</h2>
+      <p class="fd-component-desc">Cartões de recursos de aprendizagem dos cursos com gradientes vibrantes, número gigante no topo e download.</p>
+      <div class="fd-showcase-box" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+        <div class="fd-atividade-card">
+          <div class="fd-atividade-badge">🏆 Desafio 01</div>
+          <div class="fd-atividade-header fd-gradient-1">
+            <span class="fd-atividade-number">01.01</span>
+          </div>
+          <div class="fd-atividade-body">
+            <h3 class="fd-atividade-title">Criação de Documento Coautorado</h3>
+            <p class="fd-atividade-desc">Aprenda a iniciar um documento no Word Online, convidar colegas e gerir permissões.</p>
+            <div class="fd-atividade-actions">
+              <a href="#" class="fd-btn-pill" style="flex: 1; text-align: center; text-decoration: none;">Abrir Atividade</a>
+              <button class="ui-btn ui-btn-outline" style="border-radius: 12px; width: 44px; height: 44px; padding: 0; display: inline-flex; align-items: center; justify-content: center;" title="Descarregar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="fd-atividade-card">
+          <div class="fd-atividade-header fd-gradient-2">
+            <span class="fd-atividade-number">01.02</span>
+          </div>
+          <div class="fd-atividade-body">
+            <h3 class="fd-atividade-title">Componentes Loop no Teams</h3>
+            <p class="fd-atividade-desc">Integre tabelas de votação rápida e listas de tarefas durante reuniões.</p>
+            <div class="fd-atividade-actions">
+              <a href="#" class="fd-btn-pill" style="flex: 1; text-align: center; text-decoration: none;">Abrir Atividade</a>
+              <button class="ui-btn ui-btn-outline" style="border-radius: 12px; width: 44px; height: 44px; padding: 0; display: inline-flex; align-items: center; justify-content: center;" title="Descarregar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="fd-atividade-card">
+          <div class="fd-atividade-header fd-gradient-3">
+            <span class="fd-atividade-number">Manual</span>
+          </div>
+          <div class="fd-atividade-body">
+            <h3 class="fd-atividade-title">Guia Essencial Equipa ON</h3>
+            <p class="fd-atividade-desc">Manual completo de boas práticas, estrutura de pastas no SharePoint e partilha segura.</p>
+            <div class="fd-atividade-actions">
+              <a href="#" class="fd-btn-pill" style="flex: 1; text-align: center; text-decoration: none;">Ver Manual</a>
+              <button class="ui-btn ui-btn-outline" style="border-radius: 12px; width: 44px; height: 44px; padding: 0; display: inline-flex; align-items: center; justify-content: center;" title="Descarregar PDF">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPONENTE: STEP-BY-STEP -->
+    <section class="fd-component-section">
+      <h2 class="fd-component-title">Componente: Step-by-Step (Linha Conectora Vertical)</h2>
+      <p class="fd-component-desc">Guião pedagógico sequencial numerado com conector vertical contínuo.</p>
+      <div class="fd-showcase-box">
+        <div class="fd-step-by-step">
+          <div class="fd-step">
+            <div class="fd-step-line"></div>
+            <div class="fd-step-number">1</div>
+            <div class="fd-step-content">
+              <h3 class="fd-step-title">Definir o Contexto e a Persona</h3>
+              <p class="fd-step-desc">Explique claramente ao modelo qual o papel pretendido (ex: Jurista Municipal ou Redator de Comunicação).</p>
+            </div>
+          </div>
+          <div class="fd-step">
+            <div class="fd-step-line"></div>
+            <div class="fd-step-number">2</div>
+            <div class="fd-step-content">
+              <h3 class="fd-step-title">Fornecer Dados de Entrada com Estrutura</h3>
+              <p class="fd-step-desc">Utilize delimitadores claros para separar instruções dos dados a processar.</p>
+            </div>
+          </div>
+          <div class="fd-step">
+            <div class="fd-step-line"></div>
+            <div class="fd-step-number">3</div>
+            <div class="fd-step-content">
+              <h3 class="fd-step-title">Revisão Humana Rigorosa</h3>
+              <p class="fd-step-desc">Nunca utilize resultados de IA em decisões administrativas sem validação do trabalhador responsável.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPONENTE: PROTIP -->
+    <section class="fd-component-section">
+      <h2 class="fd-component-title">Componente: ProTip (Dica do Formador)</h2>
+      <p class="fd-component-desc">Caixa com ênfase visual de borda lateral para instruções essenciais.</p>
+      <div class="fd-showcase-box">
+        <div class="fd-protip">
+          <div class="fd-protip-icon">💡</div>
+          <div class="fd-protip-text">
+            <strong>Dica do Formador:</strong> Quando solicitar sumários de deliberações, peça ao modelo para organizar as conclusões numa tabela de 3 colunas: "Assunto", "Impacto Orçamental" e "Próximo Passo".
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPONENTE: ACCORDION -->
+    <section class="fd-component-section">
+      <h2 class="fd-component-title">Componente: Accordion Interativo (FAQ)</h2>
+      <p class="fd-component-desc">Módulos expansíveis nativos para esclarecimento de dúvidas e conteúdos de detalhe.</p>
+      <div class="fd-showcase-box">
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <details class="ui-accordion">
+            <summary>Quem pode frequentar os cursos do Futuro Digital?</summary>
+            <div class="ui-accordion-content">
+              Todos os trabalhadores da Câmara Municipal de Lisboa, empresas municipais e juntas de freguesia parceiras.
+            </div>
+          </details>
+          <details class="ui-accordion">
+            <summary>Como descarregar o certificado do Passaporte?</summary>
+            <div class="ui-accordion-content">
+              Após a frequência e submissão da avaliação, o selo surge automaticamente no portal do Passaporte de Competências Digitais da CML.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- RODAPÉ IDÊNTICO AO INDEX -->
+  <footer class="fd-footer-facsimile">
+    <div class="fd-container">
+      <div class="fd-footer-grid">
+        <div>
+          <img
+            src="https://ik.imagekit.io/htuazpop/banco-de-imagens/tYc9GgI_Dl4bUtSCi.png"
+            alt="Câmara Municipal de Lisboa Logo"
+            class="fd-footer-logo"
+          />
+          <p style="margin: 0; line-height: 1.6;">
+            Programa para a Inclusão e Literacia Digital da Câmara Municipal de Lisboa.
+          </p>
+        </div>
+        <div>
+          <h4 class="fd-footer-heading">Navegação</h4>
+          <ul class="fd-footer-links">
+            <li><a href="du-futuro-digital.html#courses">Cursos</a></li>
+            <li><a href="du-futuro-digital.html#about-program">O Programa</a></li>
+            <li><a href="du-futuro-digital.html#testimonials">Testemunhos</a></li>
+            <li><a href="du-futuro-digital.html#inscricao">Inscrição</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="fd-footer-heading">Cursos</h4>
+          <ul class="fd-footer-links">
+            <li><a href="du-futuro-digital.html#courses">Word e Loop</a></li>
+            <li><a href="du-futuro-digital.html#courses">Excel e Forms</a></li>
+            <li><a href="du-futuro-digital.html#courses">OneDrive</a></li>
+            <li><a href="du-futuro-digital.html#courses">Teams & SharePoint</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="fd-footer-heading">Contacto</h4>
+          <p style="margin: 0 0 10px; line-height: 1.6;">
+            Departamento de Formação CMLisboa<br>
+            Email: formacao@cm-lisboa.pt
+          </p>
+          <p style="margin: 0; line-height: 1.6;">
+            Apoio ao participante e tutoria ativa.
+          </p>
+        </div>
+      </div>
+      <div class="fd-footer-bottom">
+        <p style="margin: 0;">© 2026 Futuro Digital — Câmara Municipal de Lisboa. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function duToggleProjection() {
+      document.body.classList.toggle('projection-mode');
+      const isProj = document.body.classList.contains('projection-mode');
+      const label = document.querySelector('.projection-label');
+      if (label) {
+        label.textContent = isProj ? 'Sair da Sala' : 'Modo Sala';
+      }
+    }
+  </script>
+</body>
+</html>
