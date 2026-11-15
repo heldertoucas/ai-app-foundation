@@ -39,10 +39,10 @@ pnpm install
 # 3. Setup SQLite database & seed
 pnpm setup
 
-# 4. Start local development
+# 4. Start local development (binds strictly to CON-0020 port 4300)
 pnpm dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:4300](http://localhost:4300) in your browser.
 
 ---
 
@@ -55,7 +55,7 @@ pnpm typecheck
 # Run unit and integration tests
 pnpm test
 
-# Verify 10 non-negotiable architectural invariants
+# Verify 12 non-negotiable architectural invariants
 pnpm foundation:check
 
 # Verify Next.js production build

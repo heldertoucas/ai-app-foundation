@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: './tests/e2e',
   testMatch: '**/*.spec.ts',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:4300',
   },
   projects: [
     {
@@ -14,7 +14,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'pnpm dev',
-    url: 'http://localhost:3000',
+    url: 'http://localhost:4300',
     reuseExistingServer: true,
   },
 });

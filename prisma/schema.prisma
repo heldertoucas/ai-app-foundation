@@ -32,7 +32,7 @@ model Project {
   description String?
   status      String   @default("Active")
   progress    Int      @default(0)
-  owner       String   @default("Helder T.")
+  owner       String   @default("Developer")
   deadline    DateTime
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

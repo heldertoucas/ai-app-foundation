@@ -2,7 +2,8 @@
 name: ai-html-foundation
 description: >-
   Build zero-build, offline-first, native HTML/CSS/JS user interfaces, cockpits,
-  and webviews using the DU HTML Foundation Kit and the bundled shadcn-html component catalog.
+  and webviews using the DU HTML Foundation Kit and the bundled shadcn-html
+  component catalog.
 ---
 # ⚡ AI HTML Foundation Guide (`ai-html-foundation`)
 
@@ -168,3 +169,17 @@ O kit oferece templates completos prontos para cópia em `ai-app-foundation/publ
    - Sem bordas nas badges;
    - `white-space: nowrap` e `flex-shrink: 0` em todas as badges/pills;
    - Sem overflow horizontal na janela (`max-width: 100%`).
+
+
+## 🌐 Modern Platform Check (DEC-0069)
+Antes de implementar um padrão de UI novo (dialog, popover, tooltip, tabela, validação de formulários, tema, animação, layout, performance), consultar o guia da plataforma web moderna. CLI fixado globalmente via pnpm (`modern-web-guidance@1.0.0`); nunca usar `npx …@latest`.
+
+```bash
+modern-web-guidance search "<capacidade em 2-5 palavras>"   # ex.: "light dismiss popover"
+modern-web-guidance retrieve "<id>[,<id>]"
+```
+
+- Uma capacidade por pesquisa, sem nomes de framework ou da app. Resultado vazio → reformular uma vez com o substantivo HTML/CSS; depois seguir sem guia.
+- Os guias são HTML/CSS/JS vanilla; em conflito, prevalecem as invariantes do Kit acima (tokens, ícones outline, zero-build).
+- Não correr `legacy-scan` salvo pedido explícito de modernização de um codebase inteiro.
+- Referência upstream (fria): `08-system/agents/skills-library/upstream/modern-web-guidance/modern-web-guidance/SKILL.md`.

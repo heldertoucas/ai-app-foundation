@@ -8,6 +8,9 @@ export const metadata = {
   description: "Standardized KPI summary cards, circular radial health gauges, and interactive filter status chips.",
 };
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function MetricsShowcasePage() {
   const [complianceData, contextTelemetry] = await Promise.all([
     getComplianceMatrixData(),

@@ -1,5 +1,7 @@
 # Local PIN Lock Recipe Checklist
 
+> **Aviso de Segurança (SEC-02)**: O `pin-lock.js` é uma barreira de conveniência no cliente para quiosques, cockpits e webviews locais offline. Não substitui autenticação criptográfica segura no servidor nem protege recursos acedidos diretamente por rede.
+
 - [ ] Passo 1: Incluir o script `pin-lock.js` no `<head>` ou início do `<body>`:
   ```html
   <script src="../recipes/auth-pin-lock/pin-lock.js" defer></script>

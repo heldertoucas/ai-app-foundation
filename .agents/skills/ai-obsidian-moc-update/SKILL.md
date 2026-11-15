@@ -1,38 +1,56 @@
 ---
 name: ai-obsidian-moc-update
 description: >-
-  Use after creating a new Engineering/ note to suggest which Maps of Content
-  (MOCs) it belongs in. Triggers on "update MOC", "add to MOC", "which MOCs", or
-  when the user has just created an Engineering/ note.
+  Maintain and refresh Maps of Content (MOCs) across the Obsidian vault. Use
+  after creating a new note to suggest where it belongs, or when synchronizing
+  system registries and domain index tables. Triggers on "update MOC", "add to
+  MOC", "which MOCs", "refresh indexes", or "/ai-moc-update".
 ---
-# MOC Update After New Note
+# Maps of Content (MOC) & Index Maintenance (`/ai-moc-update` / `ai-obsidian-moc-update`)
 
-Find the Maps of Content (MOCs) that should link to a newly created note and suggest the additions.
+Unified workflow for linking notes to Maps of Content (MOCs) and maintaining structural registries.
 
-## Workflow
+---
 
-1. **Identify the new note** — Path follows the skill invocation. If not provided, ask.
+## Mode 1 — Interactive Note-to-MOC Linker (Post-Note Creation)
 
-2. **Semantic MOC search** — Call `obsidian_rag_query` with the note title as query, `limit: 10`.
-   Flag results that are MOC-style notes (path contains "MOC", filename ends in "-MOC", or
-   `type: moc` frontmatter).
+Use when a new note (e.g. concept, pattern, decision) was created and needs to be woven into the vault's MOC network.
 
-3. **Keyword fallback** — Call `obsidian_search_notes` with key terms from the note title
-   to catch MOCs that aren't yet indexed.
+1. **Identify the Target Note**:
+   - Path specified by user or originating context (e.g. `Engineering/AuthPatterns.md` or `03-knowledge/PAT-0002.md`).
+2. **Semantic MOC Search (Tier 1 - MCP)**:
+   - Call `obsidian_rag_query` with note title and summary keywords (`limit: 10`).
+   - Filter for MOC-style notes (path contains `MOC`, filename ends with `-MOC.md`, or frontmatter `type: moc`).
+3. **Keyword Fallback (Tier 2/3 - MCP / Search)**:
+   - Call `obsidian_search_notes` with key technical terms if semantic index misses unindexed MOCs.
+4. **Formulate Link Suggestions**:
+   - Identify relevant section heading inside each candidate MOC.
+   - Propose formatted link line: `- [[NoteName]] — concise one-line description`.
+5. **Interactive Insertion**:
+   - On human confirmation, insert the link using `obsidian_insert_at_heading` (preferred) or `obsidian_append_note`.
+   - Never modify MOCs without user approval.
 
-4. **Present suggestions** — For each candidate MOC, show:
-   - The MOC path
-   - Which heading the link should go under (if readable)
-   - A proposed link line: `- [[NoteName]] — one-line description`
+---
 
-5. **Append on confirmation** — Call `obsidian_insert_at_heading` (preferred) or
-   `obsidian_append_note` to add the link. Never edit without user approval.
+## Mode 2 — System Registries & Canonical Index Synchronization
 
-## Arguments
+Use when refreshing global project tables, repository registries, or canonical knowledge indexes.
 
-New note path: `/moc-update Engineering/AuthPatterns.md`
+1. **Synchronize System Registries**:
+   - Run the DU validation and MOC synchronization command:
+     ```bash
+     dev validate --fix
+     ```
+2. **Scan Active Entities**:
+   - Verify registry tables in:
+     - `08-system/registry/PROJECTS.md` (Project registry table).
+     - `08-system/registry/REPOSITORIES.md` (Repository & branch registry table).
+     - Domain indexes in `03-knowledge/` (Architecture, Patterns, Problems).
+3. **Link State Verification**:
+   - Ensure all table entries link correctly to valid files and reflect current status (`canonical`, `active`, `superseded`).
 
-## Tips
+---
 
-- If the vault has no MOCs yet, offer to create a starter one at `MOCs/<Topic>-MOC.md`
-- Daily Notes are not MOCs — skip them in results
+## Tips & Invariants
+- **Daily Notes Exclusion**: Daily logs are not MOCs — ignore them when searching for candidate parents.
+- **Starter MOC**: If a topic has no existing MOC, offer to initialize `MOCs/<Topic>-MOC.md` using the canonical template.

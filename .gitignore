@@ -276,7 +276,18 @@ packages/database/generated
 # Documentation
 .contentlayer
 .content-collections
-.source\
+.source/
+
+# SQLite WAL and local persistence
+*.db
+*.db-wal
+*.db-shm
+prisma/*.db
+prisma/*.db-wal
+prisma/*.db-shm
+dev.db
+dev.db-wal
+dev.db-shm
 # ─────────────────────────────────────────────────────────────────────────────
 # AI Harness Machine-Specific Local Outputs (DEC-0033 / Multi-Station Parity)
 # ─────────────────────────────────────────────────────────────────────────────

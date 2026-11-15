@@ -9,8 +9,8 @@ Use this skill when checking current identity and session state.
 ## Procedure
 Run:
 ```bash
-python -m dev.cli repo current
-python -m dev.cli session status
+dev repo identify
+dev session status
 ```
 
 Present:

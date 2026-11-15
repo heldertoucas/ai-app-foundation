@@ -1,9 +1,8 @@
 ---
 name: ai-obsidian-companion
 description: >-
-  This skill enables you to act as an expert companion for the user's Obsidian
-  Vault. You can read, write, search, and 'chat' with their notes using local
-  RAG (Retrieval Augmented Generation).
+  Companheiro do Vault Obsidian com RAG local (LanceDB) para dialogar com notas
+  e pesquisar o Second Brain.
 ---
 # Obsidian Companion Skill
 

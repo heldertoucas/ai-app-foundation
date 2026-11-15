@@ -3,9 +3,10 @@ import { resolveSafeVaultPath } from "@/lib/du/core/path-jail";
 import { copyTerminalCommand, copyToClipboard } from "@/lib/clipboard";
 import path from "node:path";
 import os from "node:os";
+import fs from "node:fs";
 
 describe("Security Core & Path Jailing (SEC-01)", () => {
-  const tmpDir = os.tmpdir();
+  const tmpDir = fs.realpathSync(os.tmpdir());
 
   it("should allow safe subpaths within base directory", () => {
     const resolved = resolveSafeVaultPath("subfolder/note.md", tmpDir);

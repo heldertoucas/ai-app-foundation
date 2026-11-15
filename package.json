@@ -3,15 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 4300",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 4300",
     "typecheck": "tsc --noEmit",
     "lint": "pnpm typecheck",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "foundation:check": "node scripts/foundation-check.js",
-    "setup": "node -e \"if (!fs.existsSync('.env')) fs.copyFileSync('.env.example', '.env')\" && prisma db push --accept-data-loss && prisma generate && pnpm typecheck"
+    "setup": "node -e \"if (!fs.existsSync('.env')) fs.copyFileSync('.env.example', '.env')\" && prisma db push --accept-data-loss && node scripts/ensure-wal.js && prisma generate && pnpm typecheck"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

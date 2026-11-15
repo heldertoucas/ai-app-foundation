@@ -1,6 +1,6 @@
 # Lean App Foundation Architectural Invariants
 
-These are the 10 inegociáveis arquitectural invariants for ai-app-foundation.
+These are the 12 inegociáveis architectural invariants for ai-app-foundation.
 
 1. Single Next.js application workspace (zero monorepo infrastructure).
 2. Local-First & Free-First defaults (SQLite + Prisma in WAL mode).
@@ -13,5 +13,5 @@ These are the 10 inegociáveis arquitectural invariants for ai-app-foundation.
 9. Deterministic Quality Gates: typecheck + test + build before any commit.
 10. Vercel readiness: recipes handle production transitions (e.g. Postgres, Auth).
 11. Lean Performance & Single Icon Toolkit: AST barrel rewrite (`optimizePackageImports`) for icon/chart packages, Vitest worker threads (`singleThread: true`) for zero Windows IPC hangs, strictly 1 icon library (`@phosphor-icons/react` exclusively with zero `lucide-react` in root app), and non-destructive CSS `content-visibility: auto` preserving in-page `#anchor` navigation.
-12. Deterministic Port Assignment: Bind root applications strictly to their designated DU Registry port allocation (CON-0020). Never occupy open user test blocks (3000-3099, 8000-8099).
+12. Deterministic Port Assignment: Bind root applications strictly to their designated DU Registry port allocation (CON-0020: port 4300 for ai-app-foundation). Never occupy open user test blocks (3000-3099, 8000-8099).
 

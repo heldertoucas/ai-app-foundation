@@ -9,13 +9,15 @@ Use this skill when reviewing staged candidates with the user.
 ## Procedure
 1. List pending candidates:
    ```bash
-   python -m dev.cli memory list --status pending
+   dev memory candidates --status pending
    ```
+   *(Ou `dev memory candidates --status pending` via CLI dispatcher).*
 2. For candidate selected by user:
-   - **Promote**: `python -m dev.cli memory promote <candidate-id>`
-   - **Reject**: `python -m dev.cli memory reject <candidate-id> --reason "<reason>"`
-   - **Defer**: `python -m dev.cli memory defer <candidate-id> --reason "<reason>"`
+   - **Promote**: `dev memory promote <candidate-id>`
+   - **Reject**: `dev memory reject <candidate-id> --reason "<reason>"`
+   - **Defer**: `dev memory review <candidate-id> --action defer --reason "<reason>"`
 3. If promoted, rebuild the index so the new canonical entity is immediately searchable:
    ```bash
-   python -m dev.cli index build --force
+   dev index build --rebuild
    ```
+   *(Ou `dev index build --rebuild` / `dev index rebuild`)*

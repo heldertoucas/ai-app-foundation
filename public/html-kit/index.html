@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="pt" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai-app-foundation</title>
+  
+  <!-- Canonical DU Foundation Stylesheets -->
+  <link rel="stylesheet" href="./tokens.css">
+  <link rel="stylesheet" href="./vendor/shadcn-html.all.css">
+  <link rel="stylesheet" href="./du-components.css">
+  <script src="./du-runtime.js" defer></script>
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--background);
+      color: var(--foreground);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 6rem 1.5rem;
+    }
+
+    /* Minimalist Hero */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 3rem 1rem 2rem 1rem;
+      gap: 1.25rem;
+    }
+
+    .hero-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 1.25rem;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero-title {
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--foreground);
+    }
+
+    .hero-search-wrapper {
+      width: 100%;
+      max-width: 600px;
+      position: relative;
+      margin-top: 0.25rem;
+    }
+
+    .hero-search-input {
+      width: 100%;
+      height: 3.25rem;
+      padding: 0 1.25rem 0 3.25rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--foreground);
+      font-size: 1rem;
+      outline: none;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .hero-search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+    }
+
+    .hero-search-icon {
+      position: absolute;
+      left: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted-foreground);
+      pointer-events: none;
+    }
+
+    /* Technical Filter Bar */
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin: 1.25rem 0 3rem 0;
+    }
+
+    .filter-chip {
+      padding: 0.45rem 0.9rem;
+      font-size: 0.825rem;
+      font-weight: 500;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted-foreground);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-chip:hover {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+
+    .filter-chip.active {
+      background: var(--primary);
+      color: var(--primary-foreground);
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Category Section */
+    .category-section {
+      margin-bottom: 3.5rem;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .category-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .category-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+
+    .category-stack-tag {
+      font-family: var(--font-mono, monospace);
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+
+    .category-count {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      background: var(--muted);
+      color: var(--muted-foreground);
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 640px) {
+      .hero-title { font-size: 2rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Model Card */
+    .model-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .model-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--ring);
+      box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-top {
+      padding: 1.25rem 1.25rem 0.75rem 1.25rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    /* Screenshot Box */
+    .card-screenshot-wrapper {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      background: var(--muted);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .card-screenshot {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      transition: transform 0.3s ease;
+      display: block;
+    }
+
+    .model-card:hover .card-screenshot {
+      transform: scale(1.02);
+    }
+
+    /* Terminal Launcher Bar */
+    .card-launcher-bar {
+      padding: 0.6rem 1.25rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .cmd-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--background);
+      border: 1px solid var(--border);
+      padding: 0.25rem 0.6rem;
+      border-radius: 0.375rem;
+      font-family: var(--font-mono, monospace);
+      font-size: 0.75rem;
+      color: var(--foreground);
+    }
+
+    .cmd-copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.25rem;
+      transition: background 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .cmd-copy-btn:hover {
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .cmd-copy-btn.copied {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+
+    .terminal-launch-btn {
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.6rem;
+      border-radius: 0.375rem;
+      border: 1px solid var(--border);
+      background: var(--card);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.15s ease;
+    }
+
+    .terminal-launch-btn:hover {
+      background: var(--primary);
+      color: var(--primary-foreground);
+      border-color: var(--primary);
+    }
+
+    .terminal-launch-btn.launched {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    /* Collapsible Details */
+    .card-details {
+      padding: 0.75rem 1.25rem;
+      font-size: 0.8125rem;
+      color: var(--muted-foreground);
+    }
+
+    .card-details summary {
+      cursor: pointer;
+      user-select: none;
+      font-weight: 600;
+      color: var(--foreground);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.25rem 0;
+      list-style: none;
+    }
+
+    .card-details summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .card-details summary::after {
+      content: "▾";
+      font-size: 0.9rem;
+      color: var(--muted-foreground);
+      transition: transform 0.2s ease;
+    }
+
+    .card-details[open] summary::after {
+      transform: rotate(180deg);
+    }
+
+    .details-content {
+      padding: 0.75rem 0 0.25rem 0;
+      border-top: 1px dashed var(--border);
+      margin-top: 0.5rem;
+      line-height: 1.5;
+    }
+
+    .details-row {
+      margin-bottom: 0.5rem;
+    }
+
+    .details-row strong {
+      color: var(--foreground);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+
+    /* Card Actions */
+    .card-actions {
+      margin-top: auto;
+      padding: 0.875rem 1.25rem;
+      background: var(--muted);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .card-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.725rem;
+      font-weight: 600;
+      font-family: var(--font-mono, monospace);
+    }
+
+    .badge-nextjs {
+      background: rgba(59, 130, 246, 0.12);
+      color: #3b82f6;
+      border: 1px solid rgba(59, 130, 246, 0.25);
+    }
+
+    .badge-zerobuild {
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .badge-recipe {
+      background: rgba(168, 85, 247, 0.12);
+      color: #a855f7;
+      border: 1px solid rgba(168, 85, 247, 0.25);
+    }
+
+    .card-path {
+      font-family: var(--font-mono, monospace);
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 200px;
+    }
+
+    /* Floating Theme Toggle */
+    .floating-theme-btn {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--foreground);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      transition: background 0.15s;
+    }
+
+    .floating-theme-btn:hover {
+      background: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Theme Toggle -->
+  <button id="theme-toggle" class="floating-theme-btn" aria-label="Alternar tema" title="Alternar Dark/Light">
+    🌙
+  </button>
+
+  <div class="container">
+    
+    <!-- ==================== HERO MINIMALISTA ==================== -->
+    <header class="hero">
+      <div class="hero-icon">DU</div>
+      <h1 class="hero-title">ai-app-foundation</h1>
+      <div class="hero-search-wrapper">
+        <svg class="hero-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input 
+          id="search-input" 
+          type="search" 
+          class="hero-search-input" 
+          placeholder="Pesquisar por stack, modelo, rota ou tecnologia..." 
+          aria-label="Pesquisar catálogo"
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- Technical Stack Filter Chips -->
+      <nav class="filter-bar" aria-label="Filtro de tecnologias">
+        <button class="filter-chip active" data-category="all">Todos os Modelos (20)</button>
+        <button class="filter-chip" data-category="html5">🌐 Zero-Build HTML5 (5)</button>
+        <button class="filter-chip" data-category="nextjs">⚛️ React 19 / Next.js 16 (6)</button>
+        <button class="filter-chip" data-category="analytics">📊 Analítica &amp; Recharts (3)</button>
+        <button class="filter-chip" data-category="agents">🤖 Agentes &amp; OpenSpec (4)</button>
+        <button class="filter-chip" data-category="recipes">🔌 Receitas &amp; DB (2)</button>
+      </nav>
+    </header>
+
+    <!-- ==================== CATÁLOGO POR DIMENSÕES TÉCNICAS ==================== -->
+    <main id="catalog-main">
+
+      <!-- ==================== DIMENSÃO 1: ZERO-BUILD HTML5 STANDALONE ==================== -->
+      <section class="category-section" data-section="html5">
+        <div class="category-header">
+          <div class="category-title-group">
+            <h2 class="category-title">🌐 Zero-Build HTML5 &amp; Standalone Cockpits</h2>
+            <span class="category-stack-tag">HTML5 • CSS Tokens • Vanilla ESM • Web Crypto</span>
+          </div>
+          <span class="category-count">5 modelos</span>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 1: DU Avaliação Dashboard Standalone -->
+          <article class="model-card" data-category="html5" data-keywords="html zero-build standalone avaliacao formador pin sha256 offline deferred dom">
+            <div class="card-top">
+              <h3 class="card-title">DU Avaliação Dashboard Standalone</h3>
+              <span class="card-badge badge-zerobuild">Zero-Build</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/du-avaliacao-zero-build.png" alt="Avaliação Zero-Build" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>offline • duplo-clique</span>
+              </div>
+              <button class="cmd-copy-btn" onclick="copyLaunchCommand('open public/html-kit/templates/du-avaliacao-dashboard.html', this)">
+                <span>Copiar comando Mac</span>
+              </button>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Stack Técnica:</strong>
+                  HTML5 nativo, tokens DU (<code>tokens.css</code>), Web Crypto API (SHA-256) e JavaScript Vanilla.
+                </div>
+                <div class="details-row">
+                  <strong>Padrão de Segurança:</strong>
+                  <em>Deferred DOM</em> — os dados sensíveis dos alunos e notas residem em <code>&lt;template&gt;</code> inerte e só são montados após validação bem-sucedida do PIN, impedindo inspeção no DevTools.
+                </div>
+                <div class="details-row">
+                  <strong>Casos de Uso:</strong>
+                  Quiosques de exames em postos institucionais da CMLisboa sem conectividade ou sem Node.js instalado.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">du-avaliacao-dashboard.html</span>
+              <a href="http://localhost:4300/html-kit/templates/du-avaliacao-dashboard.html" target="_blank" class="ui-btn ui-btn-outline ui-btn-sm">Abrir HTML ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 2: DU Dashboard Standalone -->
+          <article class="model-card" data-category="html5" data-keywords="html zero-build du dashboard standalone telemetria command palette">
+            <div class="card-top">
+              <h3 class="card-title">DU Dashboard Standalone</h3>
+              <span class="card-badge badge-zerobuild">Zero-Build</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/du-dashboard-standalone.png" alt="DU Dashboard Standalone" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>offline • standalone</span>
+              </div>
+              <button class="cmd-copy-btn" onclick="copyLaunchCommand('open public/html-kit/templates/du-dashboard.html', this)">
+                <span>Copiar comando Mac</span>
+              </button>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Stack Técnica:</strong>
+                  Ficheiro único autónomo com CSS embutido, drawer de telemetria lateral e command palette em JS puro.
+                </div>
+                <div class="details-row">
+                  <strong>Invariantes:</strong>
+                  Zero dependências externas, latência &lt; 2ms, compatível com WebViews desktop e navegadores legados.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">du-dashboard.html</span>
+              <a href="http://localhost:4300/html-kit/templates/du-dashboard.html" target="_blank" class="ui-btn ui-btn-outline ui-btn-sm">Abrir HTML ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 3: Starter Cockpit -->
+          <article class="model-card" data-category="html5" data-keywords="html starter cockpit minimalista bento kpi">
+            <div class="card-top">
+              <h3 class="card-title">Starter Cockpit (Minimalista)</h3>
+              <span class="card-badge badge-zerobuild">Zero-Build</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/starter-cockpit.png" alt="Starter Cockpit" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>standalone template</span>
+              </div>
+              <button class="cmd-copy-btn" onclick="copyLaunchCommand('open public/html-kit/templates/starter-cockpit.html', this)">
+                <span>Copiar comando Mac</span>
+              </button>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Stack Técnica:</strong>
+                  Layout estático responsivo, 3 cards Bento com tokens <code>--card</code> e <code>--border</code>, tabela com estilização shadcn-html.
+                </div>
+                <div class="details-row">
+                  <strong>Invariantes:</strong>
+                  Micro-runtime &lt; 50 linhas de código, perfeito para painéis locais de automação.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">starter-cockpit.html</span>
+              <a href="http://localhost:4300/html-kit/templates/starter-cockpit.html" target="_blank" class="ui-btn ui-btn-outline ui-btn-sm">Abrir HTML ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 4: Template App Shell -->
+          <article class="model-card" data-category="html5" data-keywords="html app shell scaffold sidebar multinivel">
+            <div class="card-top">
+              <h3 class="card-title">Template App Shell Scaffold</h3>
+              <span class="card-badge badge-zerobuild">Zero-Build</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/template-app-shell.png" alt="App Shell Scaffold" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>pure layout scaffold</span>
+              </div>
+              <button class="cmd-copy-btn" onclick="copyLaunchCommand('open public/html-kit/templates/template-app-shell.html', this)">
+                <span>Copiar comando Mac</span>
+              </button>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Stack Técnica:</strong>
+                  Armação estrutural em CSS Grid/Flexbox puro com sidebar de navegação multinível e header fixo.
+                </div>
+                <div class="details-row">
+                  <strong>Invariantes:</strong>
+                  Zero JavaScript para layout base; serve de molde inicial para criar novas aplicações estáticas.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">template-app-shell.html</span>
+              <a href="http://localhost:4300/html-kit/templates/template-app-shell.html" target="_blank" class="ui-btn ui-btn-outline ui-btn-sm">Abrir HTML ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 5: Canónico HTML App Template -->
+          <article class="model-card" data-category="html5" data-keywords="html canonico app template datatable bento">
+            <div class="card-top">
+              <h3 class="card-title">Canónico HTML App Template</h3>
+              <span class="card-badge badge-zerobuild">Zero-Build</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/html-app-template.png" alt="Canónico HTML App Template" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>complete app twin</span>
+              </div>
+              <button class="cmd-copy-btn" onclick="copyLaunchCommand('open public/html-kit/templates/du-html-app-template.html', this)">
+                <span>Copiar comando Mac</span>
+              </button>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Stack Técnica:</strong>
+                  Aplicação Zero-Build completa com sidebar responsiva, filtros dinâmicos e cards de telemetria.
+                </div>
+                <div class="details-row">
+                  <strong>Invariantes:</strong>
+                  Paridade estrita de tokens com a versão Next.js (<code>du-components.css</code> + <code>tokens.css</code>).
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">du-html-app-template.html</span>
+              <a href="http://localhost:4300/html-kit/templates/du-html-app-template.html" target="_blank" class="ui-btn ui-btn-outline ui-btn-sm">Abrir HTML ↗</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ==================== DIMENSÃO 2: REACT 19 & NEXT.JS 16 APP ROUTER ==================== -->
+      <section class="category-section" data-section="nextjs">
+        <div class="category-header">
+          <div class="category-title-group">
+            <h2 class="category-title">⚛️ React 19 &amp; Next.js 16 (App Router + shadcn/ui)</h2>
+            <span class="category-stack-tag">Next.js 16 • React 19 Server Components • Tailwind v4 • SQLite WAL</span>
+          </div>
+          <span class="category-count">6 modelos</span>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 6: Avaliação Mesa do Formador -->
+          <article class="model-card" data-category="nextjs" data-keywords="react nextjs avaliacao formador trainer tabela pauta pin">
+            <div class="card-top">
+              <h3 class="card-title">Avaliação — Mesa do Formador</h3>
+              <span class="card-badge badge-nextjs">Next.js 16</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/app-avaliacao-trainer.png" alt="Mesa do Formador" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>pnpm dev</span>
+                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                  <span>Copiar CLI</span>
+                </button>
+              </div>
+              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Arquitetura:</strong>
+                  App Router (<code>app/(site)/avaliacao-dashboard/trainer/page.tsx</code>), protegido por <code>AuthGuard</code> client wrapper e <code>useSyncExternalStore</code> SSR-safe.
+                </div>
+                <div class="details-row">
+                  <strong>Componentes:</strong>
+                  TraineeMonitorTable com busca debounced (150ms), status badges em Tailwind v4 e mitigação RFC 4180 de formula injection em CSV.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">/avaliacao-dashboard/trainer</span>
+              <a href="http://localhost:4300/avaliacao-dashboard/trainer" target="_blank" class="ui-btn ui-btn-primary ui-btn-sm">Abrir Rota ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 7: Avaliação Cockpit Admin -->
+          <article class="model-card" data-category="nextjs" data-keywords="react nextjs avaliacao admin cockpit telemetria google sheets neon db">
+            <div class="card-top">
+              <h3 class="card-title">Avaliação — Cockpit Admin</h3>
+              <span class="card-badge badge-nextjs">Next.js 16</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/app-avaliacao-admin.png" alt="Cockpit Admin" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>pnpm dev</span>
+                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                  <span>Copiar CLI</span>
+                </button>
+              </div>
+              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Arquitetura:</strong>
+                  TelemetrySyncCard com mutex assíncrono (<code>isSyncing</code>), medidores de quota de API e feed cronológico auditável.
+                </div>
+                <div class="details-row">
+                  <strong>Resiliência:</strong>
+                  Cálculo defensivo de taxas e latências p95 seguras contra divisão por zero em sessões vazias.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">/avaliacao-dashboard/admin</span>
+              <a href="http://localhost:4300/avaliacao-dashboard/admin" target="_blank" class="ui-btn ui-btn-primary ui-btn-sm">Abrir Rota ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 8: Avaliação PIN Pad Login -->
+          <article class="model-card" data-category="nextjs" data-keywords="react nextjs avaliacao login pin pad auth tátil lockout">
+            <div class="card-top">
+              <h3 class="card-title">Avaliação — Auth PIN Pad</h3>
+              <span class="card-badge badge-nextjs">Next.js 16</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/app-avaliacao-login.png" alt="Auth PIN Pad" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>pnpm dev</span>
+                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                  <span>Copiar CLI</span>
+                </button>
+              </div>
+              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Arquitetura:</strong>
+                  Keypad tátil virtual com indicação visual de dígitos, alternância de perfil e lockout exponencial persistido em SafeStorage.
+                </div>
+                <div class="details-row">
+                  <strong>Segurança:</strong>
+                  Atraso de verificação de 400ms para desaceleração de força-bruta e temporizador de cooldown de 60s/15m.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">/avaliacao-dashboard</span>
+              <a href="http://localhost:4300/avaliacao-dashboard" target="_blank" class="ui-btn ui-btn-primary ui-btn-sm">Abrir Rota ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 9: Mission Control Dashboard -->
+          <article class="model-card" data-category="nextjs" data-keywords="react nextjs mission control dashboard bento sqlite wal prisma">
+            <div class="card-top">
+              <h3 class="card-title">Mission Control Cockpit Executivo</h3>
+              <span class="card-badge badge-nextjs">Next.js 16</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/mission-control-dashboard.png" alt="Mission Control Dashboard" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>pnpm dev</span>
+                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                  <span>Copiar CLI</span>
+                </button>
+              </div>
+              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Arquitetura:</strong>
+                  Server Actions assíncronas (<code>atlas-actions.ts</code>), persistência SQLite WAL com cabeçalho físico validado (02 02) e Prisma 6 ORM.
+                </div>
+                <div class="details-row">
+                  <strong>Componentes:</strong>
+                  Sidebar colapsável com SidebarProvider, Breadcrumbs dinâmicos e Bento Grid responsivo.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">/dashboard</span>
+              <a href="http://localhost:4300/dashboard" target="_blank" class="ui-btn ui-btn-primary ui-btn-sm">Abrir Rota ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 10: Landing Page Foundation -->
+          <article class="model-card" data-category="nextjs" data-keywords="react nextjs landing page marketing hero shadcn">
+            <div class="card-top">
+              <h3 class="card-title">Landing Page &amp; Web Foundation</h3>
+              <span class="card-badge badge-nextjs">Next.js 16</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/landing-page.png" alt="Landing Page" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>pnpm dev</span>
+                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                  <span>Copiar CLI</span>
+                </button>
+              </div>
+              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Arquitetura:</strong>
+                  Prerenderização estática em build time, cabeçalho sticky com backdrop blur e suporte nativo a dark/light via <code>next-themes</code>.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">/</span>
+              <a href="http://localhost:4300/" target="_blank" class="ui-btn ui-btn-primary ui-btn-sm">Abrir Rota ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 11: Futuro Digital Portal -->
+          <article class="model-card" data-category="nextjs" data-keywords="react nextjs futuro digital cmlisboa portal formacao imagekit">
+            <div class="card-top">
+              <h3 class="card-title">Futuro Digital — Portal CMLisboa</h3>
+              <span class="card-badge badge-nextjs">Next.js 16</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/futuro-digital-portal.png" alt="Futuro Digital Portal" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>pnpm dev</span>
+                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                  <span>Copiar CLI</span>
+                </button>
+              </div>
+              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Arquitetura:</strong>
+                  Design fac-símile institucional, assets em CDN ImageKit, client toolbar e catálogo de cursos interativo.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">/futuro-digital</span>
+              <a href="http://localhost:4300/futuro-digital" target="_blank" class="ui-btn ui-btn-primary ui-btn-sm">Abrir Rota ↗</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ==================== DIMENSÃO 3: REACT 19 ANALÍTICA & TELEMETRIA ==================== -->
+      <section class="category-section" data-section="analytics">
+        <div class="category-header">
+          <div class="category-title-group">
+            <h2 class="category-title">📊 React 19 Analítica &amp; Telemetria (Recharts + Radix)</h2>
+            <span class="category-stack-tag">Recharts • Radix UI • Delta Trends • Heatmaps</span>
+          </div>
+          <span class="category-count">3 modelos</span>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 12: Métricas & KPIs -->
+          <article class="model-card" data-category="analytics" data-keywords="react recharts metricas kpi telemetria delta trend">
+            <div class="card-top">
+              <h3 class="card-title">Métricas, KPIs &amp; Telemetria</h3>
+              <span class="card-badge badge-nextjs">Next.js 16</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/dashboard-metrics.png" alt="Métricas & KPIs" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>pnpm dev</span>
+                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                  <span>Copiar CLI</span>
+                </button>
+              </div>
+              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Arquitetura:</strong>
+                  Configurada com <code>force-dynamic</code> para atualização contínua, cards isolados com ErrorBoundary individual (PAT-0098) e gauges radiais.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">/dashboard/metrics</span>
+              <a href="http://localhost:4300/dashboard/metrics" target="_blank" class="ui-btn ui-btn-primary ui-btn-sm">Abrir Rota ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 13: Gráficos & Charts -->
+          <article class="model-card" data-category="analytics" data-keywords="react recharts charts graficos radar area bar time-series">
+            <div class="card-top">
+              <h3 class="card-title">Visualizadores Analíticos &amp; Gráficos</h3>
+              <span class="card-badge badge-nextjs">Next.js 16</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/dashboard-charts.png" alt="Charts e Gráficos" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>pnpm dev</span>
+                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                  <span>Copiar CLI</span>
+                </button>
+              </div>
+              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Arquitetura:</strong>
+                  Componentes Recharts carregados assincronamente via <code>next/dynamic({ ssr: false })</code> prevenindo conflitos de hidratação no React 19.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">/dashboard/charts</span>
+              <a href="http://localhost:4300/dashboard/charts" target="_blank" class="ui-btn ui-btn-primary ui-btn-sm">Abrir Rota ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 14: Matriz de Decisão & Heatmaps -->
+          <article class="model-card" data-category="analytics" data-keywords="react matriz decisao heatmaps arquitetura avaliacao ponderacao">
+            <div class="card-top">
+              <h3 class="card-title">Matriz de Decisão &amp; Heatmaps</h3>
+              <span class="card-badge badge-nextjs">Next.js 16</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/dashboard-matrix.png" alt="Matriz de Decisão" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>pnpm dev</span>
+                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                  <span>Copiar CLI</span>
+                </button>
+              </div>
+              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Arquitetura:</strong>
+                  Cálculo matricial de ponderações e trade-offs arquiteturais com seletor de densidade (grid/list) e memoização de rendering.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">/dashboard/matrix</span>
+              <a href="http://localhost:4300/dashboard/matrix" target="_blank" class="ui-btn ui-btn-primary ui-btn-sm">Abrir Rota ↗</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ==================== DIMENSÃO 4: REACT 19 AGENTES, WORKFLOWS & OPENSPEC ==================== -->
+      <section class="category-section" data-section="agents">
+        <div class="category-header">
+          <div class="category-title-group">
+            <h2 class="category-title">🤖 React 19 Agentes, Workflows &amp; OpenSpec</h2>
+            <span class="category-stack-tag">OpenSpec • Multi-Agent Pipelines • Code Diff • Terminal Safety</span>
+          </div>
+          <span class="category-count">4 modelos</span>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 15: Multi-Agent Pipelines -->
+          <article class="model-card" data-category="agents" data-keywords="react agentes multi-agent pipelines streaming llm governanca">
+            <div class="card-top">
+              <h3 class="card-title">Multi-Agent Pipelines &amp; Chat</h3>
+              <span class="card-badge badge-nextjs">Next.js 16</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/dashboard-agents.png" alt="Multi-Agent Pipelines" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>pnpm dev</span>
+                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                  <span>Copiar CLI</span>
+                </button>
+              </div>
+              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Arquitetura:</strong>
+                  Interface para orquestração de equipas de agentes com banners de revisão humana obrigatória e controlo de transição de tarefas.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">/dashboard/agents</span>
+              <a href="http://localhost:4300/dashboard/agents" target="_blank" class="ui-btn ui-btn-primary ui-btn-sm">Abrir Rota ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 16: Workflows Kanban -->
+          <article class="model-card" data-category="agents" data-keywords="react workflow kanban openspec tarefas fases lifecycle">
+            <div class="card-top">
+              <h3 class="card-title">Workflows &amp; Kanban Lifecycle</h3>
+              <span class="card-badge badge-nextjs">Next.js 16</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/dashboard-workflow.png" alt="Workflows & Kanban" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>pnpm dev</span>
+                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                  <span>Copiar CLI</span>
+                </button>
+              </div>
+              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Arquitetura:</strong>
+                  Quadro de acompanhamento do ciclo de vida OpenSpec (Draft $\rightarrow$ Council $\rightarrow$ Apply $\rightarrow$ Archive) com stepper de fases.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">/dashboard/workflow</span>
+              <a href="http://localhost:4300/dashboard/workflow" target="_blank" class="ui-btn ui-btn-primary ui-btn-sm">Abrir Rota ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 17: Inspeção & Diff Viewer -->
+          <article class="model-card" data-category="agents" data-keywords="react inspecao code diff viewer markdown segredos mascarados">
+            <div class="card-top">
+              <h3 class="card-title">Inspeção &amp; Code Diff Viewer</h3>
+              <span class="card-badge badge-nextjs">Next.js 16</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/dashboard-inspection.png" alt="Inspeção & Diff Viewer" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>pnpm dev</span>
+                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                  <span>Copiar CLI</span>
+                </button>
+              </div>
+              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Arquitetura:</strong>
+                  Leitor de Markdown seguro, visualizador de diffs linha-a-linha e mascarador de tokens e credenciais (SEC-04).
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">/dashboard/inspection</span>
+              <a href="http://localhost:4300/dashboard/inspection" target="_blank" class="ui-btn ui-btn-primary ui-btn-sm">Abrir Rota ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 18: Terminal Actions -->
+          <article class="model-card" data-category="agents" data-keywords="react terminal actions cli anti-pastejacking remediação scripts">
+            <div class="card-top">
+              <h3 class="card-title">Terminal Actions &amp; Quick Dispatches</h3>
+              <span class="card-badge badge-nextjs">Next.js 16</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/dashboard-actions.png" alt="Terminal Actions" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>pnpm dev</span>
+                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                  <span>Copiar CLI</span>
+                </button>
+              </div>
+              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Arquitetura:</strong>
+                  Terminal interativo com helper de cópia anti-pastejacking (SEC-03) que elimina caracteres de controlo invisíveis antes de colar.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">/dashboard/actions</span>
+              <a href="http://localhost:4300/dashboard/actions" target="_blank" class="ui-btn ui-btn-primary ui-btn-sm">Abrir Rota ↗</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ==================== DIMENSÃO 5: DESIGN SYSTEM & RECEITAS ==================== -->
+      <section class="category-section" data-section="recipes">
+        <div class="category-header">
+          <div class="category-title-group">
+            <h2 class="category-title">🔌 Design System Hub &amp; Receitas Modulares</h2>
+            <span class="category-stack-tag">shadcn Component Catalog • PostgreSQL Transition • Modos de Persistência</span>
+          </div>
+          <span class="category-count">2 modelos</span>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 19: Component Library Master Hub -->
+          <article class="model-card" data-category="recipes" data-keywords="react component library catalogo componentes shadcn design system blueprints">
+            <div class="card-top">
+              <h3 class="card-title">Component Library Master Hub</h3>
+              <span class="card-badge badge-nextjs">Next.js 16</span>
+            </div>
+            <div class="card-screenshot-wrapper">
+              <img src="./screenshots/component-library.png" alt="Component Library Hub" class="card-screenshot" loading="lazy">
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>pnpm dev</span>
+                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                  <span>Copiar CLI</span>
+                </button>
+              </div>
+              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Arquitetura:</strong>
+                  Hub interativo com 30+ componentes shadcn/ui categorizados, snippets JSX copiáveis e documentação de dependências CLI.
+                </div>
+                <div class="details-row">
+                  <strong>Resiliência:</strong>
+                  Per-Card ErrorBoundary com fallback gracioso e renderização segura sem dados de produção.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">/dashboard/library</span>
+              <a href="http://localhost:4300/dashboard/library" target="_blank" class="ui-btn ui-btn-primary ui-btn-sm">Abrir Rota ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 20: Receitas Modulares Backend -->
+          <article class="model-card" data-category="recipes" data-keywords="receitas modulares postgres pin-lock datatable localstorage prisma">
+            <div class="card-top">
+              <h3 class="card-title">Receitas Modulares &amp; Backend</h3>
+              <span class="card-badge badge-recipe">4 Receitas</span>
+            </div>
+            <div class="card-screenshot-wrapper" style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, var(--card) 0%, var(--muted) 100%);">
+              <div style="font-size: 2.75rem; margin-bottom: 0.5rem;">🔌</div>
+              <div style="font-family: monospace; font-size: 0.75rem; color: var(--muted-foreground);">Postgres • Pin-Lock • DataTable • State</div>
+            </div>
+            <div class="card-launcher-bar">
+              <div class="cmd-pill">
+                <span>recipes/</span>
+              </div>
+              <button class="cmd-copy-btn" onclick="copyLaunchCommand('ls -la recipes/ public/html-kit/recipes/', this)">
+                <span>Copiar comando Mac</span>
+              </button>
+            </div>
+            <details class="card-details">
+              <summary>Detalhes Técnicos &amp; Arquitetura</summary>
+              <div class="details-content">
+                <div class="details-row">
+                  <strong>Receitas Incluídas:</strong>
+                  1. <code>recipes/postgres/</code> — Transição de SQLite para PostgreSQL/Neon.<br>
+                  2. <code>auth-pin-lock</code> — Barreira de PIN tátil standalone.<br>
+                  3. <code>datatable-fetch</code> — Wrapper nativo para carregar JSON em tabelas.<br>
+                  4. <code>localstorage-state</code> — Sincronização reativa de estado local.
+                </div>
+              </div>
+            </details>
+            <div class="card-actions">
+              <span class="card-path">recipes/</span>
+              <a href="http://localhost:4300/html-kit/recipes/auth-pin-lock/pin-lock.js" target="_blank" class="ui-btn ui-btn-outline ui-btn-sm">Ver Código ↗</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // Terminal Launch & Command Copy (macOS Native + Anti-Pastejacking)
+    async function openTerminal(rawCommand, buttonElement) {
+      const cleanCommand = String(rawCommand).replace(/[\r\n\t]/g, '').trim();
+
+      // 1. Copia sempre para o clipboard primeiro (garantia anti-pastejacking)
+      copyLaunchCommand(cleanCommand, buttonElement);
+
+      // 2. Dispara abertura nativa do Terminal no macOS via API local (com fallback de origem)
+      try {
+        const apiUrl = window.location.origin.startsWith('http') ? '/api/open-terminal' : 'http://localhost:4300/api/open-terminal';
+        const res = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ command: cleanCommand }),
+        });
+
+        if (res.ok) {
+          showCopySuccess(buttonElement, '✓ Terminal Aberto!');
+          return;
+        }
+      } catch (err) {
+        // Ignora erro de rede quando o servidor Next.js ainda não está ligado
+      }
+
+      // 3. Fallback informativo e seguro se o servidor Next.js ainda não estiver em execução
+      showCopySuccess(buttonElement, '✓ Copiado! (⌘+V no Terminal)');
+    }
+
+    // Safe Command Copy Helper (Anti-Pastejacking & CML-Defender Safe)
+    function copyLaunchCommand(rawCommand, buttonElement) {
+      // 1. Purga caracteres invisíveis e newlines para conformidade estrita anti-pastejacking
+      const cleanCommand = String(rawCommand).replace(/[\r\n\t]/g, '').trim();
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(cleanCommand).then(() => {
+          showCopySuccess(buttonElement);
+        }).catch(() => {
+          fallbackCopy(cleanCommand, buttonElement);
+        });
+      } else {
+        fallbackCopy(cleanCommand, buttonElement);
+      }
+    }
+
+    function fallbackCopy(text, buttonElement) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showCopySuccess(buttonElement);
+      } catch (err) {
+        console.error('Falha ao copiar:', err);
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function showCopySuccess(btn, msg) {
+      const originalText = btn.innerHTML;
+      btn.innerHTML = `<span>${msg || '✓ Copiado!'}</span>`;
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.classList.remove('copied');
+      }, 2500);
+    }
+
+    // Search & Technical Filter Logic
+    const searchInput = document.getElementById('search-input');
+    const filterChips = document.querySelectorAll('.filter-chip');
+    const sections = document.querySelectorAll('.category-section');
+
+    let currentFilter = 'all';
+
+    function filterCards() {
+      const query = (searchInput.value || '').toLowerCase().trim();
+
+      sections.forEach(section => {
+        const sectionCategory = section.getAttribute('data-section');
+        const sectionCards = section.querySelectorAll('.model-card');
+        let visibleCount = 0;
+
+        sectionCards.forEach(card => {
+          const cardCategory = card.getAttribute('data-category');
+          const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+          const title = (card.querySelector('.card-title')?.textContent || '').toLowerCase();
+
+          const matchesCategory = currentFilter === 'all' || cardCategory === currentFilter;
+          const matchesQuery = !query || keywords.includes(query) || title.includes(query);
+
+          if (matchesCategory && matchesQuery) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        // Oculta secção inteira se nenhum card corresponder
+        section.style.display = visibleCount > 0 ? 'block' : 'none';
+      });
+    }
+
+    searchInput.addEventListener('input', filterCards);
+
+    filterChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        filterChips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        currentFilter = chip.getAttribute('data-category');
+        filterCards();
+      });
+    });
+
+    // Theme Toggle
+    const themeBtn = document.getElementById('theme-toggle');
+    themeBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      themeBtn.textContent = isDark ? '🌙' : '☀️';
+      try {
+        localStorage.setItem('du_theme', isDark ? 'dark' : 'light');
+      } catch {}
+    });
+
+    // Restore saved theme
+    try {
+      const saved = localStorage.getItem('du_theme');
+      if (saved === 'light') {
+        document.documentElement.classList.remove('dark');
+        themeBtn.textContent = '☀️';
+      }
+    } catch {}
+  </script>
+</body>
+</html>

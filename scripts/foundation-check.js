@@ -21,6 +21,19 @@ const envPath = path.join(__dirname, '../.env');
 const envContent = fs.existsSync(envPath) ? fs.readFileSync(envPath, 'utf-8') : '';
 check('SQLite Connection string', envContent.includes('connection_limit=1&busy_timeout=10000'), 'DATABASE_URL not using SQLite WAL parameters');
 
+let walActive = false;
+for (const p of ['../prisma/dev.db', '../dev.db']) {
+  const full = path.join(__dirname, p);
+  if (fs.existsSync(full)) {
+    const buf = fs.readFileSync(full);
+    if (buf.length >= 20 && buf[18] === 2 && buf[19] === 2) {
+      walActive = true;
+      break;
+    }
+  }
+}
+check('SQLite WAL Physical Header (02 02)', walActive, 'dev.db is not in WAL mode (header bytes 18 & 19 are not 0x02 0x02). Run pnpm setup');
+
 const vitestPath = path.join(__dirname, '../vitest.config.ts');
 const vitestContent = fs.existsSync(vitestPath) ? fs.readFileSync(vitestPath, 'utf-8') : '';
 check('Vitest singleThread pool', vitestContent.includes('singleThread: true'), 'vitest.config.ts missing singleThread setting');

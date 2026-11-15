@@ -1,10 +1,8 @@
 ---
 name: skillscore
 description: >-
-  Evaluate, score, and optimize agent skills against authoring rubrics and
-  generate interactive HTML reports. Use when the user asks to score skills,
-  evaluate skill quality, or run skillscore. Do not use for non-skill markdown
-  files.
+  Auditar, pontuar e otimizar a frota de skills em HTML interativo contra
+  rubricas de qualidade. Gatilho: /skillscore.
 ---
 # 🎯 SkillScore — Skill Evaluation & Fleet Health Engine (`/skillscore`)
 
@@ -14,22 +12,27 @@ Evaluates, scores, benchmarks, and optimizes agent `SKILL.md` manifests across 9
 
 ### A. Full Workspace Fleet Audit (Default)
 Scans all 100+ skills in the configuration directory, tags modifiability (Workspace vs. Upstream Read-Only), and generates the complete interactive HTML dashboard:
-```powershell
-dart "C:\Users\helder.toucas\Dev\skillscore\bin\skillscore.dart" "C:\Users\helder.toucas\.gemini\config\skills\" --format html --output-html "C:\Users\helder.toucas\Dev\skillscore\skills_fleet_report.html"
+```bash
+# Executar a partir da raiz do repositório skillscore:
+dart bin/skillscore.dart "<skills-dir>" --format html --output-html skills_fleet_report.html
+
+# Ou invocação direta com caminhos da estação:
+# macOS:   dart "$HOME/dev/skillscore/bin/skillscore.dart" "$HOME/.gemini/antigravity-cli/skills/" --format html --output-html "$HOME/dev/skillscore/skills_fleet_report.html"
+# Windows: dart "$env:USERPROFILE\Dev\skillscore\bin\skillscore.dart" "$env:USERPROFILE\.gemini\antigravity-cli\skills\" --format html --output-html "$env:USERPROFILE\Dev\skillscore\skills_fleet_report.html"
 ```
-*Report Path:* [`C:/Users/helder.toucas/Dev/skillscore/skills_fleet_report.html`](file:///C:/Users/helder.toucas/Dev/skillscore/skills_fleet_report.html)
+*Report Path:* `skills_fleet_report.html` gerado na pasta do output.
 
 ### B. Single-Skill Deep Dive & Radar Report
 Generates an individual skill scorecard with 9-axis SVG rubric radar, token usage breakdown, and actionable fix hints:
-```powershell
-dart "C:\Users\helder.toucas\Dev\skillscore\bin\skillscore.dart" "C:\Users\helder.toucas\.gemini\config\skills\<skill-name>\SKILL.md" --format html --output-html "C:\Users\helder.toucas\Dev\skillscore\<skill-name>_report.html"
+```bash
+dart bin/skillscore.dart "<skills-dir>/<skill-name>/SKILL.md" --format html --output-html "<skill-name>_report.html"
 ```
 
 ### C. CI Quality Gating & Strict Security
 Enforces quality gates in CI/CD or local pre-commit checks:
-```powershell
+```bash
 # Exit non-zero if any skill scores below 80 or has Category H/I security errors:
-dart "C:\Users\helder.toucas\Dev\skillscore\bin\skillscore.dart" "C:\Users\helder.toucas\.gemini\config\skills\" --min-score 80 --security-strict --format pretty
+dart bin/skillscore.dart "<skills-dir>" --min-score 80 --security-strict --format pretty
 ```
 
 ---
@@ -37,8 +40,8 @@ dart "C:\Users\helder.toucas\Dev\skillscore\bin\skillscore.dart" "C:\Users\helde
 ## 2. Automated Workspace Optimizer
 
 To automatically refine weak or poorly formatted custom skills (frontload action verbs, nest metadata, add negative boundaries, and validation loops):
-```powershell
-dart "C:\Users\helder.toucas\Dev\skillscore\bin\workspace_optimizer.dart"
+```bash
+dart bin/workspace_optimizer.dart
 ```
 
 ---

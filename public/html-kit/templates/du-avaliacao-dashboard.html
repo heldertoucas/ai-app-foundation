@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="pt" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avaliação Dashboard — Zero-Build Cockpit</title>
+  
+  <!-- 1. Tokens Canónicos DU (1:1 com globals.css) -->
+  <link rel="stylesheet" href="../tokens.css">
+  
+  <!-- 2. shadcn-html Core Components Bundle -->
+  <link rel="stylesheet" href="../vendor/shadcn-html.all.css">
+  
+  <!-- 3. Componentes Próprios DU (KPI, Telemetria, Bento) -->
+  <link rel="stylesheet" href="../du-components.css">
+  
+  <!-- 4. Micro-Runtime (<50 LOC) -->
+  <script src="../du-runtime.js" defer></script>
+
+  <style>
+    .du-container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+    .du-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+    .du-flex-row { display: flex; align-items: center; gap: 0.75rem; }
+    .du-card { background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; }
+    .du-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .du-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    
+    /* Pin Pad Styles */
+    .pin-display { display: flex; justify-content: center; gap: 0.75rem; padding: 0.75rem; background: var(--muted); border-radius: 0.5rem; border: 1px solid var(--border); margin: 1rem 0; }
+    .pin-dot { width: 1rem; height: 1rem; border-radius: 9999px; border: 2px solid var(--muted-foreground); transition: all 0.15s ease; }
+    .pin-dot.filled { background: var(--primary); border-color: var(--primary); transform: scale(1.1); }
+    .pin-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 0.75rem; }
+    .pin-btn { height: 2.75rem; font-size: 1.125rem; font-weight: 600; border-radius: 0.5rem; border: 1px solid var(--border); background: var(--card); color: var(--foreground); cursor: pointer; transition: background 0.15s; }
+    .pin-btn:hover { background: var(--muted); }
+    .pin-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    
+    /* Table styles */
+    .table-container { border: 1px solid var(--border); border-radius: 0.75rem; overflow-x: auto; background: var(--card); }
+    table.du-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.875rem; }
+    table.du-table th { padding: 0.75rem 1rem; background: var(--muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted-foreground); border-bottom: 1px solid var(--border); }
+    table.du-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+    table.du-table tr:last-child td { border-bottom: none; }
+    table.du-table tr:hover td { background: var(--accent); }
+    
+    /* Status Badges */
+    .badge-live { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.25); }
+    .badge-concluido { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background: rgba(59, 130, 246, 0.12); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.25); }
+    .badge-pendente { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.25); }
+    .badge-esgotado { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.25); }
+  </style>
+</head>
+<body class="bg-background text-foreground">
+
+  <div id="app-root" class="du-container">
+    <!-- Ecrã Inicial de Autenticação (Montado diretamente) -->
+    <div id="auth-screen" style="max-width: 440px; margin: 3rem auto; text-align: center;">
+      <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🎓</div>
+      <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0 0 0.25rem 0;">Cockpit de Avaliação e Pauta</h1>
+      <p style="font-size: 0.85rem; color: var(--muted-foreground); margin: 0 0 1.5rem 0;">Template Zero-Build com Paridade Canónica DU</p>
+
+      <div class="du-card" style="text-align: left;">
+        <!-- Abas Formador / Admin -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; background: var(--muted); padding: 0.25rem; border-radius: 0.5rem; margin-bottom: 1.25rem;">
+          <button id="tab-trainer-btn" class="ui-button ui-button-secondary" style="font-size: 0.8rem; font-weight: 600;" onclick="switchAuthTab('trainer')">Formador (PIN)</button>
+          <button id="tab-admin-btn" class="ui-button ui-button-ghost" style="font-size: 0.8rem;" onclick="switchAuthTab('admin')">Admin (Password)</button>
+        </div>
+
+        <div id="lockout-alert" style="display: none; padding: 0.75rem; border-radius: 0.5rem; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); color: #ef4444; font-size: 0.8rem; margin-bottom: 1rem;">
+          Tentativas excedidas. Bloqueio ativo por <strong id="lockout-timer">60</strong>s.
+        </div>
+
+        <div id="error-alert" style="display: none; padding: 0.75rem; border-radius: 0.5rem; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.25); color: #d97706; font-size: 0.8rem; margin-bottom: 1rem;"></div>
+
+        <!-- Form Formador -->
+        <div id="trainer-auth-form">
+          <label style="font-size: 0.75rem; font-weight: 600; color: var(--muted-foreground); text-transform: uppercase;">Código de Turma</label>
+          <input id="action-code-input" class="ui-input" type="text" value="FD-2026-TURMA4" style="margin-top: 0.25rem; text-align: center; font-family: monospace; font-weight: 700; text-transform: uppercase;" />
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+            <label style="font-size: 0.75rem; font-weight: 600; color: var(--muted-foreground); text-transform: uppercase;">PIN de 4 Dígitos</label>
+            <span style="font-size: 0.7rem; color: var(--muted-foreground);">Demo: 1234</span>
+          </div>
+
+          <div class="pin-display">
+            <div class="pin-dot" id="dot-0"></div>
+            <div class="pin-dot" id="dot-1"></div>
+            <div class="pin-dot" id="dot-2"></div>
+            <div class="pin-dot" id="dot-3"></div>
+          </div>
+
+          <div class="pin-keypad">
+            <button class="pin-btn" onclick="pressPin('1')">1</button>
+            <button class="pin-btn" onclick="pressPin('2')">2</button>
+            <button class="pin-btn" onclick="pressPin('3')">3</button>
+            <button class="pin-btn" onclick="pressPin('4')">4</button>
+            <button class="pin-btn" onclick="pressPin('5')">5</button>
+            <button class="pin-btn" onclick="pressPin('6')">6</button>
+            <button class="pin-btn" onclick="pressPin('7')">7</button>
+            <button class="pin-btn" onclick="pressPin('8')">8</button>
+            <button class="pin-btn" onclick="pressPin('9')">9</button>
+            <button class="pin-btn" style="font-size: 0.75rem;" onclick="clearPin()">Limpar</button>
+            <button class="pin-btn" onclick="pressPin('0')">0</button>
+            <button class="pin-btn" style="font-size: 0.85rem;" onclick="backspacePin()">⌫</button>
+          </div>
+
+          <button id="submit-trainer-btn" class="ui-button ui-button-primary" style="width: 100%; margin-top: 1.25rem; font-weight: 600;" onclick="validateTrainerPin()">
+            Entrar no Painel do Formador
+          </button>
+        </div>
+
+        <!-- Form Admin -->
+        <div id="admin-auth-form" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <label style="font-size: 0.75rem; font-weight: 600; color: var(--muted-foreground); text-transform: uppercase;">Password Mestra</label>
+            <span style="font-size: 0.7rem; color: var(--muted-foreground);">Demo: admin123</span>
+          </div>
+          <input id="admin-pass-input" class="ui-input" type="password" placeholder="••••••••••••" style="margin-top: 0.25rem; text-align: center; font-family: monospace;" />
+
+          <button id="submit-admin-btn" class="ui-button ui-button-primary" style="width: 100%; margin-top: 1.25rem; font-weight: 600;" onclick="validateAdminPassword()">
+            Aceder ao Cockpit Administrativo
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔒 DEFERRED DOM TEMPLATE (Não pré-renderizado no DOM ativo contra devtools bypass) -->
+  <template id="dashboard-view-template">
+    <div id="dashboard-content">
+      <!-- Session Header -->
+      <header class="du-header">
+        <div class="du-flex-row">
+          <div style="font-size: 1.5rem;">🎓</div>
+          <div>
+            <div class="du-flex-row">
+              <h1 id="view-title" style="margin: 0; font-size: 1.125rem; font-weight: 700;">Painel de Avaliação</h1>
+              <span id="role-badge" class="ui-badge ui-badge-secondary font-mono">FD-2026-TURMA4</span>
+            </div>
+            <p id="view-subtitle" style="margin: 0; font-size: 0.8rem; color: var(--muted-foreground);">Mesa de trabalho do formador</p>
+          </div>
+        </div>
+
+        <div class="du-flex-row">
+          <div class="du-telemetry-pill du-status-live">
+            <span class="du-ping-dot"><span class="du-ping-circle"></span><span class="du-ping-core"></span></span>
+            <span id="live-clock" style="font-family: monospace; font-size: 0.8rem;">--:--:--</span>
+          </div>
+
+          <button id="toggle-view-btn" class="ui-button ui-button-outline" style="font-size: 0.75rem;" onclick="toggleViewMode()">Alternar Visão</button>
+          <button class="ui-button ui-button-ghost" style="font-size: 0.75rem; color: #ef4444;" onclick="logout()">Terminar Sessão</button>
+        </div>
+      </header>
+
+      <!-- KPI Summary Cards -->
+      <div class="du-grid-4">
+        <div class="du-card">
+          <div style="font-size: 0.75rem; color: var(--muted-foreground); text-transform: uppercase;">Total de Formandos</div>
+          <div id="kpi-total" style="font-size: 1.75rem; font-weight: 700; font-family: monospace;">10</div>
+          <div style="font-size: 0.75rem; color: var(--muted-foreground);">Turma Completa</div>
+        </div>
+        <div class="du-card">
+          <div style="font-size: 0.75rem; color: var(--muted-foreground); text-transform: uppercase;">Em Prova Ativa</div>
+          <div id="kpi-in-progress" style="font-size: 1.75rem; font-weight: 700; font-family: monospace; color: #10b981;">3</div>
+          <div style="font-size: 0.75rem; color: var(--muted-foreground);">Tempo a decorrer</div>
+        </div>
+        <div class="du-card">
+          <div style="font-size: 0.75rem; color: var(--muted-foreground); text-transform: uppercase;">Submetidos</div>
+          <div id="kpi-completed" style="font-size: 1.75rem; font-weight: 700; font-family: monospace; color: #3b82f6;">5</div>
+          <div style="font-size: 0.75rem; color: var(--muted-foreground);">Provas concluídas</div>
+        </div>
+        <div class="du-card">
+          <div style="font-size: 0.75rem; color: var(--muted-foreground); text-transform: uppercase;">Taxa Média Sucesso</div>
+          <div id="kpi-approval" style="font-size: 1.75rem; font-weight: 700; font-family: monospace; color: #10b981;">100%</div>
+          <div id="kpi-avg-score" style="font-size: 0.75rem; color: var(--muted-foreground);">Média: 17.6 / 20</div>
+        </div>
+      </div>
+
+      <!-- Secção de Telemetria (Visível no Admin ou quando alternado) -->
+      <div id="admin-telemetry-section" style="display: none; margin-bottom: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <div>
+            <h2 style="font-size: 1.125rem; font-weight: 700; margin: 0;">Sincronizações Externas</h2>
+            <p style="font-size: 0.8rem; color: var(--muted-foreground); margin: 0;">Google Sheets Pauta Sync &amp; Neon DB Wal Cache</p>
+          </div>
+          <button id="sync-now-btn" class="ui-button ui-button-primary" style="font-size: 0.8rem;" onclick="triggerSync()">Forçar Sincronização</button>
+        </div>
+
+        <div class="du-grid-3">
+          <div class="du-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <strong style="font-size: 0.875rem;">Google Sheets Pauta Sync</strong>
+              <span class="badge-live">Live</span>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--muted-foreground); font-family: monospace;">Spreadsheet ID: 1A...k8 | Folha "Resultados-2026"</p>
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-top: 0.5rem;">
+              <span style="color: var(--muted-foreground);">Latência:</span>
+              <strong id="sheets-latency" style="font-family: monospace;">142 ms</strong>
+            </div>
+          </div>
+
+          <div class="du-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <strong style="font-size: 0.875rem;">Neon DB / WAL Cache</strong>
+              <span class="badge-live">Live</span>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--muted-foreground); font-family: monospace;">Pool ativo: 4/20 ligações | Conexões SSL</p>
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-top: 0.5rem;">
+              <span style="color: var(--muted-foreground);">Latência:</span>
+              <strong id="db-latency" style="font-family: monospace;">18 ms</strong>
+            </div>
+          </div>
+
+          <div class="du-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <strong style="font-size: 0.875rem;">CMLisboa Auth API Quota</strong>
+              <span class="badge-live">Live</span>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--muted-foreground); font-family: monospace;">Quota diária de validação de NIF</p>
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-top: 0.5rem;">
+              <span style="color: var(--muted-foreground);">Consumo:</span>
+              <strong style="font-family: monospace;">38%</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secção da Tabela de Formandos -->
+      <div id="trainer-table-section">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+          <input id="table-search-input" class="ui-input" type="text" placeholder="Pesquisar formando por nome, NIF ou ID..." style="max-width: 320px;" oninput="onSearchInput()" />
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="ui-button ui-button-outline" style="font-size: 0.8rem;" onclick="exportCsv()">Exportar Pauta (CSV)</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="du-table" id="trainees-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nome do Formando</th>
+                <th>NIF</th>
+                <th>Estado</th>
+                <th>Hora Início</th>
+                <th>Questões</th>
+                <th style="text-align: right;">Nota</th>
+                <th style="text-align: right;">Ação</th>
+              </tr>
+            </thead>
+            <tbody id="trainees-tbody">
+              <!-- Renderizado dinamicamente via safe DOM injection -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    // SHA-256 Hashes canónicos para verificação sem segredos em texto limpo
+    const HASH_TRAINER_PIN = '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4'; // '1234'
+    const HASH_ADMIN_PASS  = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9'; // 'admin123'
+    const LOCKOUT_KEY = 'du_avaliacao_lockout';
+
+    let currentPin = '';
+    let currentUserRole = null;
+    let isSyncing = false;
+    let searchDebounceTimer = null;
+
+    let traineesData = [
+      { id: 'TRN-001', name: 'Ana Rodrigues Silva', nif: '234567891', status: 'concluido', startedAt: '14:02', score: 18.5, answers: '20/20' },
+      { id: 'TRN-002', name: 'Carlos Manuel Ferreira', nif: '245678912', status: 'em_curso', startedAt: '14:05', score: null, answers: '14/20' },
+      { id: 'TRN-003', name: 'Beatriz Costa Matos', nif: '256789123', status: 'concluido', startedAt: '14:01', score: 16.0, answers: '20/20' },
+      { id: 'TRN-004', name: 'Diogo André Lourenço', nif: '267890234', status: 'em_curso', startedAt: '14:10', score: null, answers: '8/20' },
+      { id: 'TRN-005', name: 'Elena Santos Antunes', nif: '278901345', status: 'pendente', startedAt: '-', score: null, answers: '0/20' },
+      { id: 'TRN-006', name: 'Fernando Miguel Tavares', nif: '289012456', status: 'tempo_esgotado', startedAt: '14:00', score: 9.5, answers: '11/20' },
+      { id: 'TRN-007', name: 'Helena Maria Soares', nif: '290123567', status: 'concluido', startedAt: '14:03', score: 19.0, answers: '20/20' },
+      { id: 'TRN-008', name: 'João Pedro Videira', nif: '211234678', status: 'em_curso', startedAt: '14:08', score: null, answers: '16/20' },
+      { id: 'TRN-009', name: 'Mariana Duarte Ramos', nif: '222345789', status: 'concluido', startedAt: '14:02', score: 17.0, answers: '20/20' },
+      { id: 'TRN-010', name: 'Tiago Rafael Mendes', nif: '233456890', status: 'pendente', startedAt: '-', score: null, answers: '0/20' }
+    ];
+
+    async function sha256(str) {
+      const buffer = new TextEncoder().encode(str);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+      return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // Lockout Management
+    function getLockout() {
+      try {
+        const raw = localStorage.getItem(LOCKOUT_KEY);
+        if (!raw) return { failedAttempts: 0, lockoutUntil: 0 };
+        return JSON.parse(raw);
+      } catch {
+        return { failedAttempts: 0, lockoutUntil: 0 };
+      }
+    }
+
+    function recordFailedAttempt() {
+      try {
+        const prev = getLockout();
+        const attempts = prev.failedAttempts + 1;
+        const duration = attempts >= 10 ? 900000 : attempts >= 5 ? 60000 : 0;
+        const lockoutUntil = duration > 0 ? Date.now() + duration : 0;
+        localStorage.setItem(LOCKOUT_KEY, JSON.stringify({ failedAttempts: attempts, lockoutUntil }));
+        return lockoutUntil;
+      } catch { return 0; }
+    }
+
+    function clearLockout() {
+      try { localStorage.removeItem(LOCKOUT_KEY); } catch {}
+    }
+
+    function checkLockout() {
+      const rec = getLockout();
+      const alertEl = document.getElementById('lockout-alert');
+      const timerEl = document.getElementById('lockout-timer');
+      if (rec.lockoutUntil > Date.now()) {
+        const sec = Math.ceil((rec.lockoutUntil - Date.now()) / 1000);
+        if (alertEl && timerEl) {
+          timerEl.textContent = sec;
+          alertEl.style.display = 'block';
+        }
+        return true;
+      } else {
+        if (alertEl) alertEl.style.display = 'none';
+        return false;
+      }
+    }
+
+    setInterval(checkLockout, 1000);
+
+    // Keypad Handlers
+    function updatePinDots() {
+      for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById(`dot-${i}`);
+        if (dot) {
+          if (i < currentPin.length) dot.classList.add('filled');
+          else dot.classList.remove('filled');
+        }
+      }
+    }
+
+    function pressPin(digit) {
+      if (checkLockout()) return;
+      if (currentPin.length < 4) {
+        currentPin += digit;
+        updatePinDots();
+        document.getElementById('error-alert').style.display = 'none';
+      }
+    }
+
+    function clearPin() {
+      currentPin = '';
+      updatePinDots();
+    }
+
+    function backspacePin() {
+      currentPin = currentPin.slice(0, -1);
+      updatePinDots();
+    }
+
+    function switchAuthTab(role) {
+      const isTrainer = role === 'trainer';
+      document.getElementById('trainer-auth-form').style.display = isTrainer ? 'block' : 'none';
+      document.getElementById('admin-auth-form').style.display = isTrainer ? 'none' : 'block';
+      
+      const tBtn = document.getElementById('tab-trainer-btn');
+      const aBtn = document.getElementById('tab-admin-btn');
+      tBtn.className = isTrainer ? 'ui-button ui-button-secondary' : 'ui-button ui-button-ghost';
+      aBtn.className = isTrainer ? 'ui-button ui-button-ghost' : 'ui-button ui-button-secondary';
+      document.getElementById('error-alert').style.display = 'none';
+    }
+
+    async function validateTrainerPin() {
+      if (checkLockout()) return;
+      if (currentPin.length !== 4) {
+        showError('Introduza os 4 dígitos do PIN.');
+        return;
+      }
+
+      await new Promise(r => setTimeout(r, 400));
+      const hash = await sha256(currentPin);
+      if (hash === HASH_TRAINER_PIN) {
+        clearLockout();
+        currentUserRole = 'trainer';
+        mountDashboard('trainer');
+      } else {
+        recordFailedAttempt();
+        clearPin();
+        showError('PIN incorreto. Tente novamente.');
+        checkLockout();
+      }
+    }
+
+    async function validateAdminPassword() {
+      if (checkLockout()) return;
+      const pass = document.getElementById('admin-pass-input').value;
+      if (!pass) {
+        showError('Introduza a password de administrador.');
+        return;
+      }
+
+      await new Promise(r => setTimeout(r, 400));
+      const hash = await sha256(pass);
+      if (hash === HASH_ADMIN_PASS) {
+        clearLockout();
+        currentUserRole = 'admin';
+        mountDashboard('admin');
+      } else {
+        recordFailedAttempt();
+        showError('Password incorreta.');
+        checkLockout();
+      }
+    }
+
+    function showError(msg) {
+      const err = document.getElementById('error-alert');
+      if (err) {
+        err.textContent = msg;
+        err.style.display = 'block';
+      }
+    }
+
+    // Deferred DOM Mounting
+    function mountDashboard(role) {
+      const appRoot = document.getElementById('app-root');
+      const tmpl = document.getElementById('dashboard-view-template');
+      appRoot.innerHTML = '';
+      appRoot.appendChild(tmpl.content.cloneNode(true));
+
+      // Configurar modo de visualização
+      const title = document.getElementById('view-title');
+      const subtitle = document.getElementById('view-subtitle');
+      const roleBadge = document.getElementById('role-badge');
+      const adminSec = document.getElementById('admin-telemetry-section');
+
+      if (role === 'admin') {
+        title.textContent = 'Cockpit de Administração & Telemetria';
+        subtitle.textContent = 'Monitorização central de sincronizações e quotas';
+        roleBadge.textContent = 'Admin Master';
+        adminSec.style.display = 'block';
+      } else {
+        title.textContent = 'Monitorização de Turma';
+        subtitle.textContent = 'Acompanhamento de exames em tempo real';
+        roleBadge.textContent = document.getElementById('action-code-input')?.value || 'FD-2026-TURMA4';
+        adminSec.style.display = 'none';
+      }
+
+      // Event delegation na tabela
+      document.getElementById('trainees-tbody').addEventListener('click', function(e) {
+        const btn = e.target.closest('[data-action="reopen"]');
+        if (btn) {
+          const id = btn.getAttribute('data-id');
+          reopenTrainee(id);
+        }
+      });
+
+      startClock();
+      renderTable();
+      updateKpis();
+    }
+
+    function toggleViewMode() {
+      const adminSec = document.getElementById('admin-telemetry-section');
+      const isVisible = adminSec.style.display !== 'none';
+      adminSec.style.display = isVisible ? 'none' : 'block';
+      document.getElementById('view-title').textContent = isVisible ? 'Monitorização de Turma' : 'Cockpit de Administração & Telemetria';
+    }
+
+    function logout() {
+      location.reload();
+    }
+
+    function startClock() {
+      setInterval(() => {
+        const clk = document.getElementById('live-clock');
+        if (clk) clk.textContent = new Date().toLocaleTimeString('pt-PT');
+      }, 1000);
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('trainees-tbody');
+      if (!tbody) return;
+      const query = (document.getElementById('table-search-input')?.value || '').toLowerCase().trim();
+
+      const filtered = traineesData.filter(t => 
+        !query || t.name.toLowerCase().includes(query) || t.nif.includes(query) || t.id.toLowerCase().includes(query)
+      );
+
+      tbody.innerHTML = filtered.map(t => {
+        let badgeHtml = '';
+        if (t.status === 'em_curso') badgeHtml = '<span class="badge-live">Em Curso</span>';
+        else if (t.status === 'concluido') badgeHtml = '<span class="badge-concluido">Concluído</span>';
+        else if (t.status === 'pendente') badgeHtml = '<span class="badge-pendente">Pendente</span>';
+        else badgeHtml = '<span class="badge-esgotado">Tempo Esgotado</span>';
+
+        const scoreHtml = t.score !== null ? `<strong style="color: ${t.score >= 9.5 ? '#10b981' : '#ef4444'}">${t.score.toFixed(1)}</strong>` : '<span style="color: var(--muted-foreground);">-</span>';
+        const actionHtml = (t.status === 'concluido' || t.status === 'tempo_esgotado') 
+          ? `<button class="ui-button ui-button-ghost" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;" data-action="reopen" data-id="${escapeHtml(t.id)}">Reabrir</button>`
+          : '';
+
+        return `
+          <tr>
+            <td style="font-family: monospace; font-weight: 600; color: var(--muted-foreground);">${escapeHtml(t.id)}</td>
+            <td><strong>${escapeHtml(t.name)}</strong></td>
+            <td style="font-family: monospace; font-size: 0.8rem; color: var(--muted-foreground);">${escapeHtml(t.nif)}</td>
+            <td>${badgeHtml}</td>
+            <td style="font-size: 0.8rem; color: var(--muted-foreground);">${escapeHtml(t.startedAt)}</td>
+            <td style="font-family: monospace; font-size: 0.8rem;">${escapeHtml(t.answers)}</td>
+            <td style="text-align: right; font-family: monospace;">${scoreHtml}</td>
+            <td style="text-align: right;">${actionHtml}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function onSearchInput() {
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(renderTable, 150);
+    }
+
+    function reopenTrainee(id) {
+      traineesData = traineesData.map(t => {
+        if (t.id === id) {
+          return { ...t, status: 'em_curso', score: null };
+        }
+        return t;
+      });
+      renderTable();
+      updateKpis();
+    }
+
+    function updateKpis() {
+      const total = traineesData.length;
+      const inProg = traineesData.filter(t => t.status === 'em_curso').length;
+      const comp = traineesData.filter(t => t.status === 'concluido').length;
+      const compWithScore = traineesData.filter(t => t.status === 'concluido' && t.score !== null);
+      const avg = compWithScore.length > 0 ? compWithScore.reduce((a, b) => a + b.score, 0) / compWithScore.length : 0;
+      const rate = compWithScore.length > 0 ? (compWithScore.filter(t => t.score >= 9.5).length / compWithScore.length) * 100 : 0;
+
+      const elTotal = document.getElementById('kpi-total');
+      const elInProg = document.getElementById('kpi-in-progress');
+      const elComp = document.getElementById('kpi-completed');
+      const elApproval = document.getElementById('kpi-approval');
+      const elAvg = document.getElementById('kpi-avg-score');
+
+      if (elTotal) elTotal.textContent = total;
+      if (elInProg) elInProg.textContent = inProg;
+      if (elComp) elComp.textContent = comp;
+      if (elApproval) elApproval.textContent = rate.toFixed(0) + '%';
+      if (elAvg) elAvg.textContent = `Média: ${avg.toFixed(1)} / 20`;
+    }
+
+    async function triggerSync() {
+      if (isSyncing) return;
+      isSyncing = true;
+      const btn = document.getElementById('sync-now-btn');
+      btn.textContent = 'A sincronizar...';
+      btn.disabled = true;
+
+      await new Promise(r => setTimeout(r, 600));
+
+      const sheets = document.getElementById('sheets-latency');
+      const db = document.getElementById('db-latency');
+      if (sheets) sheets.textContent = (Math.floor(Math.random() * 40) + 120) + ' ms';
+      if (db) db.textContent = (Math.floor(Math.random() * 15) + 10) + ' ms';
+
+      btn.textContent = 'Sincronizado!';
+      setTimeout(() => {
+        btn.textContent = 'Forçar Sincronização';
+        btn.disabled = false;
+        isSyncing = false;
+      }, 1200);
+    }
+
+    // CSV Sanitizer com mitigação de injeção de fórmulas
+    function exportCsv() {
+      const dangerous = ['=', '+', '-', '@', '\t', '\r'];
+      const sanitize = (val) => {
+        let s = val === null || val === undefined ? '' : String(val);
+        if (dangerous.some(d => s.startsWith(d))) s = "'" + s;
+        return '"' + s.replace(/"/g, '""') + '"';
+      };
+
+      const headers = ['ID', 'Nome', 'NIF', 'Estado', 'Hora Início', 'Questões', 'Nota'];
+      const rows = traineesData.map(t => [
+        t.id, t.name, t.nif, t.status, t.startedAt, t.answers, t.score !== null ? t.score.toFixed(1) : '-'
+      ]);
+
+      const csvContent = [headers.map(sanitize).join(','), ...rows.map(r => r.map(sanitize).join(','))].join('\r\n');
+      const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'pauta-avaliacao-zero-build.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>

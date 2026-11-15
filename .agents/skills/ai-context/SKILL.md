@@ -11,11 +11,11 @@ Use this skill when inspecting the context assembled for a task or understanding
 ## Procedure
 1. Display the full Context Capsule:
    ```bash
-   python -m dev.cli context --intent "$TASK_INTENT"
+   dev context --intent "$TASK_INTENT"
    ```
 2. For historical time-travel debugging:
    ```bash
-   python -m dev.cli context --intent "$TASK_INTENT" --as-of YYYY-MM-DD
+   dev context --intent "$TASK_INTENT" --as-of YYYY-MM-DD
    ```
 3. To inspect why specific notes were included or excluded:
    - Check **Score / Distance**: Semantic vector proximity in LanceDB.

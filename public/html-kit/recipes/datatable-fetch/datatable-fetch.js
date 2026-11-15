@@ -4,6 +4,16 @@
  * Renders JSON feeds into shadcn .ui-table structures with loading skeletons and error handling.
  */
 
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 class DuDataTable {
   constructor(selector, options = {}) {
     this.table = typeof selector === 'string' ? document.querySelector(selector) : selector;
@@ -54,7 +64,7 @@ class DuDataTable {
 
   _renderError(msg) {
     const colCount = this.fields.length || 3;
-    this.tbody.innerHTML = `<tr><td colspan="${colCount}" style="text-align: center; color: var(--destructive); padding: 1.5rem;">Failed to load data: ${msg}</td></tr>`;
+    this.tbody.innerHTML = `<tr><td colspan="${colCount}" style="text-align: center; color: var(--destructive); padding: 1.5rem;">Failed to load data: ${escapeHtml(msg)}</td></tr>`;
   }
 
   renderRows(rows) {
@@ -68,9 +78,11 @@ class DuDataTable {
       .map((row) => {
         const cells = this.fields
           .map((f) => {
-            const val = row[f.key] !== undefined ? row[f.key] : '';
-            const custom = this.renderers[f.key] ? this.renderers[f.key](val, row) : val;
-            return `<td>${custom}</td>`;
+            const rawVal = row[f.key] !== undefined ? row[f.key] : '';
+            const cellContent = this.renderers[f.key]
+              ? this.renderers[f.key](rawVal, row)
+              : escapeHtml(rawVal);
+            return `<td>${cellContent}</td>`;
           })
           .join('');
         return `<tr>${cells}</tr>`;

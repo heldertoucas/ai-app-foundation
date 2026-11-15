@@ -1,37 +1,44 @@
 ---
 name: opsx-propose
 description: >-
-  Create a DU context-grounded OpenSpec proposal for a feature or architectural
-  change
+  Propose DU context-grounded changes with Second Brain RAG and dense
+  retrieval-first writing rules.
 ---
-# 📝 OpenSpec: DU Context-Grounded Proposal (`/opsx-propose`)
+# 📝 OpenSpec: DU-Grounded Proposal (`/opsx-propose`)
 
 Use this skill when drafting a new change proposal in a repository managed by the Development Universe.
 
-## Invariant (CON-0016)
-No OpenSpec change may begin substantial architectural planning without querying the DU Context Engine.
-
-## Procedure
-1. Query active DU context and constraints:
+## 1. Pre-Flight Grounding (CON-0016)
+1. Query active DU memory, constraints, and decisions:
    ```bash
-   python -m dev.cli context --intent "$CHANGE_INTENT"
+   dev context --intent "$CHANGE_INTENT"
    ```
-2. Review retrieved Decisions (`DEC-*`), Constraints (`CON-*`), and Patterns (`PAT-*`).
-3. Generate the proposal artifact under `openspec/proposals/YYYYMMDD-<change-title>.md`:
-   ```yaml
-   ---
-   title: "<Proposal Title>"
-   type: proposal
-   status: proposed
-   project: <PRJ-ID>
-   created: "YYYY-MM-DD"
-   relevant_decisions: ["DEC-XXXX"]
-   relevant_constraints: ["CON-XXXX"]
-   ---
-   ```
-4. Structure the proposal:
-   - **Problem & Context**: Grounded in current project state.
-   - **Proposed Solution**: Architectural components and boundary definitions.
-   - **Impacted Files & Repositories**: Concrete paths.
-   - **Non-Goals & Alternatives**: Scope limits.
-5. Present the proposal for human review before proceeding to specification.
+2. Query Second Brain semantic memory across the entire vault using `obsidian_rag_query` (MCP `ai-obsidian`):
+   - Search for related prior projects, trap notes (`PRB-*`), or architectural decisions (`DEC-*`).
+   - Ground the "Problem & Context" section directly in verified vault history.
+
+## 2. Style & Writing Standards (Dense & Anti-Slop)
+- **Retrieval Surface, Not an Essay**: Open every section with the concrete fact or decision. Zero preamble, narrative filler, or marketing adjectives (*robusto*, *inovador*).
+- **Simple Sentences, Smart Structure**: Format as `[Actor] [Verb] [Object] [Literal Event]`. If an idea fits in one line, keep it in one line.
+- **Scan Anchors**: Every load-bearing technical fact must sit on a scan anchor (bold lead-in, file path first, fenced code block, or comparison table). Never bury critical parameters mid-paragraph.
+
+## 3. Proposal Artifact Generation
+Write to `openspec/proposals/YYYYMMDD-<change-title>.md`:
+```yaml
+---
+title: "<Proposal Title>"
+type: proposal
+status: proposed
+project: <PRJ-ID>
+created: "YYYY-MM-DD"
+relevant_decisions: ["DEC-XXXX"]
+relevant_constraints: ["CON-XXXX"]
+---
+```
+Sections:
+- **Problem & Context**: Grounded in project state and Second Brain RAG findings.
+- **Proposed Solution**: Architectural components and boundary definitions.
+- **Impacted Files & Repositories**: Concrete relative paths.
+- **Non-Goals & Alternatives**: Strict boundaries preventing scope creep.
+
+Present the proposal for human confirmation before proceeding to specification.

@@ -1,9 +1,8 @@
 ---
 name: ai-council
 description: >-
-  Evaluate, review, and stress-test architectural plans, OpenSpec proposals, and
-  code changes using multi-agent debate. Use for complex proposals or when user
-  invokes /ai-council. Do not use for routine bug fixes.
+  Debate multi-agente adversarial para stress-test de planos e arquitetura.
+  Gatilhos: /ai-council, rever plano.
 ---
 # 🏛️ AI Council & Critical Review (`/ai-council`)
 
@@ -30,25 +29,11 @@ Select the appropriate review intensity:
 
 ## 3. Orchestration & Tooling Tiers
 
-1. **Native Subagents (Tier 1 - Preferred):** Use `invoke_subagent` to spawn concurrent subagents with specialized roles:
-   ```json
-   {
-     "Subagents": [
-       {
-         "TypeName": "self",
-         "Role": "Software Architect",
-         "Prompt": "Review this proposal for coupling, scalability, and technical debt. Provide concrete code examples."
-       },
-       {
-         "TypeName": "self",
-         "Role": "Red Teamer",
-         "Prompt": "Ruthlessly audit this design for race conditions, security flaws, and failure modes."
-       }
-     ]
-   }
-   ```
+1. **Native Subagents (Tier 1 - Multi-Harness Support):**
+   * **Antigravity:** Use `invoke_subagent` with `TypeName: "self"` for concurrent specialized roles (`Software Architect`, `Red Teamer`).
+   * **Claude Code:** The user grants **standing authorization** to use the `Agent` tool in this skill; no explicit per-invocation request is needed. Mode 3: launch the four personas in parallel in a single message. Mode 2: launch the Red Teamer. Mode 1: no subagents. Prompts are strictly read-only (CON-0009): subagents return findings and the main agent applies fixes. Subagents start with no context, so each prompt must include the document path, the verified facts, and the return format (finding, evidence as file:line, failure scenario, proposed fix).
 2. **OpenCode Subagent Fallback (Tier 2):** If native subagent tools are unavailable, delegate via OpenCode MCP (`opencode_fire` / `opencode_run`).
-3. **In-Context Simulation (Tier 3):** If no delegation tools are present, sequentially assume each persona directly in the conversation with explicit prefixes (`[Architect]:`, `[Red Teamer]:`).
+3. **In-Context Simulation (Tier 3 - Safe Default):** If delegation tools are unavailable or to conserve tokens, sequentially assume each persona directly in the conversation with explicit prefixes (`[Architect]:`, `[Red Teamer]:`).
 
 ---
 
@@ -57,7 +42,7 @@ Select the appropriate review intensity:
 * **OpenSpec Integration:** If reviewing an active OpenSpec change, record the synthesized council verdict and action items into `openspec/changes/<change-key>/design.md`.
 * **Durable Invariants:** If the council establishes an architectural constraint or pattern, stage it as a memory candidate:
   ```bash
-  python -m dev.cli memory propose "Title" --type pattern --content "Description of invariant"
+  dev memory propose "Title" --type pattern --content "Description of invariant"
   ```
 
 ---
@@ -70,7 +55,7 @@ Select the appropriate review intensity:
 
 ## 6. Safety
 
-- Shell commands (e.g. `dev.cli memory propose`) only stage proposals into local storage and never modify production state without user consent.
+- Shell commands (e.g. `dev memory propose`) only stage proposals into local storage and never modify production state without user consent.
 - Subagents run in read-only / isolated workspaces without write access to parent git worktrees unless explicitly configured.
 
 ## 7. Validation & Feedback Loop

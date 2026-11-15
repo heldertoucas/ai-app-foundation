@@ -15,8 +15,8 @@ Conducts a rigorous technical interview to de-risk proposals, challenge assumpti
 3. **Structured Options with Recommendation**: Every question must follow the DU Universal Interaction rule:
    - Provide $\ge 3$ concrete numbered options.
    - List your recommended option first with `(Recommended)`.
-   - Provide an Open Answer / Other option as the final option.
-   - Alternatively, invoke the interactive `ask_question` tool when supported by the UI.
+   - Provide an Open Answer / Other option as the final option (or rely on UI native input).
+   - Alternatively, invoke the interactive dialog tool when supported (`ask_question` in Antigravity, `AskUserQuestion` in Claude Code).
 4. **No Premature Implementation**: Do not write project code or commit changes until the interview is complete and aligned.
 
 ---
@@ -29,5 +29,5 @@ Conducts a rigorous technical interview to de-risk proposals, challenge assumpti
 2. **Canonical Architectural Decisions (ADRs)**:
    - If key architectural decisions emerge, propose them to DU memory:
      ```bash
-     python -m dev.cli memory propose "ADR Title" --type decision --content "Context, decision, and consequences"
+     dev memory propose "ADR Title" --type decision --content "Context, decision, and consequences"
      ```

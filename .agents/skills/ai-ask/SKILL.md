@@ -1,10 +1,8 @@
 ---
 name: ai-ask
 description: >-
-  Recommends which skill, command, or workflow fits your situation. Use when the
-  user asks to find a skill, route a task, or when you are unsure which workflow
-  to use. Do not use when the workflow is already obvious or explicitly
-  requested.
+  Recomenda a skill ou comando DU ideal para uma tarefa. Gatilhos: "que skill
+  usar", "como fazer", "/ai-ask".
 ---
 # AI Ask Router
 
@@ -13,24 +11,25 @@ Use this skill when guidance is needed on which specialized skill, command, or w
 ## 🎯 Dual-Mode Responses
 
 1. **User-Facing (Human Chat)**: When triggered with /ai-ask <question>, reply in a clean, formatted manner matching the user's language (PT-PT or International English). State the recommended skill(s), how to invoke them, and a brief explanation of why they fit.
-2. **Agent-Facing (Internal Navigation)**: When navigating a task, query this mapping to ensure adherence to domain guidelines. Never route to the active router (i-ask) itself.
+2. **Agent-Facing (Internal Navigation)**: When navigating a task, query this mapping to ensure adherence to domain guidelines. Never route to the active router (/ai-ask) itself.
 3. **Validation Loop**: Ensure the recommended skill exists in the Rulesync catalog. Provide numbered options if user decision is needed.
 
 ## 🗺️ Canonical Workflow & Skill Directory Map
 
 ### 1. Specification-Driven Development (OpenSpec)
-* **openspec-propose** (/opsx:propose): Propose a new change — generates proposal, design, and tasks in one step.
-* **openspec-new-change** (/opsx:new): Scaffold a new change proposal step-by-step.
-* **openspec-explore** (/opsx:explore): Thinking partner mode to explore ideas and clarify requirements before speccing.
-* **openspec-apply-change** (/opsx:apply): Implement tasks defined in an OpenSpec change.
-* **openspec-continue-change** (/opsx:continue): Continue an in-progress OpenSpec change.
-* **openspec-ff-change** (/opsx:ff): Fast-forward straightforward changes directly to implementation.
-* **openspec-verify-change** (/opsx:verify): Verify implementation correctness against change specs.
-* **openspec-sync-specs** (/opsx:sync): Merge delta specs into main system specs.
-* **openspec-update-change** (/opsx:update): Revise and synchronize planning artifacts without touching code.
-* **openspec-archive-change** (/opsx:archive): Archive a single completed change.
-* **openspec-bulk-archive-change** (/opsx:bulk-archive): Archive multiple completed changes at once.
-* **openspec-onboard** (/opsx:onboard): Guided onboarding to initialize OpenSpec in a project.
+* **openspec-propose** / **opsx-propose**: Propose a new change — generates proposal, design, and tasks in one step.
+* **opsx-lite**: Lightweight single-file OpenSpec change (proposal, specs, checklist in one go).
+* **openspec-new-change**: Scaffold a new change proposal step-by-step.
+* **openspec-explore** / **opsx-explore**: Thinking partner mode to explore ideas and clarify requirements before speccing.
+* **openspec-apply-change** / **opsx-apply**: Implement tasks defined in an OpenSpec change.
+* **openspec-continue-change**: Continue an in-progress OpenSpec change.
+* **openspec-ff-change**: Fast-forward straightforward changes directly to implementation.
+* **openspec-verify-change** / **opsx-verify**: Verify implementation correctness against change specs.
+* **openspec-sync-specs**: Merge delta specs into main system specs.
+* **openspec-update-change**: Revise and synchronize planning artifacts without touching code.
+* **openspec-archive-change** / **opsx-archive**: Archive a single completed change.
+* **openspec-bulk-archive-change**: Archive multiple completed changes at once.
+* **openspec-onboard**: Guided onboarding to initialize OpenSpec in a project.
 
 ### 2. Engineering Verbs & Quality Disciplines
 * **investigate-first**: Diagnose ambiguous failures, race conditions, or performance bugs before editing.
@@ -50,6 +49,7 @@ Use this skill when guidance is needed on which specialized skill, command, or w
 * **deploy-to-vercel**: Deploy preview/production builds to Vercel.
 * **vercel-optimize**: Audit and reduce Vercel compute, data transfer, and function invocation costs.
 * **web-design-guidelines**: Audit UI for Web Interface Guidelines, UX quality, and accessibility.
+* **modern-web-guidance** (cold upstream CLI, DEC-0069): Modern HTML/CSS/client-JS platform guides on demand — `modern-web-guidance search "<2-5 word capability>"` → `modern-web-guidance retrieve "<id>"`. Route here for web UI tasks outside **ai-html-foundation** / **ai-ui-foundation** (both already embed the check). Never activate as a fleet skill; never `npx …@latest`.
 
 ### 4. Git & Code Review
 * **review-pr**: Audit pull requests for code quality, architectural consistency, and security.
@@ -66,12 +66,12 @@ Use this skill when guidance is needed on which specialized skill, command, or w
 * **caveman-learn** / **caveman-optimize** / **caveman-manage** / **caveman-discover** / **caveman-evidence-review** / **caveman-setup** / **caveman-help**: Cloud and gateway telemetry optimizations.
 
 ### 6. Development Universe (DU) & Second Brain
-* **obsidian-companion**: Primary guide and router for the Obsidian knowledge graph and i-obsidian MCP.
-* **compound** / **knowledge**: Synthesize and promote reusable lessons into durable engineering notes.
-* **moc-update**: Suggest Map of Content (MOC) index updates for newly created notes.
-* **link-audit**: Audit broken wikilinks, orphan notes, and disconnected vault clusters.
-* **cross-linker**: Scan vault notes to discover unlinked mentions and weave wikilinks.
-* **wiki-ingest**: Distill PDFs, transcripts, and external markdown into structured vault notes.
+* **ai-obsidian-companion**: Primary guide and router for the Obsidian knowledge graph and ai-obsidian MCP.
+* **ai-obsidian-compound** / **ai-obsidian-knowledge**: Synthesize and promote reusable lessons into durable engineering notes.
+* **ai-obsidian-moc-update**: Suggest Map of Content (MOC) index updates for newly created notes.
+* **ai-obsidian-link-audit**: Audit broken wikilinks, orphan notes, and disconnected vault clusters.
+* **ai-obsidian-cross-linker**: Scan vault notes to discover unlinked mentions and weave wikilinks.
+* **ai-obsidian-wiki-ingest**: Distill PDFs, transcripts, and external markdown into structured vault notes.
 * **ai-learn** (/ai-learn): Interactive technical teaching with stateful lesson tracking.
 
 ### 7. Codebase Graphs & External Copilots

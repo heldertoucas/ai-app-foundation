@@ -7,6 +7,9 @@ export const metadata = {
   description: "Unified/split diff viewers, GFM documentation readers, masked credentials, and nested file tree explorers.",
 };
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface InspectionPageProps {
   searchParams: Promise<{
     invariant?: string;
