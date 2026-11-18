@@ -149,8 +149,8 @@ ${ruleSyncData.harnessStatuses.map((h) => `- **${h.name}**: ${h.status} (Last sy
         </div>
         <div className="flex flex-col gap-3">
           <h2 className="text-lg font-semibold font-heading text-foreground">Masked Secret Viewer (Server-Redacted)</h2>
-          <MaskedSecretViewer label="ANTHROPIC_API_KEY" value="sk-ant-api03-live-49190184910248102948102" />
-          <MaskedSecretViewer label="GEMINI_API_KEY" value="AIzaSyD-mock-secret-key-109284019284" />
+          <MaskedSecretViewer label="ANTHROPIC_API_KEY" value="demo-anthropic-key-placeholder-0000" />
+          <MaskedSecretViewer label="GEMINI_API_KEY" value="demo-gemini-key-placeholder-0000" />
           <MaskedSecretViewer label="DATABASE_URL" value="file:./dev.db?connection_limit=1&busy_timeout=10000" />
         </div>
       </div>
