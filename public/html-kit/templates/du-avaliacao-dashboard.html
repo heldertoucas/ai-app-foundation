@@ -32,8 +32,8 @@
       <div class="du-card x-s5">
         <!-- Abas Formador / Admin -->
         <div class="x-s6">
-          <button class="ui-button ui-button-secondary x-s7" id="tab-trainer-btn" data-du-on-click="[[&quot;switchAuthTab&quot;,[&quot;trainer&quot;]]]">Formador (PIN)</button>
-          <button class="ui-button ui-button-ghost x-s8" id="tab-admin-btn" data-du-on-click="[[&quot;switchAuthTab&quot;,[&quot;admin&quot;]]]">Admin (Password)</button>
+          <button class="ui-btn ui-btn-secondary x-s7" id="tab-trainer-btn" data-du-on-click="[[&quot;switchAuthTab&quot;,[&quot;trainer&quot;]]]">Formador (PIN)</button>
+          <button class="ui-btn ui-btn-ghost x-s8" id="tab-admin-btn" data-du-on-click="[[&quot;switchAuthTab&quot;,[&quot;admin&quot;]]]">Admin (Password)</button>
         </div>
 
         <div class="x-s9" id="lockout-alert">
@@ -74,7 +74,7 @@
             <button class="pin-btn x-s16" data-du-on-click="[[&quot;backspacePin&quot;,[]]]">⌫</button>
           </div>
 
-          <button class="ui-button ui-button-primary x-s17" id="submit-trainer-btn" data-du-on-click="[[&quot;validateTrainerPin&quot;,[]]]">
+          <button class="ui-btn x-s17" id="submit-trainer-btn" data-du-on-click="[[&quot;validateTrainerPin&quot;,[]]]">
             Entrar no Painel do Formador
           </button>
         </div>
@@ -87,7 +87,7 @@
           </div>
           <input class="ui-input x-s20" id="admin-pass-input" type="password" placeholder="••••••••••••" />
 
-          <button class="ui-button ui-button-primary x-s17" id="submit-admin-btn" data-du-on-click="[[&quot;validateAdminPassword&quot;,[]]]">
+          <button class="ui-btn x-s17" id="submit-admin-btn" data-du-on-click="[[&quot;validateAdminPassword&quot;,[]]]">
             Aceder ao Cockpit Administrativo
           </button>
         </div>
@@ -117,8 +117,8 @@
             <span class="x-s24" id="live-clock">--:--:--</span>
           </div>
 
-          <button class="ui-button ui-button-outline x-s15" id="toggle-view-btn" data-du-on-click="[[&quot;toggleViewMode&quot;,[]]]">Alternar Visão</button>
-          <button class="ui-button ui-button-ghost x-s25" data-du-on-click="[[&quot;logout&quot;,[]]]">Terminar Sessão</button>
+          <button class="ui-btn ui-btn-outline x-s15" id="toggle-view-btn" data-du-on-click="[[&quot;toggleViewMode&quot;,[]]]">Alternar Visão</button>
+          <button class="ui-btn ui-btn-ghost x-s25" data-du-on-click="[[&quot;logout&quot;,[]]]">Terminar Sessão</button>
         </div>
       </header>
 
@@ -153,7 +153,7 @@
             <h2 class="x-s33">Sincronizações Externas</h2>
             <p class="x-s34">Google Sheets Pauta Sync &amp; Neon DB Wal Cache</p>
           </div>
-          <button class="ui-button ui-button-primary x-s8" id="sync-now-btn" data-du-on-click="[[&quot;triggerSync&quot;,[]]]">Forçar Sincronização</button>
+          <button class="ui-btn x-s8" id="sync-now-btn" data-du-on-click="[[&quot;triggerSync&quot;,[]]]">Forçar Sincronização</button>
         </div>
 
         <div class="du-grid-3">
@@ -200,7 +200,7 @@
         <div class="x-s41">
           <input class="ui-input x-s42" id="table-search-input" type="text" placeholder="Pesquisar formando por nome, NIF ou ID..." data-du-on-input="[[&quot;onSearchInput&quot;,[]]]" />
           <div class="x-s43">
-            <button class="ui-button ui-button-outline x-s8" data-du-on-click="[[&quot;exportCsv&quot;,[]]]">Exportar Pauta (CSV)</button>
+            <button class="ui-btn ui-btn-outline x-s8" data-du-on-click="[[&quot;exportCsv&quot;,[]]]">Exportar Pauta (CSV)</button>
           </div>
         </div>
 

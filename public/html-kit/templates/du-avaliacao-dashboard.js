@@ -120,8 +120,8 @@
       
       const tBtn = document.getElementById('tab-trainer-btn');
       const aBtn = document.getElementById('tab-admin-btn');
-      tBtn.className = isTrainer ? 'ui-button ui-button-secondary' : 'ui-button ui-button-ghost';
-      aBtn.className = isTrainer ? 'ui-button ui-button-ghost' : 'ui-button ui-button-secondary';
+      tBtn.className = isTrainer ? 'ui-btn ui-btn-secondary' : 'ui-btn ui-btn-ghost';
+      aBtn.className = isTrainer ? 'ui-btn ui-btn-ghost' : 'ui-btn ui-btn-secondary';
       document.getElementById('error-alert').style.display = 'none';
     }
 
