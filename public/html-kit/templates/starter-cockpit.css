@@ -1,8 +1,9 @@
 
     /* Estilos de layout estático sem necessidade de Tailwind compiler */
     .du-container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
-    .du-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
-    .du-flex-row { display: flex; align-items: center; gap: 0.75rem; }
+    .du-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+    .du-flex-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; min-width: 0; }
+    .du-command-bar { max-width: 100%; min-width: 0; }
     .du-grid-2 { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem; }
     @media (min-width: 768px) { .du-grid-2 { grid-template-columns: 2fr 1fr; } }
   

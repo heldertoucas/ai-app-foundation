@@ -334,7 +334,6 @@
 .du-view-container {
   flex: 1;
   overflow-y: auto;
-  overflow-x: hidden;
   padding: 1.5rem;
   max-width: 100%;
   width: 100%;
