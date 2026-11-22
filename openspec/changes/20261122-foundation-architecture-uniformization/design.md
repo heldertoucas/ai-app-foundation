@@ -159,3 +159,39 @@ Cada `README.md` tem no máximo uma página e define:
 ## 9. Reversão
 
 Cada fase é um commit ou PR independente. `git revert` repõe a fase. Os movimentos usam `git mv` e ficam separados das alterações de conteúdo.
+
+## 10. AI Council Verdict
+
+**Data:** 2026-11-22. **Modo:** 3, com 5 revisores cegos e só de leitura.
+**Veredito:** **BLOQUEADO. Não executar os pacotes até fechar B1 a B17.**
+**Fase 0:** `openspec validate --strict` e `node --check` das 4 ferramentas passam.
+**Fase 2:** os bloqueadores abaixo foram confirmados no código ou nos pacotes. B1 e B2 foram confirmados por leitura, sem exploração.
+
+| Dimensão | Resultado | Motivo |
+|---|---|---|
+| **Architecture** | Blocker | Ordem de fases e contrato incoerentes |
+| **Security** | Blocker | App exposta na rede local e ações sem proteção |
+| **Resilience** | Blocker | Comandos e gates falham quando seguidos à letra |
+| **UX/Scope** | Blocker | Shell móvel, landmarks e assets ficam incorretos |
+
+| ID | Pacote | Problema verificado | Correção |
+|---|---|---|---|
+| **B1** | WP-01 | `next dev` escuta em `*:4300` e os cabeçalhos podem ser forjados na rede local | Ligar `dev` e `start` a `127.0.0.1` |
+| **B2** | novo | Server actions mutáveis não têm guarda; sem `Origin`, o Next só avisa | Novo pacote M0 com guarda de Host em todas as ações |
+| **B3** | WP-35, 37, 50, 60 | O modo estrito exige specs e `data-kit` criados depois, e bloqueia M3 | Mover WP-50 para antes e dividir o modo estrito por fase |
+| **B4** | Gate | `foundation:check` falha em worktree limpa sem ficheiros ignorados | Definir um gate local e de CI sem esses ficheiros |
+| **B5** | WP-40, 41 | Edição antes de exigir árvore limpa; move e referências não são atómicos | `fonts` no tool e um único pacote atómico |
+| **B6** | WP-42 | Compara com a baseline anterior às alterações de M2 | Criar baseline imediatamente antes do move |
+| **B7** | WP-36, 91 | A ferramenta de auditoria não está no change | Adicionar auditoria e limiares às ferramentas |
+| **B8** | Vários | `$CH` e `$BASE` nunca são definidos em shell | Preâmbulo copiável em cada bloco |
+| **B9** | WP-24, 27 | Avisos vão para stderr e o `grep` lê só stdout | Usar `2>&1` |
+| **B10** | WP-54 | `git mv` sem caminho e check ainda exige `recipe.json` | 4 caminhos exatos e check atualizado |
+| **B11** | WP-01 | Teste em worktree descartável não contém os ficheiros novos | Reordenar com WP-02 e dar comandos exatos |
+| **B12** | WP-31, 40 | Caminho das imagens fica um nível errado depois do move | Reescrever para `../../../assets/` e validar |
+| **B13** | WP-31 | Layout Cockpit cria `main` duplicado em admin e formador | Layout com `div` e um `main` por vista |
+| **B14** | WP-25 | Mission Control não carrega o core; `reference` usa `.du-topbar` | Pacote D4 antes de WP-25 e excluir `reference` |
+| **B15** | WP-23 | `ui-btn-primary` não existe | Mapear para `ui-btn` e confirmar visualmente |
+| **B16** | WP-27 | Contrato rejeita portas válidas de KNW-0025 | Uma única lista de portas aprovada |
+| **B17** | WP-05, 12 | Listas de ficheiros incompletas forçam `BLOCKED` | Enumerar ficheiros e seletores exatos |
+
+**Concerns:** os relatórios trouxeram 39 preocupações, algumas repetidas. As mais importantes são foco do drawer, contraste do `--ring`, clickjacking, ações privilegiadas no registo, downloads sem hash, `run-dev.command`, documentação com caminhos antigos, recuperação após falha e compatibilidade fora do Chromium.
