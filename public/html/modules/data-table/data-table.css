@@ -1,0 +1,18 @@
+.du-table-skeleton {
+  height: 1rem;
+  width: 80%;
+  background: var(--muted);
+  border-radius: var(--radius);
+}
+
+.du-table-error {
+  text-align: center;
+  color: var(--destructive);
+  padding: 1.5rem;
+}
+
+.du-table-empty {
+  text-align: center;
+  color: var(--muted-foreground);
+  padding: 1.5rem;
+}

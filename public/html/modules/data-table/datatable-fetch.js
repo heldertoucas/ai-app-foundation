@@ -1,18 +1,8 @@
 /**
  * DU HTML Foundation Kit — Dynamic DataTable Fetch
- * Zero dependencies / Clean native fetch wrapper
- * Renders JSON feeds into shadcn .ui-table structures with loading skeletons and error handling.
+ * Zero dependencies / Safe DOM rendering
+ * Supports fetch() over HTTP(S) and <script type="application/json"> fallback under file://.
  */
-
-function escapeHtml(str) {
-  if (str === null || str === undefined) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
 
 class DuDataTable {
   constructor(selector, options = {}) {
@@ -27,8 +17,15 @@ class DuDataTable {
     if (!this.table) return [];
     return Array.from(this.table.querySelectorAll('thead th')).map((th) => ({
       key: th.getAttribute('data-field') || th.textContent.trim().toLowerCase(),
-      label: th.textContent.trim()
+      label: th.textContent.trim(),
     }));
+  }
+
+  _readInlineJson(source) {
+    const targetId = source.startsWith('#') ? source.slice(1) : source;
+    const scriptEl = document.getElementById(targetId) || document.querySelector('script[type="application/json"][data-du-table-data]');
+    if (!scriptEl) return null;
+    return JSON.parse(scriptEl.textContent || '[]');
   }
 
   async load(overrideUrl) {
@@ -39,9 +36,15 @@ class DuDataTable {
     this._renderSkeleton();
 
     try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
+      let data;
+      if (location.protocol === 'file:' || url.startsWith('#')) {
+        data = this._readInlineJson(url);
+        if (data === null) throw new Error('Inline JSON data element not found for file:// mode');
+      } else {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        data = await res.json();
+      }
       const rows = Array.isArray(data) ? data : data.items || [];
       this.renderRows(rows);
     } catch (err) {
@@ -51,43 +54,63 @@ class DuDataTable {
 
   _renderSkeleton() {
     const colCount = this.fields.length || 3;
-    let html = '';
+    const trs = [];
     for (let i = 0; i < 4; i++) {
-      html += '<tr>';
+      const tr = document.createElement('tr');
       for (let j = 0; j < colCount; j++) {
-        html += '<td><div class="du-skeleton" style="height: 1rem; width: 80%; background: var(--muted); border-radius: 4px; animation: pulse 1.5s infinite;"></div></td>';
+        const td = document.createElement('td');
+        const sk = document.createElement('div');
+        sk.className = 'du-skeleton du-table-skeleton';
+        td.append(sk);
+        tr.append(td);
       }
-      html += '</tr>';
+      trs.push(tr);
     }
-    this.tbody.innerHTML = html;
+    this.tbody.replaceChildren(...trs);
   }
 
   _renderError(msg) {
     const colCount = this.fields.length || 3;
-    this.tbody.innerHTML = `<tr><td colspan="${colCount}" style="text-align: center; color: var(--destructive); padding: 1.5rem;">Failed to load data: ${escapeHtml(msg)}</td></tr>`;
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = colCount;
+    td.className = 'du-table-error';
+    td.textContent = `Falha ao carregar dados: ${String(msg ?? '')}`;
+    tr.append(td);
+    this.tbody.replaceChildren(tr);
   }
 
   renderRows(rows) {
     if (!rows.length) {
       const colCount = this.fields.length || 3;
-      this.tbody.innerHTML = `<tr><td colspan="${colCount}" style="text-align: center; color: var(--muted-foreground); padding: 1.5rem;">No records found.</td></tr>`;
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = colCount;
+      td.className = 'du-table-empty';
+      td.textContent = 'Sem registos encontrados.';
+      tr.append(td);
+      this.tbody.replaceChildren(tr);
       return;
     }
 
-    this.tbody.innerHTML = rows
-      .map((row) => {
-        const cells = this.fields
-          .map((f) => {
-            const rawVal = row[f.key] !== undefined ? row[f.key] : '';
-            const cellContent = this.renderers[f.key]
-              ? this.renderers[f.key](rawVal, row)
-              : escapeHtml(rawVal);
-            return `<td>${cellContent}</td>`;
-          })
-          .join('');
-        return `<tr>${cells}</tr>`;
-      })
-      .join('');
+    const trs = rows.map((row) => {
+      const tr = document.createElement('tr');
+      for (const f of this.fields) {
+        const td = document.createElement('td');
+        const rawVal = row[f.key] !== undefined ? row[f.key] : '';
+        if (this.renderers[f.key]) {
+          const out = this.renderers[f.key](rawVal, row);
+          if (out instanceof Node) td.append(out);
+          else td.textContent = String(out ?? '');
+        } else {
+          td.textContent = rawVal === null || rawVal === undefined ? '' : String(rawVal);
+        }
+        tr.append(td);
+      }
+      return tr;
+    });
+
+    this.tbody.replaceChildren(...trs);
   }
 }
 

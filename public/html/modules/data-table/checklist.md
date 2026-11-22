@@ -1,7 +1,8 @@
 # Dynamic DataTable Fetch Recipe Checklist
 
-- [ ] Passo 1: Incluir o script `datatable-fetch.js` no final do `<body>`:
+- [ ] Passo 1: Incluir a folha de estilos e o script:
   ```html
+  <link rel="stylesheet" href="../../modules/data-table/data-table.css">
   <script src="../../modules/data-table/datatable-fetch.js" defer></script>
   ```
 - [ ] Passo 2: Definir a tabela HTML com o atributo `data-du-table-source="URL_DO_JSON"`:

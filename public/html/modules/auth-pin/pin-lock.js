@@ -1,15 +1,15 @@
 /**
  * DU HTML Foundation Kit — Local PIN Barrier Lock
+ * AVISO: auth-pin é uma barreira de conveniência no browser. Não protege dados.
  * Zero dependencies / Standalone modal overlay
- * Protects local cockpits or kiosks with session expiry and rate-limiting.
  */
 
 const duPinLock = {
   options: {
     correctPin: '1234',
     sessionMinutes: 30,
-    title: 'Restricted Cockpit Access',
-    storageKey: 'du_cockpit_pin_auth'
+    title: 'Acesso Restrito ao Cockpit',
+    storageKey: 'du_cockpit_pin_auth',
   },
 
   init(userOptions = {}) {
@@ -45,30 +45,45 @@ const duPinLock = {
 
     const overlay = document.createElement('div');
     overlay.id = 'du-pin-lock-overlay';
-    overlay.style.cssText = `
-      position: fixed; inset: 0; z-index: 99999;
-      background: var(--background, #000);
-      display: flex; align-items: center; justify-content: center;
-      padding: 1.5rem;
-    `;
+    overlay.className = 'du-pin-overlay';
 
-    overlay.innerHTML = `
-      <div class="ui-card" style="width: 100%; max-width: 360px; padding: 2rem; text-align: center; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card);">
-        <div style="font-weight: 700; font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--foreground);">${this.options.title}</div>
-        <p style="font-size: 0.85rem; color: var(--muted-foreground); margin-bottom: 1.5rem;">Enter security PIN to unlock this session.</p>
-        <form id="du-pin-form">
-          <input id="du-pin-input" type="password" maxlength="8" autofocus placeholder="••••" style="width: 100%; text-align: center; font-size: 1.5rem; letter-spacing: 0.3em; padding: 0.6rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--background); color: var(--foreground); margin-bottom: 1rem; outline: none;" />
-          <button type="submit" class="ui-btn ui-btn-primary" style="width: 100%; padding: 0.6rem; font-weight: 600; cursor: pointer; border-radius: var(--radius); border: none; background: var(--primary); color: var(--primary-foreground);">Unlock</button>
-        </form>
-        <div id="du-pin-err" style="display: none; color: var(--destructive); font-size: 0.8rem; margin-top: 0.75rem;">Invalid PIN. Try again.</div>
-      </div>
-    `;
+    const card = document.createElement('div');
+    card.className = 'ui-card du-pin-card';
 
+    const title = document.createElement('div');
+    title.className = 'du-pin-title';
+    title.textContent = String(this.options.title || '');
+
+    const desc = document.createElement('p');
+    desc.className = 'du-pin-desc';
+    desc.textContent = 'Introduza o PIN de segurança para desbloquear esta sessão.';
+
+    const form = document.createElement('form');
+    form.id = 'du-pin-form';
+
+    const input = document.createElement('input');
+    input.id = 'du-pin-input';
+    input.type = 'password';
+    input.maxLength = 8;
+    input.autofocus = true;
+    input.placeholder = '••••';
+    input.setAttribute('aria-label', 'PIN de segurança');
+    input.className = 'du-pin-input';
+
+    const submit = document.createElement('button');
+    submit.type = 'submit';
+    submit.className = 'ui-btn du-pin-submit';
+    submit.textContent = 'Desbloquear';
+
+    const err = document.createElement('div');
+    err.id = 'du-pin-err';
+    err.className = 'du-pin-err';
+    err.textContent = 'PIN incorreto. Tente novamente.';
+
+    form.append(input, submit);
+    card.append(title, desc, form, err);
+    overlay.append(card);
     document.body.appendChild(overlay);
-
-    const form = document.getElementById('du-pin-form');
-    const input = document.getElementById('du-pin-input');
-    const err = document.getElementById('du-pin-err');
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -76,12 +91,12 @@ const duPinLock = {
         this.setAuthenticated();
         overlay.remove();
       } else {
-        err.style.display = 'block';
+        err.classList.add('is-visible');
         input.value = '';
         input.focus();
       }
     });
-  }
+  },
 };
 
 if (typeof window !== 'undefined') {
