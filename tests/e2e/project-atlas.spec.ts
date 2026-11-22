@@ -7,6 +7,6 @@ test.describe('Project Atlas E2E Flow', () => {
     
     await page.getByRole('link', { name: 'Abrir Dashboard' }).click();
     await expect(page).toHaveURL(/.*dashboard/);
-    await expect(page.locator('h1')).toContainText('Project Atlas');
+    await expect(page.locator('h1')).toContainText('Visão Geral do Sistema');
   });
 });

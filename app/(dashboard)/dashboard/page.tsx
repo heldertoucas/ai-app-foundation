@@ -1,5 +1,8 @@
 import { db } from '@/lib/db';
 import { createAtlasProject, deleteAtlasProject } from './atlas-actions';
+import { getComplianceMatrixData } from '@/lib/du/compliance-adapter';
+import { getContextTelemetry } from '@/lib/du/context-adapter';
+import { getMemoryCandidates } from '@/lib/du/memory-adapter';
 import Link from 'next/link';
 import {
   Card,
@@ -53,10 +56,15 @@ export default async function DashboardPage({
     where.status = statusFilter;
   }
 
-  const projects = await db.project.findMany({
-    where,
-    orderBy: { createdAt: 'desc' },
-  });
+  const [projects, complianceData, contextTelemetry, memoryCandidates] = await Promise.all([
+    db.project.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+    }),
+    getComplianceMatrixData(),
+    getContextTelemetry(),
+    getMemoryCandidates(),
+  ]);
 
   const activeCount = projects.filter((p: any) => p.status === 'Active').length;
   const totalCount = projects.length;
@@ -64,16 +72,16 @@ export default async function DashboardPage({
   const completionRate = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 100;
 
   return (
-    <div className="flex flex-col gap-8 max-w-7xl mx-auto px-4 py-8 sm:px-6">
+    <div className="flex flex-col gap-8 w-full min-w-0 max-w-7xl mx-auto px-4 py-8 sm:px-6">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex flex-col gap-1">
           <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-2.5">
             <Folder className="size-7 text-primary" />
-            Project Atlas
+            Visão Geral do Sistema
           </h1>
           <p className="text-sm text-muted-foreground">
-            Executive project intelligence, operational velocity, and delivery milestones.
+            Cockpit central de inteligência operacional, conformidade DU e projetos locais.
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -91,30 +99,30 @@ export default async function DashboardPage({
       {/* KPI Summary Cards Grid using Universal Dashboard Components */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <KpiStatCard
-          title="Active Projects"
+          title="Projetos Ativos"
           value={activeCount}
-          description={`${totalCount} total initiatives tracked`}
+          description={`${totalCount} projetos locais · ${completedCount} concluídos (${completionRate}%)`}
           change={14.2}
-          changePeriod="vs last sprint"
+          changePeriod="vs último sprint"
           icon={<Folder className="size-4 text-primary" />}
         />
         <KpiStatCard
-          title="Completed"
-          value={completedCount}
-          description="Verified in SQLite WAL"
+          title="Orçamento de Contexto"
+          value={`${contextTelemetry.tokenBudget.usedPercent}%`}
+          description={`${contextTelemetry.tokenBudget.headroom} tok livres`}
           change={8.5}
-          changePeriod="velocity"
-          icon={<CheckCircle className="size-4 text-emerald-500" />}
+          changePeriod="telemetria"
+          icon={<CheckCircle className="size-4 text-status-live-foreground" />}
         />
         <KpiStatCard
-          title="Completion Rate"
-          value={`${completionRate}%`}
-          description={`${completedCount} of ${totalCount} finished`}
-          trend={completionRate >= 80 ? "up" : "neutral"}
+          title="Candidatos Pendentes"
+          value={memoryCandidates.length}
+          description="Ciclo de memória DU"
+          trend="neutral"
           icon={<TrendUp className="size-4 text-primary" />}
         />
         <div className="flex items-center justify-center rounded-[min(var(--radius-4xl),24px)] bg-card border border-border/60 p-2 shadow-xs">
-          <HealthGauge value={completionRate} size={110} strokeWidth={9} label="Delivery Health" />
+          <HealthGauge value={complianceData.overallHealth} size={110} strokeWidth={9} label="Saúde DU" />
         </div>
       </div>
 

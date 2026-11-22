@@ -15,10 +15,10 @@
       "react": null, "differences": ["Sem implementação React nesta migração"]
     },
     {
-      "id": "mission-control", "name": "Mission Control", "blueprint": "dashboard", "starter": false, "parity": "divergent",
+      "id": "mission-control", "name": "Mission Control", "blueprint": "dashboard", "starter": false, "parity": "partial",
       "html": { "entries": ["public/html/kits/mission-control/index.html"], "legacyEntries": ["public/html-kit/templates/du-dashboard.html"] },
       "react": { "routes": ["/dashboard"], "entries": ["app/(dashboard)/dashboard/page.tsx"] },
-      "differences": ["HTML mostra System Overview e React mostra Project Atlas até WP-35"]
+      "differences": ["React lê adaptadores DU e mantém CRUD Prisma de projetos; HTML usa fixtures estáticas e vistas numa só página"]
     },
     {
       "id": "cockpit-starter", "name": "Cockpit Starter", "blueprint": "cockpit", "starter": true, "parity": "single-stack",
