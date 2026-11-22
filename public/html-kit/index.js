@@ -16,7 +16,7 @@
         });
 
         if (res.ok) {
-          showCopySuccess(buttonElement, '✓ Terminal Aberto!');
+          showCopySuccess(buttonElement, 'Terminal Aberto!');
           return;
         }
       } catch (err) {
@@ -24,7 +24,7 @@
       }
 
       // 3. Fallback informativo e seguro se o servidor Next.js ainda não estiver em execução
-      showCopySuccess(buttonElement, '✓ Copiado! (⌘+V no Terminal)');
+      showCopySuccess(buttonElement, 'Copiado! (⌘+V no Terminal)');
     }
 
     // Safe Command Copy Helper (Anti-Pastejacking & CML-Defender Safe)
@@ -61,7 +61,7 @@
 
     function showCopySuccess(btn, msg) {
       const originalText = btn.innerHTML;
-      btn.innerHTML = `<span>${msg || '✓ Copiado!'}</span>`;
+      const s = document.createElement('span'); s.textContent = msg || 'Copiado!'; btn.replaceChildren(s);
       btn.classList.add('copied');
       setTimeout(() => {
         btn.innerHTML = originalText;
@@ -120,7 +120,7 @@
     const themeBtn = document.getElementById('theme-toggle');
     themeBtn.addEventListener('click', () => {
       const isDark = document.documentElement.classList.toggle('dark');
-      themeBtn.textContent = isDark ? '🌙' : '☀️';
+      themeBtn.textContent = isDark ? 'Escuro' : 'Claro';
       try {
         localStorage.setItem('du_theme', isDark ? 'dark' : 'light');
       } catch {}
@@ -131,7 +131,7 @@
       const saved = localStorage.getItem('du_theme');
       if (saved === 'light') {
         document.documentElement.classList.remove('dark');
-        themeBtn.textContent = '☀️';
+        themeBtn.textContent = 'Claro';
       }
     } catch {}
   

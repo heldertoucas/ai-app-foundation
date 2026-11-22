@@ -1166,3 +1166,6 @@
 
 
 .du-nav-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+.du-icon { width: 1rem; height: 1rem; flex-shrink: 0; stroke: currentColor; fill: none; }
+.du-icon-lg { width: 1.25rem; height: 1.25rem; }
