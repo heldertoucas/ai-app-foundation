@@ -1,0 +1,30 @@
+
+    /* Estilos de layout estático sem necessidade de Tailwind compiler */
+    .du-container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+    .du-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+    .du-flex-row { display: flex; align-items: center; gap: 0.75rem; }
+    .du-grid-2 { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem; }
+    @media (min-width: 768px) { .du-grid-2 { grid-template-columns: 2fr 1fr; } }
+  
+
+/* Generated from inline style attributes. Triple class keeps inline-like priority, and JS style changes still win. */
+.x-s1.x-s1.x-s1 { font-size: 1.5rem; }
+.x-s2.x-s2.x-s2 { margin: 0; font-size: 1.125rem; font-weight: 700; }
+.x-s3.x-s3.x-s3 { margin: 0; font-size: 0.8rem; color: var(--muted-foreground); }
+.x-s4.x-s4.x-s4 { font-size: 0.875rem; font-weight: 400; color: var(--status-live-foreground); }
+.x-s5.x-s5.x-s5 { font-size: 0.875rem; font-weight: 400; color: var(--muted-foreground); }
+.x-s6.x-s6.x-s6 { background-color: var(--status-live); color: #000; }
+.x-s7.x-s7.x-s7 { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.x-s8.x-s8.x-s8 { display: flex; align-items: center; justify-content: space-between; }
+.x-s9.x-s9.x-s9 { font-size: 0.875rem; }
+.x-s10.x-s10.x-s10 { width: 100%; margin-top: 0.5rem; }
+.x-s11.x-s11.x-s11 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.x-s12.x-s12.x-s12 { margin: 0; font-size: 1.125rem; }
+.x-s13.x-s13.x-s13 { font-size: 0.875rem; color: var(--muted-foreground); margin-bottom: 1rem; }
+.x-s14.x-s14.x-s14 { background-color: var(--muted); padding: 0.75rem; border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.8rem; margin-bottom: 1.5rem; }
+.x-s15.x-s15.x-s15 { display: flex; justify-content: flex-end; gap: 0.5rem; }
+.x-s16.x-s16.x-s16 { margin-bottom: 1rem; }
+.x-s17.x-s17.x-s17 { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem; }
+.x-s18.x-s18.x-s18 { padding: 0.5rem; border-radius: var(--radius); background-color: var(--muted); cursor: pointer; }
+.x-s19.x-s19.x-s19 { padding: 0.5rem; border-radius: var(--radius); cursor: pointer; }
+.x-s20.x-s20.x-s20 { margin-top: 1rem; text-align: right; }

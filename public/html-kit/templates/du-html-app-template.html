@@ -2,6 +2,7 @@
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; font-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DU Standalone HTML App Template</title>
   
@@ -12,6 +13,7 @@
   
   <!-- Modular DU Micro-Runtime -->
   <script src="../du-runtime.js" defer></script>
+<link rel="stylesheet" href="du-html-app-template.css">
 </head>
 <body class="bg-background text-foreground">
 
@@ -19,12 +21,12 @@
     <!-- ==================== SIDEBAR ==================== -->
     <aside class="du-sidebar" aria-label="Sidebar Navigation">
       <div class="du-sidebar-header">
-        <div class="du-stat-icon-wrapper" style="background-color: var(--primary); color: var(--primary-foreground); font-weight: 700;">
+        <div class="du-stat-icon-wrapper x-s1">
           DU
         </div>
         <div>
-          <div style="font-weight: 600; font-size: 0.8125rem;">DU App Template</div>
-          <div style="font-size: 0.6875rem; color: var(--muted-foreground);">Zero-Build / Offline-First</div>
+          <div class="x-s2">DU App Template</div>
+          <div class="x-s3">Zero-Build / Offline-First</div>
         </div>
       </div>
 
@@ -70,7 +72,7 @@
     <!-- ==================== MAIN CONTENT AREA ==================== -->
     <div class="du-app-main">
       <header class="du-topbar">
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <div class="x-s4">
           <h1 id="du-view-title" class="du-topbar-title">Executive Dashboard</h1>
           <div class="du-telemetry-pill du-status-live" role="status">
             <span class="du-ping-dot">
@@ -81,7 +83,7 @@
           </div>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <div class="x-s4">
           <button class="ui-button ui-button-outline ui-button-sm" data-du-modal-open="help-dialog" aria-label="Help and shortcuts">
             Shortcuts (/)
           </button>
@@ -125,11 +127,11 @@
         </section>
 
         <!-- View 2: Table -->
-        <section id="view-table" class="du-view" style="display: none;">
+        <section class="du-view x-s5" id="view-table">
           <div class="du-bento-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-              <h2 style="font-size: 1rem; font-weight: 600;">Entity Records</h2>
-              <input type="search" placeholder="Filter records..." class="ui-input" style="max-width: 250px;" data-du-filter-target="#entity-table" aria-label="Filter entity records">
+            <div class="x-s6">
+              <h2 class="x-s7">Entity Records</h2>
+              <input class="ui-input x-s8" type="search" placeholder="Filter records..." data-du-filter-target="#entity-table" aria-label="Filter entity records">
             </div>
 
             <div class="ui-table-container">
@@ -162,14 +164,14 @@
         </section>
 
         <!-- View 3: Settings -->
-        <section id="view-settings" class="du-view" style="display: none;">
+        <section class="du-view x-s5" id="view-settings">
           <div class="du-bento-card">
-            <h2 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Application Settings</h2>
-            <p style="font-size: 0.8125rem; color: var(--muted-foreground); margin-bottom: 1.5rem;">
+            <h2 class="x-s9">Application Settings</h2>
+            <p class="x-s10">
               Configure offline persistence and user interface preferences.
             </p>
-            <div style="display: flex; gap: 0.75rem;">
-              <button class="ui-button ui-button-outline ui-button-sm" onclick="DU.toast('Settings stored in localStorage');" aria-label="Save Settings">
+            <div class="x-s11">
+              <button class="ui-button ui-button-outline ui-button-sm" aria-label="Save Settings" data-du-on-click="[[&quot;DU.toast&quot;,[&quot;Settings stored in localStorage&quot;]]]">
                 Save Preferences
               </button>
             </div>
@@ -186,7 +188,7 @@
       <button class="ui-button ui-button-ghost ui-button-sm" data-du-modal-close aria-label="Close dialog">✕</button>
     </div>
     <div class="du-dialog-body">
-      <ul style="font-size: 0.875rem; list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.5rem;">
+      <ul class="x-s12">
         <li><kbd class="ui-kbd">/</kbd> Focus Search / Filter</li>
         <li><kbd class="ui-kbd">Esc</kbd> Close Dialog / Drawer</li>
         <li><kbd class="ui-kbd">T</kbd> Toggle Dark / Light Theme</li>
@@ -205,13 +207,14 @@
     </div>
     <div class="du-dialog-body">
       <label class="ui-label" for="item-title">Item Title</label>
-      <input type="text" id="item-title" class="ui-input" placeholder="Enter title..." style="margin-top: 0.25rem;">
+      <input class="ui-input x-s13" type="text" id="item-title" placeholder="Enter title...">
     </div>
     <div class="du-dialog-footer">
       <button class="ui-button ui-button-outline ui-button-sm" data-du-modal-close>Cancel</button>
-      <button class="ui-button ui-button-primary ui-button-sm" data-du-modal-close onclick="DU.toast('Item created successfully');">Save</button>
+      <button class="ui-button ui-button-primary ui-button-sm" data-du-modal-close data-du-on-click="[[&quot;DU.toast&quot;,[&quot;Item created successfully&quot;]]]">Save</button>
     </div>
   </dialog>
 
+<script src="du-html-app-template.js"></script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 <html lang="pt" class="dark">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; font-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ai-app-foundation</title>
   
@@ -11,438 +12,7 @@
   <link rel="stylesheet" href="./du-components.css">
   <script src="./du-runtime.js" defer></script>
 
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 0;
-      background: var(--background);
-      color: var(--foreground);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 6rem 1.5rem;
-    }
-
-    /* Minimalist Hero */
-    .hero {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 3rem 1rem 2rem 1rem;
-      gap: 1.25rem;
-    }
-
-    .hero-icon {
-      width: 72px;
-      height: 72px;
-      border-radius: 1.25rem;
-      background: var(--primary);
-      color: var(--primary-foreground);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.85rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-    }
-
-    .hero-title {
-      font-size: 2.75rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin: 0;
-      color: var(--foreground);
-    }
-
-    .hero-search-wrapper {
-      width: 100%;
-      max-width: 600px;
-      position: relative;
-      margin-top: 0.25rem;
-    }
-
-    .hero-search-input {
-      width: 100%;
-      height: 3.25rem;
-      padding: 0 1.25rem 0 3.25rem;
-      border-radius: 9999px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--foreground);
-      font-size: 1rem;
-      outline: none;
-      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08);
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-
-    .hero-search-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-    }
-
-    .hero-search-icon {
-      position: absolute;
-      left: 1.25rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted-foreground);
-      pointer-events: none;
-    }
-
-    /* Technical Filter Bar */
-    .filter-bar {
-      display: flex;
-      justify-content: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin: 1.25rem 0 3rem 0;
-    }
-
-    .filter-chip {
-      padding: 0.45rem 0.9rem;
-      font-size: 0.825rem;
-      font-weight: 500;
-      border-radius: 9999px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--muted-foreground);
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .filter-chip:hover {
-      background: var(--muted);
-      color: var(--foreground);
-    }
-
-    .filter-chip.active {
-      background: var(--primary);
-      color: var(--primary-foreground);
-      border-color: var(--primary);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    /* Category Section */
-    .category-section {
-      margin-bottom: 3.5rem;
-    }
-
-    .category-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .category-title-group {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .category-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin: 0;
-      letter-spacing: -0.01em;
-    }
-
-    .category-stack-tag {
-      font-family: var(--font-mono, monospace);
-      font-size: 0.75rem;
-      color: var(--muted-foreground);
-    }
-
-    .category-count {
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 0.2rem 0.6rem;
-      border-radius: 9999px;
-      background: var(--muted);
-      color: var(--muted-foreground);
-    }
-
-    /* Cards Grid */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-      gap: 1.5rem;
-    }
-
-    @media (max-width: 640px) {
-      .hero-title { font-size: 2rem; }
-      .cards-grid { grid-template-columns: 1fr; }
-    }
-
-    /* Model Card */
-    .model-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 1rem;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .model-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--ring);
-      box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.15);
-    }
-
-    .card-top {
-      padding: 1.25rem 1.25rem 0.75rem 1.25rem;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 0.75rem;
-    }
-
-    .card-title {
-      font-size: 1rem;
-      font-weight: 700;
-      margin: 0;
-      line-height: 1.3;
-    }
-
-    /* Screenshot Box */
-    .card-screenshot-wrapper {
-      position: relative;
-      width: 100%;
-      height: 220px;
-      background: var(--muted);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      overflow: hidden;
-    }
-
-    .card-screenshot {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top center;
-      transition: transform 0.3s ease;
-      display: block;
-    }
-
-    .model-card:hover .card-screenshot {
-      transform: scale(1.02);
-    }
-
-    /* Terminal Launcher Bar */
-    .card-launcher-bar {
-      padding: 0.6rem 1.25rem;
-      background: rgba(0, 0, 0, 0.2);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.5rem;
-    }
-
-    .cmd-pill {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: var(--background);
-      border: 1px solid var(--border);
-      padding: 0.25rem 0.6rem;
-      border-radius: 0.375rem;
-      font-family: var(--font-mono, monospace);
-      font-size: 0.75rem;
-      color: var(--foreground);
-    }
-
-    .cmd-copy-btn {
-      background: transparent;
-      border: none;
-      color: var(--primary);
-      cursor: pointer;
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 0.2rem 0.5rem;
-      border-radius: 0.25rem;
-      transition: background 0.15s;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    .cmd-copy-btn:hover {
-      background: var(--primary);
-      color: var(--primary-foreground);
-    }
-
-    .cmd-copy-btn.copied {
-      background: rgba(16, 185, 129, 0.15);
-      color: #10b981;
-    }
-
-    .terminal-launch-btn {
-      color: var(--primary);
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 0.25rem 0.6rem;
-      border-radius: 0.375rem;
-      border: 1px solid var(--border);
-      background: var(--card);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      transition: all 0.15s ease;
-    }
-
-    .terminal-launch-btn:hover {
-      background: var(--primary);
-      color: var(--primary-foreground);
-      border-color: var(--primary);
-    }
-
-    .terminal-launch-btn.launched {
-      background: rgba(16, 185, 129, 0.15);
-      color: #10b981;
-      border-color: rgba(16, 185, 129, 0.3);
-    }
-
-    /* Collapsible Details */
-    .card-details {
-      padding: 0.75rem 1.25rem;
-      font-size: 0.8125rem;
-      color: var(--muted-foreground);
-    }
-
-    .card-details summary {
-      cursor: pointer;
-      user-select: none;
-      font-weight: 600;
-      color: var(--foreground);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.25rem 0;
-      list-style: none;
-    }
-
-    .card-details summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .card-details summary::after {
-      content: "▾";
-      font-size: 0.9rem;
-      color: var(--muted-foreground);
-      transition: transform 0.2s ease;
-    }
-
-    .card-details[open] summary::after {
-      transform: rotate(180deg);
-    }
-
-    .details-content {
-      padding: 0.75rem 0 0.25rem 0;
-      border-top: 1px dashed var(--border);
-      margin-top: 0.5rem;
-      line-height: 1.5;
-    }
-
-    .details-row {
-      margin-bottom: 0.5rem;
-    }
-
-    .details-row strong {
-      color: var(--foreground);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      display: block;
-      margin-bottom: 0.15rem;
-    }
-
-    /* Card Actions */
-    .card-actions {
-      margin-top: auto;
-      padding: 0.875rem 1.25rem;
-      background: var(--muted);
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-    }
-
-    .card-badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.2rem 0.6rem;
-      border-radius: 9999px;
-      font-size: 0.725rem;
-      font-weight: 600;
-      font-family: var(--font-mono, monospace);
-    }
-
-    .badge-nextjs {
-      background: rgba(59, 130, 246, 0.12);
-      color: #3b82f6;
-      border: 1px solid rgba(59, 130, 246, 0.25);
-    }
-
-    .badge-zerobuild {
-      background: rgba(16, 185, 129, 0.12);
-      color: #10b981;
-      border: 1px solid rgba(16, 185, 129, 0.25);
-    }
-
-    .badge-recipe {
-      background: rgba(168, 85, 247, 0.12);
-      color: #a855f7;
-      border: 1px solid rgba(168, 85, 247, 0.25);
-    }
-
-    .card-path {
-      font-family: var(--font-mono, monospace);
-      font-size: 0.75rem;
-      color: var(--muted-foreground);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      max-width: 200px;
-    }
-
-    /* Floating Theme Toggle */
-    .floating-theme-btn {
-      position: fixed;
-      top: 1.5rem;
-      right: 1.5rem;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: var(--card);
-      border: 1px solid var(--border);
-      color: var(--foreground);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      z-index: 100;
-      transition: background 0.15s;
-    }
-
-    .floating-theme-btn:hover {
-      background: var(--muted);
-    }
-  </style>
+  <link rel="stylesheet" href="index.css">
 </head>
 <body>
 
@@ -510,7 +80,7 @@
               <div class="cmd-pill">
                 <span>offline • duplo-clique</span>
               </div>
-              <button class="cmd-copy-btn" onclick="copyLaunchCommand('open public/html-kit/templates/du-avaliacao-dashboard.html', this)">
+              <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;open public/html-kit/templates/du-avaliacao-dashboard.html&quot;,{&quot;$this&quot;:true}]]]">
                 <span>Copiar comando Mac</span>
               </button>
             </div>
@@ -550,7 +120,7 @@
               <div class="cmd-pill">
                 <span>offline • standalone</span>
               </div>
-              <button class="cmd-copy-btn" onclick="copyLaunchCommand('open public/html-kit/templates/du-dashboard.html', this)">
+              <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;open public/html-kit/templates/du-dashboard.html&quot;,{&quot;$this&quot;:true}]]]">
                 <span>Copiar comando Mac</span>
               </button>
             </div>
@@ -586,7 +156,7 @@
               <div class="cmd-pill">
                 <span>standalone template</span>
               </div>
-              <button class="cmd-copy-btn" onclick="copyLaunchCommand('open public/html-kit/templates/starter-cockpit.html', this)">
+              <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;open public/html-kit/templates/starter-cockpit.html&quot;,{&quot;$this&quot;:true}]]]">
                 <span>Copiar comando Mac</span>
               </button>
             </div>
@@ -622,7 +192,7 @@
               <div class="cmd-pill">
                 <span>pure layout scaffold</span>
               </div>
-              <button class="cmd-copy-btn" onclick="copyLaunchCommand('open public/html-kit/templates/template-app-shell.html', this)">
+              <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;open public/html-kit/templates/template-app-shell.html&quot;,{&quot;$this&quot;:true}]]]">
                 <span>Copiar comando Mac</span>
               </button>
             </div>
@@ -658,7 +228,7 @@
               <div class="cmd-pill">
                 <span>complete app twin</span>
               </div>
-              <button class="cmd-copy-btn" onclick="copyLaunchCommand('open public/html-kit/templates/du-html-app-template.html', this)">
+              <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;open public/html-kit/templates/du-html-app-template.html&quot;,{&quot;$this&quot;:true}]]]">
                 <span>Copiar comando Mac</span>
               </button>
             </div>
@@ -706,11 +276,11 @@
             <div class="card-launcher-bar">
               <div class="cmd-pill">
                 <span>pnpm dev</span>
-                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">
                   <span>Copiar CLI</span>
                 </button>
               </div>
-              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+              <a class="terminal-launch-btn" href="./run-dev.command" title="Abrir Terminal no macOS ou executar script .command" data-du-on-click="[[&quot;openTerminal&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">Abrir Terminal ⚡</a>
             </div>
             <details class="card-details">
               <summary>Detalhes Técnicos &amp; Arquitetura</summary>
@@ -743,11 +313,11 @@
             <div class="card-launcher-bar">
               <div class="cmd-pill">
                 <span>pnpm dev</span>
-                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">
                   <span>Copiar CLI</span>
                 </button>
               </div>
-              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+              <a class="terminal-launch-btn" href="./run-dev.command" title="Abrir Terminal no macOS ou executar script .command" data-du-on-click="[[&quot;openTerminal&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">Abrir Terminal ⚡</a>
             </div>
             <details class="card-details">
               <summary>Detalhes Técnicos &amp; Arquitetura</summary>
@@ -780,11 +350,11 @@
             <div class="card-launcher-bar">
               <div class="cmd-pill">
                 <span>pnpm dev</span>
-                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">
                   <span>Copiar CLI</span>
                 </button>
               </div>
-              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+              <a class="terminal-launch-btn" href="./run-dev.command" title="Abrir Terminal no macOS ou executar script .command" data-du-on-click="[[&quot;openTerminal&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">Abrir Terminal ⚡</a>
             </div>
             <details class="card-details">
               <summary>Detalhes Técnicos &amp; Arquitetura</summary>
@@ -817,11 +387,11 @@
             <div class="card-launcher-bar">
               <div class="cmd-pill">
                 <span>pnpm dev</span>
-                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">
                   <span>Copiar CLI</span>
                 </button>
               </div>
-              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+              <a class="terminal-launch-btn" href="./run-dev.command" title="Abrir Terminal no macOS ou executar script .command" data-du-on-click="[[&quot;openTerminal&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">Abrir Terminal ⚡</a>
             </div>
             <details class="card-details">
               <summary>Detalhes Técnicos &amp; Arquitetura</summary>
@@ -854,11 +424,11 @@
             <div class="card-launcher-bar">
               <div class="cmd-pill">
                 <span>pnpm dev</span>
-                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">
                   <span>Copiar CLI</span>
                 </button>
               </div>
-              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+              <a class="terminal-launch-btn" href="./run-dev.command" title="Abrir Terminal no macOS ou executar script .command" data-du-on-click="[[&quot;openTerminal&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">Abrir Terminal ⚡</a>
             </div>
             <details class="card-details">
               <summary>Detalhes Técnicos &amp; Arquitetura</summary>
@@ -887,11 +457,11 @@
             <div class="card-launcher-bar">
               <div class="cmd-pill">
                 <span>pnpm dev</span>
-                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">
                   <span>Copiar CLI</span>
                 </button>
               </div>
-              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+              <a class="terminal-launch-btn" href="./run-dev.command" title="Abrir Terminal no macOS ou executar script .command" data-du-on-click="[[&quot;openTerminal&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">Abrir Terminal ⚡</a>
             </div>
             <details class="card-details">
               <summary>Detalhes Técnicos &amp; Arquitetura</summary>
@@ -933,11 +503,11 @@
             <div class="card-launcher-bar">
               <div class="cmd-pill">
                 <span>pnpm dev</span>
-                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">
                   <span>Copiar CLI</span>
                 </button>
               </div>
-              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+              <a class="terminal-launch-btn" href="./run-dev.command" title="Abrir Terminal no macOS ou executar script .command" data-du-on-click="[[&quot;openTerminal&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">Abrir Terminal ⚡</a>
             </div>
             <details class="card-details">
               <summary>Detalhes Técnicos &amp; Arquitetura</summary>
@@ -966,11 +536,11 @@
             <div class="card-launcher-bar">
               <div class="cmd-pill">
                 <span>pnpm dev</span>
-                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">
                   <span>Copiar CLI</span>
                 </button>
               </div>
-              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+              <a class="terminal-launch-btn" href="./run-dev.command" title="Abrir Terminal no macOS ou executar script .command" data-du-on-click="[[&quot;openTerminal&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">Abrir Terminal ⚡</a>
             </div>
             <details class="card-details">
               <summary>Detalhes Técnicos &amp; Arquitetura</summary>
@@ -999,11 +569,11 @@
             <div class="card-launcher-bar">
               <div class="cmd-pill">
                 <span>pnpm dev</span>
-                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">
                   <span>Copiar CLI</span>
                 </button>
               </div>
-              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+              <a class="terminal-launch-btn" href="./run-dev.command" title="Abrir Terminal no macOS ou executar script .command" data-du-on-click="[[&quot;openTerminal&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">Abrir Terminal ⚡</a>
             </div>
             <details class="card-details">
               <summary>Detalhes Técnicos &amp; Arquitetura</summary>
@@ -1045,11 +615,11 @@
             <div class="card-launcher-bar">
               <div class="cmd-pill">
                 <span>pnpm dev</span>
-                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">
                   <span>Copiar CLI</span>
                 </button>
               </div>
-              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+              <a class="terminal-launch-btn" href="./run-dev.command" title="Abrir Terminal no macOS ou executar script .command" data-du-on-click="[[&quot;openTerminal&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">Abrir Terminal ⚡</a>
             </div>
             <details class="card-details">
               <summary>Detalhes Técnicos &amp; Arquitetura</summary>
@@ -1078,11 +648,11 @@
             <div class="card-launcher-bar">
               <div class="cmd-pill">
                 <span>pnpm dev</span>
-                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">
                   <span>Copiar CLI</span>
                 </button>
               </div>
-              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+              <a class="terminal-launch-btn" href="./run-dev.command" title="Abrir Terminal no macOS ou executar script .command" data-du-on-click="[[&quot;openTerminal&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">Abrir Terminal ⚡</a>
             </div>
             <details class="card-details">
               <summary>Detalhes Técnicos &amp; Arquitetura</summary>
@@ -1111,11 +681,11 @@
             <div class="card-launcher-bar">
               <div class="cmd-pill">
                 <span>pnpm dev</span>
-                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">
                   <span>Copiar CLI</span>
                 </button>
               </div>
-              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+              <a class="terminal-launch-btn" href="./run-dev.command" title="Abrir Terminal no macOS ou executar script .command" data-du-on-click="[[&quot;openTerminal&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">Abrir Terminal ⚡</a>
             </div>
             <details class="card-details">
               <summary>Detalhes Técnicos &amp; Arquitetura</summary>
@@ -1144,11 +714,11 @@
             <div class="card-launcher-bar">
               <div class="cmd-pill">
                 <span>pnpm dev</span>
-                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">
                   <span>Copiar CLI</span>
                 </button>
               </div>
-              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+              <a class="terminal-launch-btn" href="./run-dev.command" title="Abrir Terminal no macOS ou executar script .command" data-du-on-click="[[&quot;openTerminal&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">Abrir Terminal ⚡</a>
             </div>
             <details class="card-details">
               <summary>Detalhes Técnicos &amp; Arquitetura</summary>
@@ -1190,11 +760,11 @@
             <div class="card-launcher-bar">
               <div class="cmd-pill">
                 <span>pnpm dev</span>
-                <button class="cmd-copy-btn" onclick="copyLaunchCommand('pnpm dev', this)">
+                <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">
                   <span>Copiar CLI</span>
                 </button>
               </div>
-              <a href="./run-dev.command" class="terminal-launch-btn" onclick="openTerminal('pnpm dev', this)" title="Abrir Terminal no macOS ou executar script .command">Abrir Terminal ⚡</a>
+              <a class="terminal-launch-btn" href="./run-dev.command" title="Abrir Terminal no macOS ou executar script .command" data-du-on-click="[[&quot;openTerminal&quot;,[&quot;pnpm dev&quot;,{&quot;$this&quot;:true}]]]">Abrir Terminal ⚡</a>
             </div>
             <details class="card-details">
               <summary>Detalhes Técnicos &amp; Arquitetura</summary>
@@ -1221,15 +791,15 @@
               <h3 class="card-title">Receitas Modulares &amp; Backend</h3>
               <span class="card-badge badge-recipe">4 Receitas</span>
             </div>
-            <div class="card-screenshot-wrapper" style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, var(--card) 0%, var(--muted) 100%);">
-              <div style="font-size: 2.75rem; margin-bottom: 0.5rem;">🔌</div>
-              <div style="font-family: monospace; font-size: 0.75rem; color: var(--muted-foreground);">Postgres • Pin-Lock • DataTable • State</div>
+            <div class="card-screenshot-wrapper x-s1">
+              <div class="x-s2">🔌</div>
+              <div class="x-s3">Postgres • Pin-Lock • DataTable • State</div>
             </div>
             <div class="card-launcher-bar">
               <div class="cmd-pill">
                 <span>recipes/</span>
               </div>
-              <button class="cmd-copy-btn" onclick="copyLaunchCommand('ls -la recipes/ public/html-kit/recipes/', this)">
+              <button class="cmd-copy-btn" data-du-on-click="[[&quot;copyLaunchCommand&quot;,[&quot;ls -la recipes/ public/html-kit/recipes/&quot;,{&quot;$this&quot;:true}]]]">
                 <span>Copiar comando Mac</span>
               </button>
             </div>
@@ -1256,142 +826,6 @@
     </main>
   </div>
 
-  <script>
-    // Terminal Launch & Command Copy (macOS Native + Anti-Pastejacking)
-    async function openTerminal(rawCommand, buttonElement) {
-      const cleanCommand = String(rawCommand).replace(/[\r\n\t]/g, '').trim();
-
-      // 1. Copia sempre para o clipboard primeiro (garantia anti-pastejacking)
-      copyLaunchCommand(cleanCommand, buttonElement);
-
-      // 2. Dispara abertura nativa do Terminal no macOS via API local (com fallback de origem)
-      try {
-        const apiUrl = window.location.origin.startsWith('http') ? '/api/open-terminal' : 'http://localhost:4300/api/open-terminal';
-        const res = await fetch(apiUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ command: cleanCommand }),
-        });
-
-        if (res.ok) {
-          showCopySuccess(buttonElement, '✓ Terminal Aberto!');
-          return;
-        }
-      } catch (err) {
-        // Ignora erro de rede quando o servidor Next.js ainda não está ligado
-      }
-
-      // 3. Fallback informativo e seguro se o servidor Next.js ainda não estiver em execução
-      showCopySuccess(buttonElement, '✓ Copiado! (⌘+V no Terminal)');
-    }
-
-    // Safe Command Copy Helper (Anti-Pastejacking & CML-Defender Safe)
-    function copyLaunchCommand(rawCommand, buttonElement) {
-      // 1. Purga caracteres invisíveis e newlines para conformidade estrita anti-pastejacking
-      const cleanCommand = String(rawCommand).replace(/[\r\n\t]/g, '').trim();
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(cleanCommand).then(() => {
-          showCopySuccess(buttonElement);
-        }).catch(() => {
-          fallbackCopy(cleanCommand, buttonElement);
-        });
-      } else {
-        fallbackCopy(cleanCommand, buttonElement);
-      }
-    }
-
-    function fallbackCopy(text, buttonElement) {
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.style.position = 'fixed';
-      textarea.style.opacity = '0';
-      document.body.appendChild(textarea);
-      textarea.select();
-      try {
-        document.execCommand('copy');
-        showCopySuccess(buttonElement);
-      } catch (err) {
-        console.error('Falha ao copiar:', err);
-      }
-      document.body.removeChild(textarea);
-    }
-
-    function showCopySuccess(btn, msg) {
-      const originalText = btn.innerHTML;
-      btn.innerHTML = `<span>${msg || '✓ Copiado!'}</span>`;
-      btn.classList.add('copied');
-      setTimeout(() => {
-        btn.innerHTML = originalText;
-        btn.classList.remove('copied');
-      }, 2500);
-    }
-
-    // Search & Technical Filter Logic
-    const searchInput = document.getElementById('search-input');
-    const filterChips = document.querySelectorAll('.filter-chip');
-    const sections = document.querySelectorAll('.category-section');
-
-    let currentFilter = 'all';
-
-    function filterCards() {
-      const query = (searchInput.value || '').toLowerCase().trim();
-
-      sections.forEach(section => {
-        const sectionCategory = section.getAttribute('data-section');
-        const sectionCards = section.querySelectorAll('.model-card');
-        let visibleCount = 0;
-
-        sectionCards.forEach(card => {
-          const cardCategory = card.getAttribute('data-category');
-          const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
-          const title = (card.querySelector('.card-title')?.textContent || '').toLowerCase();
-
-          const matchesCategory = currentFilter === 'all' || cardCategory === currentFilter;
-          const matchesQuery = !query || keywords.includes(query) || title.includes(query);
-
-          if (matchesCategory && matchesQuery) {
-            card.style.display = 'flex';
-            visibleCount++;
-          } else {
-            card.style.display = 'none';
-          }
-        });
-
-        // Oculta secção inteira se nenhum card corresponder
-        section.style.display = visibleCount > 0 ? 'block' : 'none';
-      });
-    }
-
-    searchInput.addEventListener('input', filterCards);
-
-    filterChips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        filterChips.forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        currentFilter = chip.getAttribute('data-category');
-        filterCards();
-      });
-    });
-
-    // Theme Toggle
-    const themeBtn = document.getElementById('theme-toggle');
-    themeBtn.addEventListener('click', () => {
-      const isDark = document.documentElement.classList.toggle('dark');
-      themeBtn.textContent = isDark ? '🌙' : '☀️';
-      try {
-        localStorage.setItem('du_theme', isDark ? 'dark' : 'light');
-      } catch {}
-    });
-
-    // Restore saved theme
-    try {
-      const saved = localStorage.getItem('du_theme');
-      if (saved === 'light') {
-        document.documentElement.classList.remove('dark');
-        themeBtn.textContent = '☀️';
-      }
-    } catch {}
-  </script>
+  <script src="index.js"></script>
 </body>
 </html>

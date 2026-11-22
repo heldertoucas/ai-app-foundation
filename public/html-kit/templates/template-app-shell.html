@@ -2,6 +2,7 @@
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; font-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>App Shell Scaffold — DU HTML Foundation</title>
   
@@ -12,6 +13,7 @@
   
   <!-- Micro-Runtime (<120 LOC) -->
   <script src="../du-runtime.js" defer></script>
+<link rel="stylesheet" href="template-app-shell.css">
 </head>
 <body>
 
@@ -20,12 +22,12 @@
     <aside class="du-sidebar">
       <!-- Header -->
       <div class="du-sidebar-header">
-        <div class="du-stat-icon-wrapper" style="background-color: var(--primary); color: var(--primary-foreground); font-weight: 700;">
+        <div class="du-stat-icon-wrapper x-s1">
           DU
         </div>
         <div>
-          <div style="font-weight: 600; font-size: 0.8125rem;">Development Universe</div>
-          <div style="font-size: 0.6875rem; color: var(--muted-foreground);">HTML-First App Shell</div>
+          <div class="x-s2">Development Universe</div>
+          <div class="x-s3">HTML-First App Shell</div>
         </div>
       </div>
 
@@ -62,11 +64,11 @@
 
       <!-- Footer -->
       <div class="du-sidebar-footer">
-        <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <span style="display: inline-block; width: 0.5rem; height: 0.5rem; border-radius: 9999px; background-color: var(--status-live);"></span>
-          <span style="font-family: var(--font-mono); font-size: 0.6875rem;">SES-2026-LIVE</span>
+        <div class="x-s4">
+          <span class="x-s5"></span>
+          <span class="x-s6">SES-2026-LIVE</span>
         </div>
-        <button class="ui-btn ui-btn-outline ui-btn-sm" onclick="duToggleTheme()" title="Toggle Dark/Light">
+        <button class="ui-btn ui-btn-outline ui-btn-sm" title="Toggle Dark/Light" data-du-on-click="[[&quot;duToggleTheme&quot;,[]]]">
           🌓
         </button>
       </div>
@@ -82,7 +84,7 @@
           <span id="du-breadcrumb-title" class="du-breadcrumb-active">Overview & Telemetry</span>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <div class="x-s7">
           <button class="du-command-bar" data-du-modal-open="du-command-dialog">
             <span>Quick Find...</span>
             <span class="du-command-shortcut">Ctrl+K</span>
@@ -96,8 +98,8 @@
         <!-- VIEW 1: OVERVIEW -->
         <section id="view-overview" class="du-view active">
           <div>
-            <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0;">System Overview</h1>
-            <p style="color: var(--muted-foreground); font-size: 0.8125rem; margin-top: 0.25rem;">Live cockpit powered by zero-build native HTML Foundation components.</p>
+            <h1 class="x-s8">System Overview</h1>
+            <p class="x-s9">Live cockpit powered by zero-build native HTML Foundation components.</p>
           </div>
 
           <!-- Bento KPI Cards Row -->
@@ -131,7 +133,7 @@
                 <span class="du-stat-title">Render Latency</span>
                 <div class="du-stat-icon-wrapper">⚡</div>
               </div>
-              <div class="du-stat-value">0.8<span style="font-size: 1rem; color: var(--muted-foreground); margin-left: 0.25rem;">ms</span></div>
+              <div class="du-stat-value">0.8<span class="x-s10">ms</span></div>
               <div class="du-stat-footer">
                 <span class="du-stat-trend du-trend-up">↑ Zero-Build</span>
                 <span>Native DOM execution</span>
@@ -143,11 +145,11 @@
         <!-- VIEW 2: ANALYTICS & VISUALS -->
         <section id="view-metrics" class="du-view">
           <div>
-            <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0;">Analytics & Data Visualizations</h1>
-            <p style="color: var(--muted-foreground); font-size: 0.8125rem; margin-top: 0.25rem;">Zero-dependency SVG gauges, sparklines, and stacked capability meters.</p>
+            <h1 class="x-s8">Analytics & Data Visualizations</h1>
+            <p class="x-s9">Zero-dependency SVG gauges, sparklines, and stacked capability meters.</p>
           </div>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+          <div class="x-s11">
             <!-- Radial Health Gauge -->
             <div class="ui-card">
               <div class="ui-card-header">
@@ -155,7 +157,7 @@
                 <p class="ui-card-description">SVG Circular Progress Meter</p>
               </div>
               <div class="ui-card-content du-radial-gauge-container">
-                <div class="du-radial-gauge" style="width: 140px; height: 140px;">
+                <div class="du-radial-gauge x-s12">
                   <svg width="140" height="140" viewBox="0 0 140 140">
                     <circle class="du-gauge-circle-bg" cx="70" cy="70" r="58" stroke-width="12"></circle>
                     <circle class="du-gauge-circle-fill du-gauge-tier-optimal" cx="70" cy="70" r="58" stroke-width="12" stroke-dasharray="364.4" stroke-dashoffset="36.4"></circle>
@@ -174,32 +176,32 @@
                 <h3 class="ui-card-title">Capability Distribution</h3>
                 <p class="ui-card-description">Live vs Drift vs Missing</p>
               </div>
-              <div class="ui-card-content" style="display: flex; flex-direction: column; gap: 1.5rem; justify-content: center;">
+              <div class="ui-card-content x-s13">
                 <div class="du-stacked-bar-container">
                   <div class="du-stacked-bar-header">
-                    <span style="font-weight: 600;">RuleSync Targets</span>
-                    <span style="font-family: var(--font-mono); color: var(--muted-foreground);">42 total</span>
+                    <span class="x-s14">RuleSync Targets</span>
+                    <span class="x-s15">42 total</span>
                   </div>
                   <div class="du-stacked-bar">
-                    <div class="du-bar-segment du-bar-live" style="width: 80%;" title="Live: 80%"></div>
-                    <div class="du-bar-segment du-bar-drift" style="width: 15%;" title="Drift: 15%"></div>
-                    <div class="du-bar-segment du-bar-missing" style="width: 5%;" title="Missing: 5%"></div>
+                    <div class="du-bar-segment du-bar-live x-s16" title="Live: 80%"></div>
+                    <div class="du-bar-segment du-bar-drift x-s17" title="Drift: 15%"></div>
+                    <div class="du-bar-segment du-bar-missing x-s18" title="Missing: 5%"></div>
                   </div>
                   <div class="du-stacked-legend">
-                    <div class="du-legend-item"><span class="du-legend-dot" style="background-color: var(--status-live);"></span>Live (34)</div>
-                    <div class="du-legend-item"><span class="du-legend-dot" style="background-color: var(--status-drift);"></span>Drift (6)</div>
-                    <div class="du-legend-item"><span class="du-legend-dot" style="background-color: var(--status-missing);"></span>Missing (2)</div>
+                    <div class="du-legend-item"><span class="du-legend-dot x-s19"></span>Live (34)</div>
+                    <div class="du-legend-item"><span class="du-legend-dot x-s20"></span>Drift (6)</div>
+                    <div class="du-legend-item"><span class="du-legend-dot x-s21"></span>Missing (2)</div>
                   </div>
                 </div>
 
                 <!-- Linear Progress -->
                 <div class="du-linear-meter">
-                  <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                  <div class="x-s22">
                     <span>Context Capsule Headroom</span>
-                    <span style="font-family: var(--font-mono); font-weight: 600;">72% Headroom</span>
+                    <span class="x-s23">72% Headroom</span>
                   </div>
                   <div class="du-meter-track">
-                    <div class="du-meter-fill" style="width: 28%; background-color: var(--primary);"></div>
+                    <div class="du-meter-fill x-s24"></div>
                   </div>
                 </div>
               </div>
@@ -211,13 +213,13 @@
                 <h3 class="ui-card-title">Operational Velocity</h3>
                 <p class="ui-card-description">7-Day Session Progression</p>
               </div>
-              <div class="ui-card-content" style="display: flex; flex-direction: column; justify-content: space-between; gap: 1rem;">
-                <div style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700;">24 <span style="font-size: 0.8125rem; font-weight: 400; color: var(--muted-foreground);">sessions</span></div>
+              <div class="ui-card-content x-s25">
+                <div class="x-s26">24 <span class="x-s27">sessions</span></div>
                 <svg class="du-sparkline" width="100%" height="60" viewBox="0 0 200 60" preserveAspectRatio="none">
                   <polygon class="du-sparkline-area" points="0,60 0,45 30,50 60,35 90,40 120,25 150,15 180,10 200,60"></polygon>
                   <polyline class="du-sparkline-line" points="0,45 30,50 60,35 90,40 120,25 150,15 180,10"></polyline>
                 </svg>
-                <div style="font-size: 0.75rem; color: var(--muted-foreground); display: flex; justify-content: space-between;">
+                <div class="x-s28">
                   <span>09-05</span>
                   <span>Today</span>
                 </div>
@@ -228,10 +230,10 @@
 
         <!-- VIEW 3: DATA DIRECTORY -->
         <section id="view-items" class="du-view">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+          <div class="x-s29">
             <div>
-              <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0;">Directory Table</h1>
-              <p style="color: var(--muted-foreground); font-size: 0.8125rem; margin-top: 0.25rem;">Instant client-side searchable data table with zero JavaScript bundle overhead.</p>
+              <h1 class="x-s8">Directory Table</h1>
+              <p class="x-s9">Instant client-side searchable data table with zero JavaScript bundle overhead.</p>
             </div>
 
             <!-- Status Filter Chips -->
@@ -254,36 +256,36 @@
                   <th>Item / Identifier</th>
                   <th>Category</th>
                   <th>Status</th>
-                  <th style="text-align: right;">Action</th>
+                  <th class="x-s30">Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr data-status="active">
                   <td>
-                    <div style="font-weight: 600;">ai-app-foundation</div>
-                    <div style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted-foreground);">DEV-001</div>
+                    <div class="x-s14">ai-app-foundation</div>
+                    <div class="x-s31">DEV-001</div>
                   </td>
                   <td><span class="ui-badge ui-badge-outline">System</span></td>
-                  <td><span class="du-telemetry-pill du-status-live"><span class="du-ping-core" style="background-color: var(--status-live);"></span> Active</span></td>
-                  <td style="text-align: right;"><button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="DEV-001">Copy ID</button></td>
+                  <td><span class="du-telemetry-pill du-status-live"><span class="du-ping-core x-s19"></span> Active</span></td>
+                  <td class="x-s30"><button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="DEV-001">Copy ID</button></td>
                 </tr>
                 <tr data-status="active">
                   <td>
-                    <div style="font-weight: 600;">du-dashboard</div>
-                    <div style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted-foreground);">PRJ-0021</div>
+                    <div class="x-s14">du-dashboard</div>
+                    <div class="x-s31">PRJ-0021</div>
                   </td>
                   <td><span class="ui-badge ui-badge-outline">Frontend</span></td>
-                  <td><span class="du-telemetry-pill du-status-live"><span class="du-ping-core" style="background-color: var(--status-live);"></span> Active</span></td>
-                  <td style="text-align: right;"><button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="PRJ-0021">Copy ID</button></td>
+                  <td><span class="du-telemetry-pill du-status-live"><span class="du-ping-core x-s19"></span> Active</span></td>
+                  <td class="x-s30"><button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="PRJ-0021">Copy ID</button></td>
                 </tr>
                 <tr data-status="standby">
                   <td>
-                    <div style="font-weight: 600;">paperclip</div>
-                    <div style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted-foreground);">PRJ-0013</div>
+                    <div class="x-s14">paperclip</div>
+                    <div class="x-s31">PRJ-0013</div>
                   </td>
                   <td><span class="ui-badge ui-badge-outline">Tools</span></td>
-                  <td><span class="du-telemetry-pill du-status-drift"><span class="du-ping-core" style="background-color: var(--status-drift);"></span> Standby</span></td>
-                  <td style="text-align: right;"><button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="PRJ-0013">Copy ID</button></td>
+                  <td><span class="du-telemetry-pill du-status-drift"><span class="du-ping-core x-s20"></span> Standby</span></td>
+                  <td class="x-s30"><button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="PRJ-0013">Copy ID</button></td>
                 </tr>
               </tbody>
             </table>
@@ -295,20 +297,20 @@
   </div>
 
   <!-- Reusable Modal Dialog -->
-  <dialog id="du-command-dialog" class="ui-dialog" style="max-width: 32rem; padding: 1.25rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-      <h3 style="font-weight: 600; font-size: 1rem; margin: 0;">Quick Search</h3>
-      <button class="ui-btn ui-btn-ghost ui-btn-sm" onclick="this.closest('dialog').close()">✕</button>
+  <dialog class="ui-dialog x-s32" id="du-command-dialog">
+    <div class="x-s33">
+      <h3 class="x-s34">Quick Search</h3>
+      <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-on-click="[[&quot;duCloseClosest&quot;,[{&quot;$this&quot;:true},&quot;dialog&quot;]]]">✕</button>
     </div>
-    <input type="text" placeholder="Type a command or view name..." class="du-table-search-input" style="width: 100%; margin-bottom: 1rem;" autofocus>
-    <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.75rem;">
-      <button class="du-nav-item" data-du-nav-target="view-overview" onclick="document.getElementById('du-command-dialog').close()">
+    <input class="du-table-search-input x-s35" type="text" placeholder="Type a command or view name..." autofocus>
+    <div class="x-s36">
+      <button class="du-nav-item" data-du-nav-target="view-overview" data-du-on-click="[[&quot;duCloseModal&quot;,[&quot;du-command-dialog&quot;]]]">
         <span>🧭 Go to Overview</span>
       </button>
-      <button class="du-nav-item" data-du-nav-target="view-metrics" onclick="document.getElementById('du-command-dialog').close()">
+      <button class="du-nav-item" data-du-nav-target="view-metrics" data-du-on-click="[[&quot;duCloseModal&quot;,[&quot;du-command-dialog&quot;]]]">
         <span>📊 Go to Analytics</span>
       </button>
-      <button class="du-nav-item" data-du-nav-target="view-items" onclick="document.getElementById('du-command-dialog').close()">
+      <button class="du-nav-item" data-du-nav-target="view-items" data-du-on-click="[[&quot;duCloseModal&quot;,[&quot;du-command-dialog&quot;]]]">
         <span>📁 Go to Directory Table</span>
       </button>
     </div>
@@ -318,7 +320,7 @@
   <div id="dossier-modal" class="du-modal-overlay">
     <div class="du-modal-card">
       <div class="du-modal-header">
-        <h3 style="font-weight: 600; margin: 0;">Item Details</h3>
+        <h3 class="x-s37">Item Details</h3>
         <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-modal-close>✕</button>
       </div>
       <div class="du-modal-body">

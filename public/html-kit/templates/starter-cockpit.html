@@ -2,6 +2,7 @@
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; font-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DU Mission Control — Zero-Build Cockpit</title>
   
@@ -17,14 +18,7 @@
   <!-- 4. Micro-Runtime (<50 LOC) -->
   <script src="../du-runtime.js" defer></script>
   
-  <style>
-    /* Estilos de layout estático sem necessidade de Tailwind compiler */
-    .du-container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
-    .du-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
-    .du-flex-row { display: flex; align-items: center; gap: 0.75rem; }
-    .du-grid-2 { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem; }
-    @media (min-width: 768px) { .du-grid-2 { grid-template-columns: 2fr 1fr; } }
-  </style>
+  <link rel="stylesheet" href="starter-cockpit.css">
 </head>
 <body class="bg-background text-foreground">
 
@@ -32,13 +26,13 @@
     <!-- Top Header -->
     <header class="du-header">
       <div class="du-flex-row">
-        <div style="font-size: 1.5rem;">🪽</div>
+        <div class="x-s1">🪽</div>
         <div>
           <div class="du-flex-row">
-            <h1 style="margin: 0; font-size: 1.125rem; font-weight: 700;">DU Mission Control</h1>
+            <h1 class="x-s2">DU Mission Control</h1>
             <span class="ui-badge ui-badge-secondary">HTML-First Cockpit</span>
           </div>
-          <p style="margin: 0; font-size: 0.8rem; color: var(--muted-foreground);">Zero-Build / Latência &lt; 2ms / Standalone Offline</p>
+          <p class="x-s3">Zero-Build / Latência &lt; 2ms / Standalone Offline</p>
         </div>
       </div>
 
@@ -53,13 +47,13 @@
         </div>
 
         <!-- Quick Filter Button -->
-        <button class="du-command-bar" onclick="document.getElementById('du-command-dialog').showModal()">
+        <button class="du-command-bar" data-du-on-click="[[&quot;duOpenModal&quot;,[&quot;du-command-dialog&quot;]]]">
           <span>Quick Find...</span>
           <span class="du-command-shortcut">Ctrl+K</span>
         </button>
 
         <!-- Theme Toggle -->
-        <button class="ui-btn ui-btn-outline ui-btn-sm" onclick="duToggleTheme()" title="Toggle Dark/Light">
+        <button class="ui-btn ui-btn-outline ui-btn-sm" title="Toggle Dark/Light" data-du-on-click="[[&quot;duToggleTheme&quot;,[]]]">
           🌓
         </button>
       </div>
@@ -73,7 +67,7 @@
           <span class="ui-badge ui-badge-secondary">Fleet</span>
         </div>
         <div class="du-kpi-value">
-          4 <span style="font-size: 0.875rem; font-weight: 400; color: var(--status-live-foreground);">● 100% OK</span>
+          4 <span class="x-s4">● 100% OK</span>
         </div>
         <div class="du-kpi-subtext">Sentinel, Engine, Dashboard, Vault</div>
       </div>
@@ -84,7 +78,7 @@
           <span class="ui-badge ui-badge-outline">Dev/home</span>
         </div>
         <div class="du-kpi-value">
-          142 <span style="font-size: 0.875rem; font-weight: 400; color: var(--muted-foreground);">notes</span>
+          142 <span class="x-s5">notes</span>
         </div>
         <div class="du-kpi-subtext">8 MEM-* candidates pending review</div>
       </div>
@@ -95,7 +89,7 @@
           <span class="ui-badge ui-badge-secondary">Instant</span>
         </div>
         <div class="du-kpi-value">
-          1.2 <span style="font-size: 0.875rem; font-weight: 400; color: var(--muted-foreground);">ms</span>
+          1.2 <span class="x-s5">ms</span>
         </div>
         <div class="du-kpi-subtext">Zero JavaScript Framework overhead</div>
       </div>
@@ -124,20 +118,20 @@
                 <tr>
                   <td><strong>DU Mission Control</strong></td>
                   <td><code>:3000</code></td>
-                  <td><span class="ui-badge" style="background-color: var(--status-live); color: #000;">Active</span></td>
-                  <td><button class="ui-btn ui-btn-outline ui-btn-sm" onclick="alert('Port 3000 already running!')">Open</button></td>
+                  <td><span class="ui-badge x-s6">Active</span></td>
+                  <td><button class="ui-btn ui-btn-outline ui-btn-sm" data-du-on-click="[[&quot;alert&quot;,[&quot;Port 3000 already running!&quot;]]]">Open</button></td>
                 </tr>
                 <tr>
                   <td><strong>Sentinel Cockpit</strong></td>
                   <td><code>:3030</code></td>
-                  <td><span class="ui-badge" style="background-color: var(--status-live); color: #000;">Active</span></td>
-                  <td><button class="ui-btn ui-btn-outline ui-btn-sm" onclick="alert('Port 3030 already running!')">Open</button></td>
+                  <td><span class="ui-badge x-s6">Active</span></td>
+                  <td><button class="ui-btn ui-btn-outline ui-btn-sm" data-du-on-click="[[&quot;alert&quot;,[&quot;Port 3030 already running!&quot;]]]">Open</button></td>
                 </tr>
                 <tr>
                   <td><strong>Development Engine MCP</strong></td>
                   <td><code>:8765</code></td>
                   <td><span class="ui-badge ui-badge-secondary">Standby</span></td>
-                  <td><button class="ui-btn ui-btn-outline ui-btn-sm" onclick="alert('Starting Engine MCP...')">Start</button></td>
+                  <td><button class="ui-btn ui-btn-outline ui-btn-sm" data-du-on-click="[[&quot;alert&quot;,[&quot;Starting Engine MCP...&quot;]]]">Start</button></td>
                 </tr>
               </tbody>
             </table>
@@ -167,16 +161,16 @@
             </div>
           </details>
 
-          <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
-            <div style="display: flex; align-items: center; justify-content: space-between;">
-              <span style="font-size: 0.875rem;">Live Watchdog Mode</span>
+          <div class="x-s7">
+            <div class="x-s8">
+              <span class="x-s9">Live Watchdog Mode</span>
               <label class="ui-switch">
                 <input type="checkbox" checked>
                 <span class="ui-switch-slider"></span>
               </label>
             </div>
 
-            <button class="ui-btn ui-btn-secondary" style="width: 100%; margin-top: 0.5rem;" onclick="document.getElementById('du-inspect-dialog').showModal()">
+            <button class="ui-btn ui-btn-secondary x-s10" data-du-on-click="[[&quot;duOpenModal&quot;,[&quot;du-inspect-dialog&quot;]]]">
               🔍 Inspecionar Estado do Vault
             </button>
           </div>
@@ -187,41 +181,42 @@
 
   <!-- Native Modal Dialog: Inspect State -->
   <dialog id="du-inspect-dialog" class="ui-dialog">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-      <h3 style="margin: 0; font-size: 1.125rem;">Estado do Vault — Dev/home</h3>
-      <button class="ui-btn ui-btn-ghost ui-btn-sm" onclick="this.closest('dialog').close()">✕</button>
+    <div class="x-s11">
+      <h3 class="x-s12">Estado do Vault — Dev/home</h3>
+      <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-on-click="[[&quot;duCloseClosest&quot;,[{&quot;$this&quot;:true},&quot;dialog&quot;]]]">✕</button>
     </div>
-    <p style="font-size: 0.875rem; color: var(--muted-foreground); margin-bottom: 1rem;">
+    <p class="x-s13">
       O repositório canónico de conhecimento encontra-se em sincronização ativa.
     </p>
-    <div style="background-color: var(--muted); padding: 0.75rem; border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.8rem; margin-bottom: 1.5rem;">
+    <div class="x-s14">
       SES-2026-10-07-005: OK<br>
       PRJ-0024: ai-app-foundation<br>
       LANCEDB: Active (Indexed)
     </div>
-    <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
-      <button class="ui-btn ui-btn-outline" onclick="this.closest('dialog').close()">Fechar</button>
-      <button class="ui-btn" onclick="alert('Snapshot gerado com sucesso!'); this.closest('dialog').close();">Criar Snapshot</button>
+    <div class="x-s15">
+      <button class="ui-btn ui-btn-outline" data-du-on-click="[[&quot;duCloseClosest&quot;,[{&quot;$this&quot;:true},&quot;dialog&quot;]]]">Fechar</button>
+      <button class="ui-btn" data-du-on-click="[[&quot;alert&quot;,[&quot;Snapshot gerado com sucesso!&quot;]],[&quot;duCloseClosest&quot;,[{&quot;$this&quot;:true},&quot;dialog&quot;]]]">Criar Snapshot</button>
     </div>
   </dialog>
 
   <!-- Native Modal Dialog: Quick Command Palette -->
   <dialog id="du-command-dialog" class="ui-dialog">
-    <div style="margin-bottom: 1rem;">
+    <div class="x-s16">
       <input type="text" class="ui-input" placeholder="Escreva um comando ou pesquise (ex: /status, /ports, /mem)..." autofocus>
     </div>
-    <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;">
-      <div style="padding: 0.5rem; border-radius: var(--radius); background-color: var(--muted); cursor: pointer;" onclick="alert('Comando /ports executado'); this.closest('dialog').close();">
+    <div class="x-s17">
+      <div class="x-s18" data-du-on-click="[[&quot;alert&quot;,[&quot;Comando /ports executado&quot;]],[&quot;duCloseClosest&quot;,[{&quot;$this&quot;:true},&quot;dialog&quot;]]]">
         <strong>/ports</strong> — Inspecionar portas abertas
       </div>
-      <div style="padding: 0.5rem; border-radius: var(--radius); cursor: pointer;" onclick="alert('Comando /session executado'); this.closest('dialog').close();">
+      <div class="x-s19" data-du-on-click="[[&quot;alert&quot;,[&quot;Comando /session executado&quot;]],[&quot;duCloseClosest&quot;,[{&quot;$this&quot;:true},&quot;dialog&quot;]]]">
         <strong>/session</strong> — Ver sessão ativa do DU
       </div>
     </div>
-    <div style="margin-top: 1rem; text-align: right;">
-      <button class="ui-btn ui-btn-ghost ui-btn-sm" onclick="this.closest('dialog').close()">Fechar (Esc)</button>
+    <div class="x-s20">
+      <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-on-click="[[&quot;duCloseClosest&quot;,[{&quot;$this&quot;:true},&quot;dialog&quot;]]]">Fechar (Esc)</button>
     </div>
   </dialog>
 
+<script src="starter-cockpit.js"></script>
 </body>
 </html>
