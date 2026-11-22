@@ -705,21 +705,21 @@
 }
 
 .du-status-chip-live.active {
-  background-color: oklch(0.72 0.17 150 / 0.18);
-  color: oklch(0.72 0.17 150);
-  border-color: oklch(0.72 0.17 150 / 0.4);
+  background-color: color-mix(in oklch, var(--status-live) 18%, transparent);
+  color: var(--status-live-foreground);
+  border-color: color-mix(in oklch, var(--status-live) 40%, transparent);
 }
 
 .du-status-chip-drift.active {
-  background-color: oklch(0.78 0.16 75 / 0.18);
-  color: oklch(0.78 0.16 75);
-  border-color: oklch(0.78 0.16 75 / 0.4);
+  background-color: color-mix(in oklch, var(--status-drift) 18%, transparent);
+  color: var(--status-drift-foreground);
+  border-color: color-mix(in oklch, var(--status-drift) 40%, transparent);
 }
 
 .du-status-chip-missing.active {
-  background-color: oklch(0.65 0.22 25 / 0.18);
-  color: oklch(0.65 0.22 25);
-  border-color: oklch(0.65 0.22 25 / 0.4);
+  background-color: color-mix(in oklch, var(--status-missing) 18%, transparent);
+  color: var(--status-missing-foreground);
+  border-color: color-mix(in oklch, var(--status-missing) 40%, transparent);
 }
 
 /* ==========================================================================
