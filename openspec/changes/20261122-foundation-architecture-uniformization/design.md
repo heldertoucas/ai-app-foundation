@@ -195,3 +195,23 @@ Cada fase é um commit ou PR independente. `git revert` repõe a fase. Os movime
 | **B17** | WP-05, 12 | Listas de ficheiros incompletas forçam `BLOCKED` | Enumerar ficheiros e seletores exatos |
 
 **Concerns:** os relatórios trouxeram 39 preocupações, algumas repetidas. As mais importantes são foco do drawer, contraste do `--ring`, clickjacking, ações privilegiadas no registo, downloads sem hash, `run-dev.command`, documentação com caminhos antigos, recuperação após falha e compatibilidade fora do Chromium.
+
+### Ronda 2 (estado atual)
+
+**Veredito atual:** **BLOQUEADO. Não executar os pacotes até fechar R1 a R9.**
+**Fechados segundo os revisores:** B1 a B5, B7 a B14 e B16. **Corrigidos depois da ronda 2:** B6 (`public/assets` na baseline), B15 (regex) e B17 (`.gitignore`).
+**Limite:** os achados R1 a R9 vêm dos revisores e ainda não foram verificados de forma independente.
+
+| ID | Pacote | Problema | Correção proposta |
+|---|---|---|---|
+| **R1** | WP-07 | Testar criar e apagar escreve em `prisma/dev.db` rastreado e suja a árvore | Usar cópia descartável com `DATABASE_URL` absoluto |
+| **R2** | M2, WP-53 | `starter-cockpit`, Avaliação e Futuro Digital HTML não têm `main` | Novo passo M2 com o elemento exato por página |
+| **R3** | WP-24, 25 | `.du-icon` não existe no core | Adicionar regra dimensionada a `du-components.css` |
+| **R4** | WP-25 | `.ui-btn` vence `.du-sidebar-toggle` e mostra o menu em desktop | Regra base `.du-top-bar .du-sidebar-toggle { display: none; }` |
+| **R5** | WP-31, 36 | Aliases em `:root` não veem o tema definido em `body` | Pôr `data-theme` em `<html>` ou remover aliases |
+| **R6** | WP-12 | `--sidebar-ring` claro fica abaixo de 3:1 | `oklch(0.556 0 0)` |
+| **R7** | Auditoria | `static-audit.mjs` ignora CSS/JS externos e usa portas fixas | Ler ficheiros irmãos e `assignedPorts` |
+| **R8** | WP-32 | O `grep` final apanha os mockups | Excluir `public/html-kit/examples` |
+| **R9** | WP-36 | Sem lista de ficheiros | Definir globs ou a lista da auditoria |
+
+**Concerns da ronda 2:** ver a revisão de proteção por Host, recuperação de WP-40, baselines idempotentes, foco do drawer, topbar móvel, handlers duplicados em Mission Control, escala tipográfica e alinhamento de `design.md` e `tasks.md` com os pacotes.

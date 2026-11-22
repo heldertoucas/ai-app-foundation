@@ -9,7 +9,7 @@ target="$BASELINES/$name"
 [ ! -e "$target" ] || { echo "STOP baseline already exists: $target"; exit 1; }
 mkdir -p "$target"
 paths=(public/screenshots)
-for p in public/html-kit public/html public/blueprints; do
+for p in public/html-kit public/html public/blueprints public/assets; do
   if [ -n "$(git ls-files -- "$p" | head -1)" ]; then paths+=("$p"); fi
 done
 git archive HEAD -- "${paths[@]}" | tar -x -C "$target"
