@@ -208,6 +208,44 @@
     }
   });
 
+  // 7b. Responsive sidebar drawer
+  let sidebarOpener = null;
+  function setSidebar(open, opener) {
+    const shell = document.querySelector('.du-app-shell');
+    if (!shell) return;
+    const main = shell.querySelector('.du-main-layout');
+    if (open) sidebarOpener = opener || document.querySelector('[data-du-sidebar-toggle]');
+    shell.classList.toggle('du-sidebar-open', open);
+    if (main) main.inert = open;
+    document.querySelectorAll('[data-du-sidebar-toggle]').forEach((b) => b.setAttribute('aria-expanded', String(open)));
+    if (open) {
+      requestAnimationFrame(() => shell.querySelector('.du-sidebar .du-nav-item')?.focus());
+    } else {
+      const target = sidebarOpener && sidebarOpener.offsetParent !== null
+        ? sidebarOpener
+        : shell.querySelector('.du-sidebar .du-nav-item.active');
+      target?.focus?.();
+      sidebarOpener = null;
+    }
+  }
+  const isSidebarOpen = () => Boolean(document.querySelector('.du-sidebar-open'));
+  document.addEventListener('click', (e) => {
+    const toggle = e.target.closest('[data-du-sidebar-toggle]');
+    if (toggle) {
+      setSidebar(!isSidebarOpen(), toggle);
+    } else if (isSidebarOpen() && (e.target.closest('.du-sidebar-backdrop') || e.target.closest('.du-sidebar [data-du-nav-target]'))) {
+      setSidebar(false);
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || !isSidebarOpen()) return;
+    if (document.querySelector('dialog[open], .du-modal-overlay.open, .du-drawer-overlay.open')) return;
+    setSidebar(false);
+  });
+  window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+    if (e.matches && isSidebarOpen()) setSidebar(false);
+  });
+
   // 8. Declarative actions (CSP-safe replacement for inline event handlers)
   window.duActions = Object.assign(window.duActions || {}, {
     duToggleTheme: () => window.duToggleTheme(),

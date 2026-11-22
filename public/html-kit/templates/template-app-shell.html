@@ -68,16 +68,17 @@
           <span class="x-s5"></span>
           <span class="x-s6">SES-2026-LIVE</span>
         </div>
-        <button class="ui-btn ui-btn-outline ui-btn-sm" title="Toggle Dark/Light" data-du-on-click="[[&quot;duToggleTheme&quot;,[]]]">
-          <svg class="du-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        </button>
       </div>
     </aside>
+    <button type="button" class="du-sidebar-backdrop" aria-label="Fechar menu"></button>
 
     <!-- ==================== MAIN LAYOUT ==================== -->
     <main class="du-main-layout">
       <!-- Top Bar -->
       <header class="du-top-bar">
+        <button type="button" class="ui-btn ui-btn-ghost du-sidebar-toggle" data-du-sidebar-toggle aria-label="Abrir menu" aria-expanded="false">
+          <svg class="du-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
         <div class="du-breadcrumb">
           <span>Universe</span>
           <span>/</span>
@@ -85,9 +86,12 @@
         </div>
 
         <div class="x-s7">
-          <button class="du-command-bar" data-du-modal-open="du-command-dialog">
-            <span>Quick Find...</span>
-            <span class="du-command-shortcut">Ctrl+K</span>
+          <button class="du-command-bar" data-du-modal-open="du-command-dialog" aria-label="Pesquisa rápida">
+            <span data-du-hide-mobile>Quick Find...</span>
+            <span class="du-command-shortcut" data-du-hide-mobile>Ctrl+K</span>
+          </button>
+          <button class="ui-btn ui-btn-outline ui-btn-sm" title="Toggle Dark/Light" aria-label="Alternar tema" data-du-on-click="[[&quot;duToggleTheme&quot;,[]]]">
+            <svg class="du-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
           </button>
         </div>
       </header>

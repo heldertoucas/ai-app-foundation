@@ -105,17 +105,18 @@
           <span class="x-s5"></span>
           <span class="x-s6">SES-2026-LIVE</span>
         </div>
-        <button class="ui-btn ui-btn-outline ui-btn-sm" title="Toggle Dark/Light" aria-label="Toggle Dark and Light theme" data-du-on-click="[[&quot;duToggleTheme&quot;,[]]]">
-          <svg class="du-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        </button>
       </div>
     </aside>
+    <button type="button" class="du-sidebar-backdrop" aria-label="Fechar menu"></button>
 
     <!-- ==================== MAIN CONTENT ==================== -->
     <main class="du-main-layout">
       
       <!-- Top Bar -->
       <header class="du-top-bar">
+        <button type="button" class="ui-btn ui-btn-ghost du-sidebar-toggle" data-du-sidebar-toggle aria-label="Abrir menu" aria-expanded="false">
+          <svg class="du-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
         <div class="du-breadcrumb">
           <span>Universe</span>
           <span>/</span>
@@ -123,20 +124,24 @@
         </div>
 
         <div class="x-s7">
-          <div class="ui-badge ui-badge-status-live x-s8">
+          <div class="ui-badge ui-badge-status-live x-s8" data-du-hide-mobile>
             <span class="x-s9"></span>
             <span>4 Online</span>
           </div>
 
-          <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-drawer-open="info-drawer" title="System Info & Telemetry Drawer" aria-label="Open Telemetry Drawer">
+          <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-drawer-open="info-drawer" title="System Info & Telemetry Drawer" aria-label="Abrir telemetria">
             <svg class="du-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-            <span>Telemetry Drawer</span>
+            <span data-du-hide-mobile>Telemetry Drawer</span>
           </button>
 
           <button class="du-command-bar" data-du-modal-open="du-command-dialog" aria-label="Search and open command dialog">
             <svg class="du-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <span>Search...</span>
-            <span class="du-command-shortcut">Ctrl+K</span>
+            <span data-du-hide-mobile>Search...</span>
+            <span class="du-command-shortcut" data-du-hide-mobile>Ctrl+K</span>
+          </button>
+
+          <button class="ui-btn ui-btn-outline ui-btn-sm" title="Toggle Dark/Light" aria-label="Alternar tema" data-du-on-click="[[&quot;duToggleTheme&quot;,[]]]">
+            <svg class="du-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
           </button>
         </div>
       </header>

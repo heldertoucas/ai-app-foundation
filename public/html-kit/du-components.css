@@ -1172,3 +1172,49 @@
 
 .du-drawer-overlay:not(.open) { visibility: hidden; transition: opacity 200ms ease, visibility 0s linear 200ms; }
 .du-drawer-overlay.open { visibility: visible; transition: opacity 200ms ease, visibility 0s; }
+
+.du-app-shell.du-app-shell { width: 100%; height: 100dvh; }
+.du-top-bar .du-breadcrumb { margin-right: auto; min-width: 0; }
+.du-top-bar .du-sidebar-toggle { display: none; }
+.du-sidebar-backdrop { display: none; }
+
+@media (max-width: 767.98px) {
+  .du-top-bar [data-du-hide-mobile] { display: none; }
+  .du-top-bar .du-sidebar-toggle {
+    display: inline-flex;
+    flex-shrink: 0;
+    min-width: 2.25rem;
+    min-height: 2.25rem;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+  }
+  .du-app-shell .du-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 60;
+    width: min(18rem, 85vw);
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform 160ms ease, visibility 0s linear 160ms;
+  }
+  .du-app-shell.du-sidebar-open .du-sidebar {
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform 160ms ease, visibility 0s;
+  }
+  .du-app-shell.du-sidebar-open .du-sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    border: 0;
+    background: oklch(0 0 0 / 0.5);
+  }
+  .du-app-shell .du-view-container { padding: 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .du-app-shell .du-sidebar,
+  .du-app-shell.du-sidebar-open .du-sidebar { transition: none; }
+}
