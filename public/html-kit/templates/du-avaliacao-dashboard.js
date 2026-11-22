@@ -179,7 +179,7 @@
     function mountDashboard(role) {
       const appRoot = document.getElementById('app-root');
       const tmpl = document.getElementById('dashboard-view-template');
-      appRoot.innerHTML = '';
+      appRoot.replaceChildren();
       appRoot.appendChild(tmpl.content.cloneNode(true));
 
       // Configurar modo de visualização
@@ -241,31 +241,64 @@
         !query || t.name.toLowerCase().includes(query) || t.nif.includes(query) || t.id.toLowerCase().includes(query)
       );
 
-      tbody.innerHTML = filtered.map(t => {
-        let badgeHtml = '';
-        if (t.status === 'em_curso') badgeHtml = '<span class="badge-live">Em Curso</span>';
-        else if (t.status === 'concluido') badgeHtml = '<span class="badge-concluido">Concluído</span>';
-        else if (t.status === 'pendente') badgeHtml = '<span class="badge-pendente">Pendente</span>';
-        else badgeHtml = '<span class="badge-esgotado">Tempo Esgotado</span>';
+      const cell = (text, className) => {
+        const td = document.createElement('td');
+        if (className) td.className = className;
+        td.textContent = text;
+        return td;
+      };
+      const STATUS = {
+        em_curso: ['badge-live', 'Em Curso'],
+        concluido: ['badge-concluido', 'Concluído'],
+        pendente: ['badge-pendente', 'Pendente'],
+      };
+      tbody.replaceChildren(...filtered.map((t) => {
+        const row = document.createElement('tr');
+        const [badgeClass, badgeText] = STATUS[t.status] || ['badge-esgotado', 'Tempo Esgotado'];
+        const badge = document.createElement('span');
+        badge.className = badgeClass;
+        badge.textContent = badgeText;
+        const statusCell = document.createElement('td');
+        statusCell.append(badge);
 
-        const scoreHtml = t.score !== null ? `<strong style="color: ${t.score >= 9.5 ? '#10b981' : '#ef4444'}">${t.score.toFixed(1)}</strong>` : '<span style="color: var(--muted-foreground);">-</span>';
-        const actionHtml = (t.status === 'concluido' || t.status === 'tempo_esgotado') 
-          ? `<button class="ui-button ui-button-ghost" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;" data-action="reopen" data-id="${escapeHtml(t.id)}">Reabrir</button>`
-          : '';
+        const scoreCell = cell('', 'av-cell-end av-cell-mono');
+        if (t.score !== null) {
+          const score = document.createElement('strong');
+          score.className = t.score >= 9.5 ? 'av-score-pass' : 'av-score-fail';
+          score.textContent = t.score.toFixed(1);
+          scoreCell.append(score);
+        } else {
+          scoreCell.textContent = '-';
+        }
 
-        return `
-          <tr>
-            <td style="font-family: monospace; font-weight: 600; color: var(--muted-foreground);">${escapeHtml(t.id)}</td>
-            <td><strong>${escapeHtml(t.name)}</strong></td>
-            <td style="font-family: monospace; font-size: 0.8rem; color: var(--muted-foreground);">${escapeHtml(t.nif)}</td>
-            <td>${badgeHtml}</td>
-            <td style="font-size: 0.8rem; color: var(--muted-foreground);">${escapeHtml(t.startedAt)}</td>
-            <td style="font-family: monospace; font-size: 0.8rem;">${escapeHtml(t.answers)}</td>
-            <td style="text-align: right; font-family: monospace;">${scoreHtml}</td>
-            <td style="text-align: right;">${actionHtml}</td>
-          </tr>
-        `;
-      }).join('');
+        const actionCell = cell('', 'av-cell-end');
+        if (t.status === 'concluido' || t.status === 'tempo_esgotado') {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'ui-btn ui-btn-ghost ui-btn-sm';
+          button.dataset.action = 'reopen';
+          button.dataset.id = t.id;
+          button.textContent = 'Reabrir';
+          actionCell.append(button);
+        }
+
+        const name = document.createElement('td');
+        const strong = document.createElement('strong');
+        strong.textContent = t.name;
+        name.append(strong);
+
+        row.append(
+          cell(t.id, 'av-cell-id'),
+          name,
+          cell(t.nif, 'av-cell-mono av-cell-small av-cell-muted'),
+          statusCell,
+          cell(t.startedAt, 'av-cell-small av-cell-muted'),
+          cell(t.answers, 'av-cell-mono av-cell-small'),
+          scoreCell,
+          actionCell,
+        );
+        return row;
+      }));
     }
 
     function onSearchInput() {
@@ -329,10 +362,9 @@
 
     // CSV Sanitizer com mitigação de injeção de fórmulas
     function exportCsv() {
-      const dangerous = ['=', '+', '-', '@', '\t', '\r'];
       const sanitize = (val) => {
         let s = val === null || val === undefined ? '' : String(val);
-        if (dangerous.some(d => s.startsWith(d))) s = "'" + s;
+        if (/^[=+\-@\t\r\n]/.test(s) || /^[=+\-@\t\r\n]/.test(s.trimStart())) s = "'" + s;
         return '"' + s.replace(/"/g, '""') + '"';
       };
 

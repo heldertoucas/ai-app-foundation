@@ -75,3 +75,11 @@
 .x-s42.x-s42.x-s42 { max-width: 320px; }
 .x-s43.x-s43.x-s43 { display: flex; gap: 0.5rem; }
 .x-s44.x-s44.x-s44 { text-align: right; }
+
+.av-cell-id { font-family: var(--font-mono); font-weight: 600; color: var(--muted-foreground); }
+.av-cell-mono { font-family: var(--font-mono); }
+.av-cell-small { font-size: 0.75rem; }
+.av-cell-muted { color: var(--muted-foreground); }
+.av-cell-end { text-align: right; }
+.av-score-pass { color: var(--status-live-foreground); }
+.av-score-fail { color: var(--status-missing-foreground); }
