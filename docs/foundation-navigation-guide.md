@@ -118,7 +118,7 @@ export type SidebarFooterConfig =
 
 When adapting this foundation navigation to any application workspace (such as `du-dashboard` or `rulesync-explorer`):
 
-1. **Scaffold `config/navigation.config.tsx`**:
+1. **Criar `config/navigation.config.tsx`**:
    - Define application-specific branding (`brand.name`, `brand.subtitle`, `brand.href`).
    - Construct domain sections and collapsible groups with Phosphor icons (`@phosphor-icons/react`).
    - Configure the footer dock mode (`system` with local port & database status).

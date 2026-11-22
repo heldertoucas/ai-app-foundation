@@ -109,7 +109,7 @@ export function SessionHeader() {
             title="Abrir versão Gémea Zero-Build HTML5"
             className="hidden lg:flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md border border-border/60 hover:bg-muted"
           >
-            <span>HTML Kit Twin</span>
+            <span>Versão HTML</span>
             <ArrowSquareOut size={12} />
           </a>
 

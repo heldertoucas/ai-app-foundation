@@ -1,6 +1,6 @@
-# 🌐 DU HTML Foundation Kit — Guia de Arquitetura & Uso
+# 🌐 DU HTML Stack — Guia de Arquitetura & Uso
 
-Este documento formaliza a variante **HTML-first / Zero-Build** do Development Universe (DU), baseada nos princípios do **`codylindley/shadcn-html`** e empacotada localmente em `public/html-kit/`.
+Este documento formaliza a variante **HTML-first / Zero-Build** do Development Universe (DU), baseada nos princípios do **`codylindley/shadcn-html`** e empacotada localmente em `public/html/`.
 
 ---
 
@@ -15,26 +15,29 @@ Contudo, ferramentas periféricas do DU exigem:
 
 ---
 
-## 📁 Estrutura do Kit Bundled (`public/html-kit/`)
+## 📁 Estrutura da Stack HTML (`public/html/`)
 
 ```
-public/html-kit/
-├── tokens.css               <-- Tokens canónicos (:root e .dark) em OKLCH com paridade com globals.css
-├── du-components.css        <-- Componentes do DU (KPI Cards, Telemetry Badges, Bento Grids)
-├── du-runtime.js            <-- Micro-script (<50 LOC) para Dark Theme e atalhos de teclado
-├── vendor/
-│   └── shadcn-html.all.css  <-- Bundling local de componentes nativos (Button, Card, Dialog, Tabs, etc.)
-└── templates/
-    └── starter-cockpit.html <-- Template funcional e testado pronto para duplicação
+public/html/
+├── index.html               <-- Catálogo por Blueprint
+├── core/
+│   ├── tokens.css           <-- Tokens canónicos (:root e .dark) em OKLCH com paridade com globals.css
+│   ├── du-components.css    <-- Componentes do DU (KPI Cards, Telemetry Badges, Bento Grids)
+│   ├── du-runtime.js        <-- Micro-runtime para Dark Theme, gavetas e ações declarativas
+│   └── vendor/
+│       └── shadcn-html.all.css
+├── modules/                 <-- Modules reutilizáveis (auth-pin, data-table, state-sync, live-telemetry)
+└── kits/
+    └── cockpit-starter/index.html
 ```
 
 ---
 
 ## 🔄 Matriz de Transição: React vs. HTML Nativo
 
-| Componente | Versão React (`ai-app-foundation`) | Versão HTML Nativo (`html-kit`) |
+| Componente | Versão React (`ai-app-foundation`) | Versão HTML Nativo (`public/html/`) |
 | :--- | :--- | :--- |
-| **Tokens & Cores** | `app/globals.css` (Tailwind `@theme`) | `public/html-kit/tokens.css` |
+| **Tokens & Cores** | `app/globals.css` (Tailwind `@theme`) | `public/html/core/tokens.css` |
 | **Botão** | `<Button variant="outline">` | `<button class="ui-btn ui-btn-outline">` |
 | **Card** | `<Card><CardHeader>...` | `<div class="ui-card"><div class="ui-card-header">...` |
 | **Badge** | `<Badge variant="secondary">` | `<span class="ui-badge ui-badge-secondary">` |
@@ -43,13 +46,13 @@ public/html-kit/
 | **Switch** | Radix Switch | `<label class="ui-switch"><input type="checkbox">...` |
 | **Tabs** | Radix Tabs | `<div class="ui-tabs">` + `duActivateTab(this, id)` |
 | **Theme Toggle** | `next-themes` | `duToggleTheme()` via `du-runtime.js` |
-| **KPI Stat Card** | `components/dashboard/kpi-stat-card.tsx` | `<div class="du-kpi-card">` |
+| **KPI Stat Card** | `components/dashboard/metrics/kpi-stat-card.tsx` | `<div class="du-kpi-card">` |
 | **Telemetria** | Componente de Telemetria com CSS Ping | `<div class="du-telemetry-pill du-status-live">` |
 
 ---
 
 ## 💡 Como Usar Num Novo Projeto Standalone
 
-1. Copiar a pasta `public/html-kit/` para o repositório ou webview de destino.
-2. Abrir `templates/starter-cockpit.html`.
+1. Copiar `public/html/core/` e o Kit desejado de `public/html/kits/` para o repositório ou webview de destino.
+2. Abrir `kits/cockpit-starter/index.html`.
 3. Adicionar novos componentes do catálogo geral do `codylindley/shadcn-html` utilizando os mesmos seletores e tokens de cor.
