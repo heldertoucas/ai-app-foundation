@@ -9,6 +9,8 @@ change: 20261122-foundation-architecture-uniformization
 
 # Mapa da AI App Foundation: kits, blueprints, recipes e templates
 
+> **Retrato do estado anterior.** Este relatório usa o vocabulário antigo. O modelo alvo está em [`proposal.md`](./proposal.md) e [`design.md`](./design.md).
+
 **Estado analisado:** 2026-11-22, commit `c514252`, com as alterações locais então presentes. `pnpm foundation:check` passou nas 13 verificações.
 
 ## 1. Resumo

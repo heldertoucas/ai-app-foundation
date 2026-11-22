@@ -1,192 +1,146 @@
 ---
-title: "Uniformização da arquitetura Foundation e entrada do Sentinel Web na família HTML"
+title: "Migração da AI App Foundation para o modelo Foundation, Blueprints, Stacks, Kits e Products"
 type: proposal
 status: proposed
 project: PRJ-0024
 created: "2026-11-22"
+updated: "2026-11-22"
 relevant_decisions: ["DEC-0027", "DEC-0069"]
 relevant_constraints: ["CON-0020", "CON-0038"]
 related_patterns: ["PAT-0104", "PAT-0105", "PAT-0174"]
 related_projects: ["PRJ-0030"]
-artifacts: ["foundation-map.md"]
+artifacts: ["canon.md", "compliance-register.md", "design.md", "tasks.md", "stress-test.md", "foundation-map.md", "specs/foundation-model/spec.md"]
 decisions_status: open
 ---
 
-# Uniformização da arquitetura Foundation
+# Migração da AI App Foundation
 
-## 1. Problem & Context
+## Why
 
-**Facto central:** a Foundation tem dois kits (React e HTML) sem vocabulário, contrato de template nem verificação comuns.
+**Facto central:** a Foundation promete a mesma experiência em HTML e React, mas não tem uma linguagem comum nem uma forma de provar essa paridade.
 
-- **Relatório completo:** [`foundation-map.md`](./foundation-map.md) documenta hierarquia, inventário, relações e 13 incoerências.
-- **Base canónica:** DEC-0027 define Core, Blueprints, Recipes e Agent Layer. PAT-0104 e PAT-0105 definem o HTML Kit.
-- **Origem do HTML Kit:** a mudança `du-html-foundation-kit` já nomeia o Sentinel como consumidor previsto.
-- **Adoção real:** o Sentinel Web ainda não usa o HTML Kit.
-- **Saúde atual:** `pnpm foundation:check` passa nas 13 verificações, mas não deteta a maioria destas incoerências.
-- **Histórico no Vault:** a pesquisa semântica não devolveu notas relevantes. O contexto vem das decisões e padrões acima, lidos diretamente.
+- **Vocabulário:** "Blueprint" tem 4 sentidos. "Kit" nomeia hoje a tecnologia. "Template", "Vertical" e "Recipe" sobrepõem-se.
+- **Catálogo:** o filtro mistura tecnologia, domínio e tipo de artefacto.
+- **Reutilização:** nenhum template HTML usa as 4 recipes HTML. A Avaliação HTML reimplementa o PIN.
+- **Qualidade:** 3 templates usam 28 classes sem definição. Os 7 templates têm 462 atributos `style` e 59 `onclick`.
+- **Verificação:** `foundation:check` não deteta estes problemas e falha num checkout limpo.
+- **Prova:** [`stress-test.md`](./stress-test.md) regista cada pressuposto testado.
+- **Conformidade:** [`compliance-register.md`](./compliance-register.md) classifica Stacks, Kits, páginas, componentes, Modules e Recipes.
+- **Cânone:** [`canon.md`](./canon.md) define taxonomia, nomes, Blueprints, layouts e regras de design.
 
-| Grupo | Incoerências | Consequência |
-|---|---|---|
-| **Vocabulário** | 1 | "Blueprint" tem 4 sentidos |
-| **Documentação e skills** | 2, 3, 4, 8 | Agentes recebem instruções erradas |
-| **Qualidade dos templates** | 5, 6, 10, 11 | Templates oficiais violam regras do kit ou ficam invisíveis |
-| **Verificação** | 7 | Divergência de tokens pode passar despercebida |
-| **Recipes** | 9 | A recipe `auth` não é operável |
-| **Higiene do repositório** | 12, 13 | O estado do OpenSpec e do Git engana |
+## What Changes
 
-## 2. Proposed Solution
-
-### 2.1 Vocabulário único
-
-| Termo | Definição | Exemplo |
-|---|---|---|
-| **Kit** | Stack técnica completa | React Kit, HTML Kit |
-| **Component** | Peça visual reutilizável | `Button`, `.ui-btn` |
-| **Blueprint** | Estrutura reutilizável de um tipo de aplicação | `(dashboard)`, `(site)` |
-| **Template** | Ficheiro pronto a copiar que concretiza um blueprint | `starter-cockpit.html` |
-| **Recipe** | Capacidade opcional com contrato próprio | `sse-telemetry` |
-| **Vertical** | Solução de domínio, presente em um ou nos dois kits | Avaliação |
-| **Theme** | Conjunto de valores de tokens | Futuro Digital, Sentinel |
-
-**Regra de dependência:** cada nível usa apenas os níveis acima, conforme a secção 2 do relatório.
-
-### 2.2 Contrato de template HTML
-
-Cada template oficial da família HTML cumpre:
-
-- **Sem compilação:** sem npm, Node, CDN ou Tailwind.
-- **Compatível com CSP rigorosa:** sem `onclick` nem atributos `style`.
-- **Tokens apenas:** cores definidas só em ficheiros de tema.
-- **Ícones:** SVG outline, sem emojis.
-- **Portas:** nenhuma porta inventada. Valores vêm de KNW-0025.
-- **Descoberta:** listado no catálogo `public/html-kit/index.html`.
-- **Verificação:** coberto por `foundation-check`.
-
-### 2.3 Sentinel Web na família HTML
-
-**Proposta em aberto:** acrescentar o Sentinel Web à família HTML como primeira aplicação de um modelo reutilizável.
-
-**Nome e estrutura provisórios:** "Mission Cockpit Blueprint" e a árvore abaixo são ilustrativos até à decisão D1.
+### Modelo aprovado em conversa
 
 ```text
-public/html-kit/blueprints/mission-cockpit/
-├── blueprint.json     versão e lista de ficheiros
-├── theme.css          tema Sentinel com valores atuais
-├── components.css     hero, bandas, medidores, atalhos
-├── runtime.js         API, atualização, pesquisa, avisos
-├── modules/guard/     robô guarda, opcional
-├── server/            servidor Python seguro (PAT-0174), opcional
-└── starter/           aplicação mínima pronta a copiar
+FOUNDATION   filosofia, linguagem de design, vocabulário
+│
+├── BLUEPRINTS   o plano: UX, layout, regras (sem tecnologia)
+│
+├── HTML STACK ─┐
+└── REACT STACK ┴─ tecnologia base → components → modules → KITS
+                                                             │
+                                                      PRODUCTS (fora)
 ```
 
-- **Design:** o requisito de partida é manter o aspeto atual, validado pixel a pixel. Qualquer exceção depende de D2.
-- **Fronteira:** tarefas, notas, Atlas e `menu.md` ficam no Sentinel.
-- **Distribuição:** o Sentinel guarda uma cópia versionada. Um script Python compara-a com `blueprint.json`.
-- **Primeiro passo:** comparar com `starter-cockpit.html` e `du-dashboard.html` para reutilizar antes de criar.
-- **Prova de template:** uma segunda aplicação pequena tem de nascer do `starter/` sem editar o blueprint.
-
-**Riscos conhecidos na migração:**
-
-| Risco | Tratamento |
-|---|---|
-| `--muted` é texto no Sentinel e fundo no kit | Migrar as 51 utilizações para `--muted-foreground` antes de carregar o kit |
-| `du-runtime.js` também captura `Cmd+K` | Reutilizar `du-command-dialog` e remover o atalho duplicado |
-| O runtime tem 2 temas e o Sentinel tem 3 | Decisão D2 |
-| `var(--ok)` não está definido no Sentinel | Registar, sem corrigir durante a migração visual |
-| O leitor de notas usa `innerHTML`, contra PAT-0174 | Revisão de segurança separada |
-
-### 2.4 Fases
-
-**Sequência provisória:** a divisão e a ordem das fases dependem de D3. Nenhuma fase depois de W0 começa sem as decisões tomadas.
-
-| Fase | Entrega | Critério de conclusão |
+| Termo | Significado | Exemplo |
 |---|---|---|
-| **W0** | Decisões D1 a D3 e registo com `/ai-decide` | Decisão aprovada por humano |
-| **W1** | Vocabulário, documentação e skills | Incoerências 1, 2, 3, 4, 8 fechadas |
-| **W2** | Contrato aplicado aos 7 templates | Incoerências 5, 6, 10, 11 fechadas |
-| **W3** | `foundation-check` alargado | Todos os tokens comuns e o contrato verificados |
-| **W4** | Recipes e higiene | Incoerências 9, 12, 13 fechadas |
-| **W5** | Sentinel migrado para o HTML Kit | Resultado visual conforme D2, testes verdes |
-| **W6** | Mission Cockpit extraído e segunda app | App nova criada sem editar o blueprint |
+| **Foundation** | O sistema completo e a sua promessa | AI App Foundation |
+| **Stack** | A tecnologia usada para construir | HTML, React |
+| **Component** | Peça visual reutilizável | Button, KPI card |
+| **Module** | Funcionalidade reutilizável com comportamento | PIN lock, telemetria |
+| **Blueprint** | Plano de um tipo de experiência | Dashboard, Cockpit, Website |
+| **Kit** | Construção pronta a copiar de um blueprint | Avaliação |
+| **Starter Kit** | Kit vazio de um blueprint | Dashboard Starter |
+| **Mockup** | Imagem de referência de um blueprint | Dashboard clean |
+| **Recipe** | Guia para alterar infraestrutura | Postgres, Vercel |
+| **Product** | Aplicação real, fora da Foundation | Sentinel |
 
-### 2.5 Decisões em aberto
+**Termos removidos:** Template e Vertical passam a Kit. "HTML Kit" e "React Kit" passam a HTML Stack e React Stack.
 
-**Estado:** D1, D2 e D3 ficam por decidir na próxima sessão. As opções estão por ordem neutra e nenhuma é recomendada. As recomendações apresentadas em 2026-11-22 não foram aceites.
+### Regras do modelo
 
-#### D1. Nome e natureza do novo membro da família HTML
+1. **Um Kit segue exatamente um Blueprint.**
+2. **Um Kit tem uma identidade e uma ou duas implementações** (HTML, React).
+3. **Um Blueprint só existe com pelo menos dois Kits.**
+4. **A paridade é declarada:** cada Kit indica `full`, `partial`, `divergent` ou `single-stack`.
+5. **Uma fonte de verdade:** os Products copiam e verificam a cópia. Não há pacotes partilhados.
 
-| Opção | O que significa | Vantagem | Custo |
-|---|---|---|---|
-| **A. Mission Cockpit Blueprint** | Modelo de aplicação dentro do HTML Kit | Encaixa no termo "Blueprint" da DEC-0027 | Alarga esse termo, hoje aplicado a layouts React |
-| **B. Mission Kit** | Kit próprio, construído sobre o HTML Kit | Nome curto e fácil de comunicar | Pode sugerir um terceiro kit ao lado de React e HTML |
-| **C. Template HTML** | Mais um template em `templates/` | Não cria nenhuma categoria nova | Um ficheiro único acomoda mal módulos e servidor |
-| **D. Outro** | Nome ou natureza a definir | Liberdade total | Exige definir o seu lugar na hierarquia |
+### Inventário alvo
 
-#### D2. Regras do HTML Kit que alteram o design do Sentinel
+| Blueprint | Kit | React | HTML | Paridade |
+|---|---|---|---|---|
+| **Dashboard** | `dashboard-starter` | não existe | `template-app-shell.html` | single-stack |
+| **Dashboard** | `mission-control` | `/dashboard` | `du-dashboard.html` | divergent |
+| **Cockpit** | `cockpit-starter` | não existe | `starter-cockpit.html` | single-stack |
+| **Cockpit** | `avaliacao` | `/avaliacao-dashboard` | `du-avaliacao-dashboard.html` | partial |
+| **Website** | `website-starter` | `/` | não existe | single-stack |
+| **Website** | `futuro-digital` | `/futuro-digital` | `du-futuro-digital*.html` | partial |
 
-**Regras em causa:** tema de 2 estados (o Sentinel tem também "sistema"), atalho `/`, etiquetas sem borda e alternador Bento/Master-Detail.
+### Entregas
 
-| Opção | Tema | Atalho `/` | Borda | Alternador | Consequência |
-|---|---|---|---|---|---|
-| **A. Design intacto** | 3 estados | Desligado | Mantida | Não entra | Zero mudanças visíveis, 4 exceções registadas |
-| **B. Microajustes** | 2 estados | Ativo | Removida | Não entra | Pequenas mudanças, 1 exceção registada |
-| **C. Cumprimento literal** | 2 estados | Ativo | Removida | Entra | Zero exceções, com controlo e vista novos na página |
-| **D. Outro** | A definir | A definir | A definir | A definir | Decisão regra a regra |
+- **Manifesto único:** `foundation.manifest.json` regista blueprints, kits, modules e recipes.
+- **HTML Stack:** `public/html-kit/` passa a `public/html/`, com `core/`, `modules/` e `kits/`.
+- **React Stack:** as rotas mantêm-se. Os componentes de domínio passam a `components/kits/`.
+- **Blueprints:** `public/blueprints/<id>/` guarda a especificação e os mockups.
+- **Catálogo:** organizado por Blueprint, com filtro separado de Stack.
+- **Verificação:** `foundation:check` valida manifesto, contrato e paridade declarada.
+- **Sentinel:** passa a Product do Blueprint Cockpit, depois de D2.
 
-#### D3. Âmbito e sequência desta mudança
+### Decisões
 
-| Opção | O que inclui | Vantagem | Custo |
-|---|---|---|---|
-| **A. Fases independentes** | Arquitetura primeiro, Sentinel depois, com entregas separadas | Um problema numa parte não bloqueia a outra | Mais coordenação entre dois repositórios |
-| **B. Só arquitetura** | W1 a W4. O Sentinel passa para outra mudança | Mudança mais pequena | O contrato não é testado numa app real nesta mudança |
-| **C. Sentinel primeiro** | Migrar o Sentinel e só depois uniformizar | Valida as regras num caso real | Pode migrar para regras que ainda vão mudar |
-| **D. Entrega única** | Todas as fases numa só entrega | Um único ciclo de revisão | Maior risco e revisão mais pesada |
-| **E. Outro** | A definir | Liberdade total | Exige redefinir as fases |
+| ID | Decisão | Estado |
+|---|---|---|
+| **D1** | Sentinel é Product. O Mission Cockpit proposto dá origem ao Blueprint Cockpit e a um Kit | Acordado em conversa, falta `/ai-decide` |
+| **D2** | Regras do HTML que alteram o design do Sentinel | **Aberta**, bloqueia M8 |
+| **D3** | Migração completa em fases independentes | Acordado em conversa, falta `/ai-decide` |
+| **D4** | `du-dashboard.html` carrega `core/` ou continua num só ficheiro | **Aberta**, bloqueia M3 |
+| **D5** | Emenda à DEC-0027, PAT-0104 e PAT-0105 | **Aberta**, bloqueia M1 |
+| **D6** | Tipografia canónica | **Aberta**, bloqueia M2 |
+| **D7** | Idioma das interfaces | **Aberta**, bloqueia M2 |
+| **D8** | Futuro Digital offline e tema escuro | **Aberta**, bloqueia M2 |
+| **D9** | Experiência de referência de Mission Control | **Aberta**, bloqueia a reconstrução do Kit |
 
-## 3. Impacted Files & Repositories
+As opções de D2 mantêm-se como definidas na versão anterior desta proposta. As opções de D4 estão em [`design.md`](./design.md).
+
+## Impact
 
 **`ai-app-foundation` (REP-0023):**
 
-- `docs/html-foundation.md`, `docs/README.md`, `FOUNDATION.md`, `AGENTS.md`
-- `public/html-kit/index.html`, `public/html-kit/templates/*.html`
-- `public/html-kit/blueprints/mission-cockpit/**` (novo)
-- `scripts/foundation-check.js`
-- `recipes/auth/**`
-- `openspec/changes/20261013-foundation-symmetry.lite.md`
+- `foundation.manifest.json` (novo)
+- `public/html-kit/**` → `public/html/**`
+- `public/blueprints/**` (novo)
+- `public/templates-index.html` (symlink substituído)
+- `components/avaliacao-dashboard/**`, `components/futuro-digital/**` → `components/kits/**`
+- `lib/avaliacao/**` → `lib/kits/avaliacao/**`
+- `app/api/open-terminal/route.ts`, `scripts/foundation-check.js`, `scripts/capture-all-screenshots.js`
+- `components/avaliacao-dashboard/session-header.tsx`
+- `docs/html-foundation.md`, `docs/README.md`, `README.md`, `FOUNDATION.md`, `AGENTS.md`
 
-**`sentinel` (REP-0029), só em W5 e W6:**
+**`sentinel` (REP-0029), só em M8:** `index.html`, `app.css`, `app.js`, `web_server.py`.
 
-- `index.html`, `app.css`, `app.js`, `web_server.py`
+**Vault, só por governação:** DEC-0027, PAT-0104, PAT-0105 e a fonte RuleSync de `ai-html-foundation` e `ai-ui-foundation`.
 
-**Skills globais, via fonte RuleSync:**
-
-- `ai-html-foundation`, `ai-ui-foundation`
-
-## 4. Non-Goals & Alternatives
+## Non-Goals & Alternatives
 
 **Non-Goals:**
 
-- Mudar o design do Sentinel, salvo o que for expressamente escolhido em D2.
-- Introduzir Tailwind, npm ou compilação na família HTML.
-- Partilhar componentes entre React e HTML.
-- Migrar o Sentinel para React ou Next.js.
+- Partilhar código de componentes entre React e HTML.
+- Criar os Kits em falta só para obter simetria.
+- Mudar URLs das rotas React.
+- Mover ou renomear `components/ui` e `components/dashboard`.
+- Introduzir Tailwind, npm, CDN ou compilação na HTML Stack.
+- Migrar `du-dashboard`, `social-manager` ou `academia-digital`.
 - Restaurar ou apagar os ficheiros pendentes em `.agents/` sem revisão humana.
 - Alterar memória canónica sem o ciclo de revisão.
 
-**Outras abordagens avaliadas (fora de D1 a D3):**
+**Alternativas rejeitadas:**
 
-| Abordagem | Limitação identificada |
+| Abordagem | Motivo |
 |---|---|
-| Tailwind só em desenvolvimento | Viola o invariante zero-build e exige exceção |
-| React + Vite | Reescreve 1173 linhas e dificulta a igualdade visual |
-| Next.js | Exige Node em execução e choca com a CSP do Sentinel |
-| Terceiro design system | Duplica tokens e componentes |
-| Sentinel lê a pasta da Foundation | Deixa de arrancar se a pasta faltar |
-
-## 5. Verification
-
-- **Foundation:** `pnpm foundation:check`, `pnpm typecheck`, `pnpm test`, `pnpm build`.
-- **Sentinel:** `python3 -m unittest discover -s tests` (63 testes verdes em 2026-11-22).
-- **Visual:** comparação Playwright em claro/escuro, desktop/telemóvel, diálogos e estados do robô. Critério: zero diferenças, exceto as escolhidas em D2.
-- **Segurança:** zero erros de CSP na consola.
-- **Windows:** teste no PC institucional sem Node instalado.
+| Pacotes partilhados | Viola o invariante 1 (aplicação única) |
+| Gerar o catálogo a partir do manifesto | Acrescenta compilação à HTML Stack |
+| Ler o manifesto com `fetch` no catálogo | Falha quando a página abre em `file://` |
+| Redirects só em `next.config.ts` | Não funcionam em `file://` |
+| Blueprint próprio para Galeria | Só tem um Kit, logo falha a regra 3 |
+| Mover rotas React para `kits/` | O App Router exige as rotas em `app/` |
