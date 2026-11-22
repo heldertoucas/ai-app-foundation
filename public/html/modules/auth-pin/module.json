@@ -1,0 +1,7 @@
+{
+  "id": "auth-pin",
+  "version": "1.0.0",
+  "stack": "html",
+  "entry": "pin-lock.js",
+  "description": "Zero-dependency local PIN / passphrase barrier modal for kiosk cockpits and local sensitive dashboards"
+}

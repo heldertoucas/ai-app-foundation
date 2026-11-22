@@ -66,7 +66,7 @@ check('HTML Kit Starter Templates present',
 );
 
 check('HTML Kit Recipes present',
-  fs.existsSync(path.join(htmlKitDir, '../modules/live-telemetry/recipe.json')),
+  fs.existsSync(path.join(htmlKitDir, '../modules/live-telemetry/module.json')),
   'Missing recipes structure in public/html/modules/'
 );
 
