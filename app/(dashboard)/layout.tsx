@@ -26,7 +26,7 @@ export default function DashboardLayout({
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center justify-between border-b px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+        <header className="flex h-14 shrink-0 items-center justify-between border-b px-4">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
             <Separator
@@ -41,14 +41,14 @@ export default function DashboardLayout({
               href="/"
               className="text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
-              Back to Site
+              Voltar ao site
             </Link>
             <ThemeToggle />
           </div>
         </header>
-        <main className="flex flex-1 flex-col p-4 sm:p-6 lg:p-8">
+        <div className="flex flex-1 flex-col p-4 sm:p-6 lg:p-8">
           {children}
-        </main>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );
