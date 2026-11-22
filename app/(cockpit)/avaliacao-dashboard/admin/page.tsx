@@ -13,7 +13,7 @@ export default function AvaliacaoDashboardAdminPage() {
 
   return (
     <AuthGuard allowedRole="admin">
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col" data-blueprint="cockpit" data-kit="avaliacao">
         <SessionHeader />
 
         <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
@@ -25,7 +25,7 @@ export default function AvaliacaoDashboardAdminPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4" data-region="summary">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                 <CardTitle className="text-xs font-medium text-muted-foreground uppercase">
@@ -86,12 +86,14 @@ export default function AvaliacaoDashboardAdminPage() {
           </div>
 
           {/* Componente de Telemetria e Auditoria */}
-          <TelemetrySyncCard
-            services={services}
-            auditLog={auditLog}
-            isSyncing={isSyncing}
-            onForceSync={forceSync}
-          />
+          <section data-region="content">
+            <TelemetrySyncCard
+              services={services}
+              auditLog={auditLog}
+              isSyncing={isSyncing}
+              onForceSync={forceSync}
+            />
+          </section>
         </main>
       </div>
     </AuthGuard>

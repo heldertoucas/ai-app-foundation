@@ -44,9 +44,9 @@ import {
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col gap-20 pb-20 overflow-hidden">
+    <div className="flex flex-col gap-20 pb-20 overflow-hidden" data-blueprint="website" data-kit="website-starter" data-region="sections">
       {/* 1. Hero Section com variante Split */}
-      <Hero variant="split" className="pt-12 sm:pt-16 pb-6">
+      <Hero variant="split" className="pt-12 sm:pt-16 pb-6" data-region="hero">
         <HeroContent align="left">
           <Badge variant="outline" className="px-3.5 py-1 gap-2 rounded-full border-border/80 w-fit">
             <span className="size-2 rounded-full bg-status-live animate-pulse" />

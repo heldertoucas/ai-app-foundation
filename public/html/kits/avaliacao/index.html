@@ -22,14 +22,14 @@
 </head>
 <body class="bg-background text-foreground">
 
-  <main id="app-root" class="du-container">
+  <main id="app-root" class="du-container" data-blueprint="cockpit" data-kit="avaliacao">
     <!-- Ecrã Inicial de Autenticação (Montado diretamente) -->
     <div class="x-s1" id="auth-screen">
       <div class="x-s2"><svg class="du-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></div>
       <h1 class="x-s3">Cockpit de Avaliação e Pauta</h1>
       <p class="x-s4">Template Zero-Build com Paridade Canónica DU</p>
 
-      <div class="du-card x-s5">
+      <div class="du-card x-s5" data-region="gate">
         <!-- Abas Formador / Admin -->
         <div class="x-s6">
           <button class="ui-btn ui-btn-secondary x-s7" id="tab-trainer-btn" data-du-on-click="[[&quot;switchAuthTab&quot;,[&quot;trainer&quot;]]]">Formador (PIN)</button>
@@ -97,9 +97,9 @@
 
   <!-- DEFERRED DOM TEMPLATE (Não pré-renderizado no DOM ativo contra devtools bypass) -->
   <template id="dashboard-view-template">
-    <div id="dashboard-content">
+    <div id="dashboard-content" data-region="content">
       <!-- Session Header -->
-      <header class="du-header">
+      <header class="du-header" data-region="topbar">
         <div class="du-flex-row">
           <div class="x-s21"><svg class="du-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></div>
           <div>
@@ -123,7 +123,7 @@
       </header>
 
       <!-- KPI Summary Cards -->
-      <div class="du-grid-4">
+      <div class="du-grid-4" data-region="summary">
         <div class="du-card">
           <div class="x-s26">Total de Formandos</div>
           <div class="x-s27" id="kpi-total">10</div>

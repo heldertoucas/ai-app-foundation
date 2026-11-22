@@ -16,9 +16,9 @@ export const metadata: Metadata = {
 
 export default function FuturoDigitalGaleriaPage() {
   return (
-    <div data-theme="futuro-digital" className="min-h-screen bg-background text-muted-foreground font-sans antialiased">
+    <div data-theme="futuro-digital" data-blueprint="website" data-kit="futuro-digital" className="min-h-screen bg-background text-muted-foreground font-sans antialiased">
       {/* 1. CABEÇALHO IDÊNTICO AO INDEX */}
-      <header className="bg-background shadow-sm sticky top-0 z-[1000] w-full">
+      <header className="bg-background shadow-sm sticky top-0 z-[1000] w-full" data-region="header">
         <div className="max-w-[1140px] mx-auto px-5">
           <nav className="flex justify-between items-center h-20">
             <Link href="/futuro-digital" className="h-[50px] block">
@@ -65,9 +65,9 @@ export default function FuturoDigitalGaleriaPage() {
       </header>
 
       {/* CONTEÚDO PRINCIPAL DA GALERIA */}
-      <main className="max-w-[1140px] mx-auto px-5 py-12 space-y-16">
+      <main className="max-w-[1140px] mx-auto px-5 py-12 space-y-16" data-region="sections">
         {/* TITULO */}
-        <div className="border-b border-border pb-8">
+        <div className="border-b border-border pb-8" data-region="hero">
           <h1 className="text-4xl md:text-5xl font-extrabold text-foreground tracking-tight mb-3">
             Catálogo & Galeria Canónica de Componentes
           </h1>
@@ -316,7 +316,7 @@ export default function FuturoDigitalGaleriaPage() {
       </main>
 
       {/* 2. RODAPÉ IDÊNTICO AO INDEX */}
-      <footer className="bg-[var(--fd-footer)] text-[var(--fd-footer-foreground)] pt-[60px] mt-16">
+      <footer className="bg-[var(--fd-footer)] text-[var(--fd-footer-foreground)] pt-[60px] mt-16" data-region="footer">
         <div className="max-w-[1140px] mx-auto px-5 grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1.5fr] gap-10 pb-10">
           <div>
             <span className="font-semibold">Futuro Digital</span>

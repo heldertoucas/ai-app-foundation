@@ -26,7 +26,7 @@ export default function DashboardLayout({
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-14 shrink-0 items-center justify-between border-b px-4">
+        <header className="flex h-14 shrink-0 items-center justify-between border-b px-4" data-region="topbar">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
             <Separator

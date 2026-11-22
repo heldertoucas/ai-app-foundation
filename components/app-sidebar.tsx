@@ -28,7 +28,7 @@ export function AppSidebar({
   ...props
 }: AppSidebarProps) {
   return (
-    <Sidebar variant="inset" {...props}>
+    <Sidebar variant="inset" data-region="sidebar" {...props}>
       {/* Brand Header */}
       <SidebarHeader>
         <SidebarMenu>

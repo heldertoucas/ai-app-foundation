@@ -46,9 +46,9 @@ const COURSES = [
 
 export default function FuturoDigitalHomePage() {
   return (
-    <div data-theme="futuro-digital" className="min-h-screen bg-background text-muted-foreground font-sans antialiased">
+    <div data-theme="futuro-digital" data-blueprint="website" data-kit="futuro-digital" className="min-h-screen bg-background text-muted-foreground font-sans antialiased">
       {/* 1. CABEÇALHO FAC-SÍMILE */}
-      <header className="bg-background shadow-sm sticky top-0 z-[1000] w-full">
+      <header className="bg-background shadow-sm sticky top-0 z-[1000] w-full" data-region="header">
         <div className="max-w-[1140px] mx-auto px-5">
           <nav className="flex justify-between items-center h-20">
             <Link href="/futuro-digital" className="h-[50px] block">
@@ -95,10 +95,10 @@ export default function FuturoDigitalHomePage() {
           </nav>
         </div>
       </header>
-      <main>
+      <main data-region="sections">
 
       {/* 2. HERO COMPONENT FAC-SÍMILE */}
-      <section id="hero" className="py-[100px] bg-background">
+      <section id="hero" className="py-[100px] bg-background" data-region="hero">
         <div className="max-w-[1140px] mx-auto px-5 flex flex-col md:flex-row items-center gap-[60px]">
           <div className="flex-1 min-w-0 w-full">
             <h1 className="fd-hero-title-exact text-[3.5rem] font-extrabold leading-[1.2] text-foreground mb-4">
@@ -293,7 +293,7 @@ export default function FuturoDigitalHomePage() {
       </main>
 
       {/* 7. RODAPÉ FAC-SÍMILE */}
-      <footer className="bg-[var(--fd-footer)] text-[var(--fd-footer-foreground)] pt-[60px]">
+      <footer className="bg-[var(--fd-footer)] text-[var(--fd-footer-foreground)] pt-[60px]" data-region="footer">
         <div className="max-w-[1140px] mx-auto px-5 grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1.5fr] gap-10 pb-10">
           <div>
             <span className="font-semibold">Futuro Digital</span>

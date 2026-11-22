@@ -8,7 +8,7 @@ export default function SiteLayout({
 }) {
   return (
     <div className="relative flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60" data-region="header">
         <div className="container flex h-14 items-center justify-between px-4 sm:px-8">
           <Link href="/" className="flex items-center space-x-2 font-bold text-lg">
             <span>Lean App Foundation</span>
@@ -39,7 +39,7 @@ export default function SiteLayout({
         </div>
       </header>
       <main className="flex-1">{children}</main>
-      <footer className="border-t py-6 md:py-0">
+      <footer className="border-t py-6 md:py-0" data-region="footer">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row px-4 sm:px-8">
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
             Built for local-first, free-first AI application development.

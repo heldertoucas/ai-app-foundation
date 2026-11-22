@@ -72,9 +72,9 @@ export default async function DashboardPage({
   const completionRate = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 100;
 
   return (
-    <div className="flex flex-col gap-8 w-full min-w-0 max-w-7xl mx-auto px-4 py-8 sm:px-6">
+    <div className="flex flex-col gap-8 w-full min-w-0 max-w-7xl mx-auto px-4 py-8 sm:px-6" data-blueprint="dashboard" data-kit="mission-control">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4" data-region="page-header">
         <div className="flex flex-col gap-1">
           <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-2.5">
             <Folder className="size-7 text-primary" />
@@ -97,6 +97,7 @@ export default async function DashboardPage({
       <Separator />
 
       {/* KPI Summary Cards Grid using Universal Dashboard Components */}
+      <section className="flex flex-col gap-8" data-region="content">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <KpiStatCard
           title="Projetos Ativos"
@@ -306,6 +307,7 @@ export default async function DashboardPage({
           </Card>
         </div>
       </div>
+      </section>
     </div>
   );
 }

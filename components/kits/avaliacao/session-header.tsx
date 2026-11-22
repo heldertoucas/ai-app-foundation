@@ -45,7 +45,7 @@ export function SessionHeader() {
   const isAdmin = pathname.includes('/admin');
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80" data-region="topbar">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Lado Esquerdo: Identidade do Painel */}
         <div className="flex items-center gap-3">

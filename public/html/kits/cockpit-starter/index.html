@@ -22,9 +22,9 @@
 </head>
 <body class="bg-background text-foreground">
 
-  <div class="du-container">
+  <div class="du-container" data-blueprint="cockpit" data-kit="cockpit-starter">
     <!-- Top Header -->
-    <header class="du-header">
+    <header class="du-header" data-region="topbar">
       <div class="du-flex-row">
         <div class="x-s1"><svg class="du-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
         <div>
@@ -61,7 +61,7 @@
     <main>
 
     <!-- Bento KPI Stats Row -->
-    <section class="du-bento-grid">
+    <section class="du-bento-grid" data-region="summary">
       <div class="du-kpi-card">
         <div class="du-kpi-label">
           <span>Active Services</span>
@@ -97,7 +97,7 @@
     </section>
 
     <!-- Main Workspace Split -->
-    <div class="du-grid-2">
+    <div class="du-grid-2" data-region="content">
       <!-- Left Column: Services Table & Tabs -->
       <div class="ui-card">
         <div class="ui-card-header">

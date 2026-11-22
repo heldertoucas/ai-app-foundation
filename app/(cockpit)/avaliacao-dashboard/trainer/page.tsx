@@ -16,7 +16,7 @@ export default function AvaliacaoDashboardTrainerPage() {
 
   return (
     <AuthGuard allowedRole="trainer">
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col" data-blueprint="cockpit" data-kit="avaliacao">
         <SessionHeader />
 
         <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
@@ -40,7 +40,7 @@ export default function AvaliacaoDashboardTrainerPage() {
           </div>
 
           {/* Cartões Rápidos de Resumo */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3" data-region="summary">
             <Card className="bg-card/60">
               <CardContent className="p-4 flex items-center gap-3">
                 <div className="p-2.5 rounded-lg bg-primary/10 text-primary">
@@ -95,12 +95,14 @@ export default function AvaliacaoDashboardTrainerPage() {
           </div>
 
           {/* Tabela Interativa de Formandos */}
-          <TraineeMonitorTable
-            trainees={trainees}
-            actionCode={actionCode}
-            onReopenExam={reopenExam}
-            onExportCsv={exportTraineesCsv}
-          />
+          <section data-region="content">
+            <TraineeMonitorTable
+              trainees={trainees}
+              actionCode={actionCode}
+              onReopenExam={reopenExam}
+              onExportCsv={exportTraineesCsv}
+            />
+          </section>
         </main>
       </div>
     </AuthGuard>

@@ -17,9 +17,9 @@
 </head>
 <body>
 
-  <div class="du-app-shell">
+  <div class="du-app-shell" data-blueprint="dashboard" data-kit="dashboard-starter">
     <!-- ==================== SIDEBAR ==================== -->
-    <aside class="du-sidebar">
+    <aside class="du-sidebar" data-region="sidebar">
       <!-- Header -->
       <div class="du-sidebar-header">
         <div class="du-stat-icon-wrapper x-s1">
@@ -75,7 +75,7 @@
     <!-- ==================== MAIN LAYOUT ==================== -->
     <main class="du-main-layout">
       <!-- Top Bar -->
-      <header class="du-top-bar">
+      <header class="du-top-bar" data-region="topbar">
         <button type="button" class="ui-btn ui-btn-ghost du-sidebar-toggle" data-du-sidebar-toggle aria-label="Abrir menu" aria-expanded="false">
           <svg class="du-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
@@ -100,8 +100,8 @@
       <div class="du-view-container">
 
         <!-- VIEW 1: OVERVIEW -->
-        <section id="view-overview" class="du-view active">
-          <div>
+        <section id="view-overview" class="du-view active" data-region="content">
+          <div data-region="page-header">
             <h1 class="x-s8">System Overview</h1>
             <p class="x-s9">Live cockpit powered by zero-build native HTML Foundation components.</p>
           </div>
