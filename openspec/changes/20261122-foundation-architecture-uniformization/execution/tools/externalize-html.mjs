@@ -4,6 +4,7 @@
 // Writes <name>.css and <name>.js beside each page. Exits 1, changing nothing for that file, on anything it cannot convert.
 import fs from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 export const CSP = "default-src 'self'; img-src 'self' data:; font-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'";
 const BLOCK = /(<script\b[^>]*>[\s\S]*?<\/script\s*>|<style\b[^>]*>[\s\S]*?<\/style\s*>|<!--[\s\S]*?-->)/gi;
@@ -125,7 +126,7 @@ export function transform(source, name, opts = {}) {
   return { html: out, css: css.join('\n'), js: js.join('\n'), stats: { styleAttrs, uniqueStyles: classes.size, handlers, actions: custom } };
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && import.meta.url === pathToFileURL(fs.realpathSync(process.argv[1])).href) {
   const args = process.argv.slice(2); const files = args.filter((a) => !a.startsWith('--'));
   const opts = { csp: args.includes('--csp'), addRuntime: (args.find((a) => a.startsWith('--add-runtime=')) || '').split('=')[1] };
   if (!files.length) { console.error('Usage: externalize-html.mjs [--csp] [--add-runtime=path] <file.html>...'); process.exit(2); }

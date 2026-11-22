@@ -1,5 +1,8 @@
 {
   "schemaVersion": 1,
+  "coreDir": "public/html-kit",
+  "catalog": "public/html-kit/index.html",
+  "assignedPorts": [4000, 4010, 4020, 4030, 4040, 4050, 4100, 4101, 4102, 4103, 4110, 4111, 4120, 4130, 4140, 4150, 4200, 4210, 4220, 4230, 4235, 4300, 7013, 7020, 7025, 7029, 7050, 7060, 7100, 7101, 7102, 7103, 7110, 7120, 7130, 7140, 7150, 7200, 7210, 7220, 7230, 7235, 7300, 7319, 9222, 9223],
   "blueprints": [
     { "id": "dashboard", "name": "Dashboard", "spec": "public/blueprints/dashboard/README.md", "regions": ["sidebar", "topbar", "page-header", "content"] },
     { "id": "cockpit", "name": "Cockpit", "spec": "public/blueprints/cockpit/README.md", "regions": ["topbar", "summary", "content"] },
@@ -23,7 +26,7 @@
       "react": null, "differences": ["Sem implementação React nesta migração"]
     },
     {
-      "id": "avaliacao", "name": "Avaliação", "blueprint": "cockpit", "starter": false, "parity": "partial",
+      "id": "avaliacao", "name": "Avaliação", "blueprint": "cockpit", "starter": false, "parity": "partial", "gateFirst": true,
       "html": { "entries": ["public/html/kits/avaliacao/index.html"], "legacyEntries": ["public/html-kit/templates/du-avaliacao-dashboard.html"] },
       "react": { "routes": ["/avaliacao-dashboard", "/avaliacao-dashboard/trainer", "/avaliacao-dashboard/admin"], "entries": ["app/(cockpit)/avaliacao-dashboard/page.tsx"], "legacyEntries": ["app/(site)/avaliacao-dashboard/page.tsx"] },
       "differences": ["React separa acesso, formador e administrador em rotas; HTML usa vistas numa só página"]

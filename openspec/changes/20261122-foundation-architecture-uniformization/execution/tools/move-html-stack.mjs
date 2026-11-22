@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Moves public/html-kit to public/html and public/blueprints with git mv, rewrites paths, and leaves redirect pages.
+// Atomically moves public/html-kit to public/html and public/blueprints, rewrites every known reference,
+// writes redirect pages and stages exactly what it touched. Rolls back on any error.
 // Usage: node move-html-stack.mjs <repo> [--dry-run]
 import fs from 'node:fs';
 import path from 'node:path';
@@ -19,10 +20,27 @@ const KITS = {
 };
 const MOCKUPS = { 'du-clean-dashboard-mockup': 'clean', 'du-cockpit-mockup': 'mission-control' };
 const MODULES = { 'auth-pin-lock': 'auth-pin', 'datatable-fetch': 'data-table', 'localstorage-state': 'state-sync', 'sse-telemetry': 'live-telemetry' };
-const CORE = ['tokens.css', 'du-components.css', 'du-runtime.js', 'vendor'];
+const CORE = ['tokens.css', 'du-components.css', 'du-runtime.js', 'vendor', 'fonts'];
+const CHECK = 'scripts/foundation-check.js';
+const ROUTE = 'app/api/open-terminal/route.ts';
+const HEADER = 'components/avaliacao-dashboard/session-header.tsx';
+const CAPTURE = 'scripts/capture-all-screenshots.js';
+const MANIFEST = 'foundation.manifest.json';
 
 const exists = (p) => fs.existsSync(path.join(repo, p));
-const git = (...a) => execFileSync('git', ['-C', repo, ...a], { stdio: 'pipe' });
+const read = (p) => fs.readFileSync(path.join(repo, p), 'utf8');
+const git = (...a) => execFileSync('git', ['-C', repo, ...a], { encoding: 'utf8', stdio: 'pipe' });
+const stop = (m) => { console.error(`STOP ${m}`); process.exit(1); };
+const rel = (file, target) => path.relative(path.dirname(file), target).split(path.sep).join('/');
+const touched = new Set();
+const write = (p, s) => { fs.mkdirSync(path.dirname(path.join(repo, p)), { recursive: true }); fs.writeFileSync(path.join(repo, p), s); touched.add(p); };
+const edit = (p, fn) => { const before = read(p); const after = fn(before); if (after !== before) write(p, after); };
+
+if (git('branch', '--show-current').trim() === 'main') stop('run on a feature branch, never main');
+if (git('status', '--porcelain').trim()) stop('working tree must be clean');
+for (const f of [CHECK, ROUTE, HEADER, CAPTURE, MANIFEST]) if (!exists(f)) stop(`missing ${f}`);
+if (!exists(`${OLD}/fonts`)) stop('fonts directory missing: run WP-32 first');
+
 const moves = [];
 for (const c of CORE) moves.push([`${OLD}/${c}`, `public/html/core/${c}`]);
 moves.push([`${OLD}/index.html`, 'public/html/index.html']);
@@ -32,54 +50,108 @@ for (const [from, to] of Object.entries(MODULES)) moves.push([`${OLD}/recipes/${
 for (const [from, [dir, name]] of Object.entries(KITS)) for (const ext of ['html', 'css', 'js']) if (exists(`${OLD}/templates/${from}.${ext}`)) moves.push([`${OLD}/templates/${from}.${ext}`, `public/${dir}/${name}.${ext}`]);
 for (const [from, name] of Object.entries(MOCKUPS)) for (const ext of ['html', 'css', 'js']) if (exists(`${OLD}/examples/${from}.${ext}`)) moves.push([`${OLD}/examples/${from}.${ext}`, `public/blueprints/dashboard/mockups/${name}.${ext}`]);
 
-const missing = moves.filter(([a]) => !exists(a)).map(([a]) => a);
-const taken = moves.filter(([, b]) => exists(b)).map(([, b]) => b);
-if (missing.length || taken.length) { console.error('STOP', JSON.stringify({ missing, taken })); process.exit(1); }
-if (dry) { moves.forEach(([a, b]) => console.log(`${a} -> ${b}`)); process.exit(0); }
-
-for (const [a, b] of moves) { fs.mkdirSync(path.dirname(path.join(repo, b)), { recursive: true }); git('mv', a, b); }
-
-const coreRe = /(["'(])(?:\.\.\/|\.\/)(tokens\.css|du-components\.css|du-runtime\.js|vendor\/shadcn-html\.all\.css)/g;
-const rel = (file, target) => path.relative(path.dirname(file), target).split(path.sep).join('/');
-for (const [from, [dir, name]] of Object.entries(KITS)) {
-  const file = `public/${dir}/${name}.html`; const full = path.join(repo, file);
-  let s = fs.readFileSync(full, 'utf8');
-  s = s.replace(coreRe, (_, q, asset) => `${q}${rel(file, `public/html/core/${asset}`)}`);
-  s = s.replaceAll(`href="${from}.css"`, `href="${name}.css"`).replaceAll(`src="${from}.js"`, `src="${name}.js"`);
-  s = s.replace(/(href=")du-futuro-digital-galeria\.html/g, '$1galeria.html').replace(/(href=")du-futuro-digital\.html/g, '$1index.html');
-  fs.writeFileSync(full, s);
-}
-for (const [from, name] of Object.entries(MOCKUPS)) {
-  const full = path.join(repo, `public/blueprints/dashboard/mockups/${name}.html`);
-  let s = fs.readFileSync(full, 'utf8');
-  s = s.replaceAll(`href="${from}.css"`, `href="${name}.css"`).replaceAll(`src="${from}.js"`, `src="${name}.js"`);
-  fs.writeFileSync(full, s);
-}
-
-const urlFor = ([dir, name]) => `/${dir}/${name === 'index' ? '' : name + '.html'}`.replace(/\/$/, '/index.html');
-for (const f of ['public/html/index.html', 'public/html/index.js', 'public/html/index.css']) {
-  if (!exists(f)) continue;
-  let s = fs.readFileSync(path.join(repo, f), 'utf8');
-  s = s.replace(/(["'(])\.\/(tokens\.css|du-components\.css|du-runtime\.js|vendor\/shadcn-html\.all\.css)/g, '$1./core/$2');
-  s = s.replace(/(["'(])\.\/screenshots\//g, '$1../screenshots/');
-  for (const [from, target] of Object.entries(KITS)) {
-    s = s.replaceAll(`/html-kit/templates/${from}.html`, urlFor(target));
-    s = s.replaceAll(`public/html-kit/templates/${from}.html`, `public${urlFor(target)}`);
-    s = s.replaceAll(`./templates/${from}.html`, urlFor(target).replace('/html/', './'));
-  }
-  for (const [from, to] of Object.entries(MODULES)) s = s.replaceAll(`/html-kit/recipes/${from}/`, `/html/modules/${to}/`);
-  s = s.replaceAll('/html-kit/recipes/', '/html/modules/').replaceAll('/html-kit/index.html', '/html/index.html');
-  fs.writeFileSync(path.join(repo, f), s);
-}
-
-const stub = (target, title) => `<!doctype html>\n<html lang="pt-PT">\n<head>\n  <meta charset="utf-8">\n  <meta http-equiv="refresh" content="0; url=${target}">\n  <link rel="canonical" href="${target}">\n  <title>${title} mudou de endereço</title>\n</head>\n<body>\n  <main>\n    <h1>${title} mudou de endereço</h1>\n    <p><a href="${target}">Abrir a nova página</a></p>\n  </main>\n</body>\n</html>\n`;
-const writeStub = (file, targetAbs, title) => {
-  const full = path.join(repo, file); fs.mkdirSync(path.dirname(full), { recursive: true });
-  fs.writeFileSync(full, stub(rel(file, targetAbs), title));
+const dupes = (list) => list.filter((x, i) => list.indexOf(x) !== i);
+const problems = {
+  missing: moves.filter(([a]) => !exists(a)).map(([a]) => a),
+  taken: moves.filter(([, b]) => exists(b)).map(([, b]) => b),
+  duplicateSources: dupes(moves.map(([a]) => a)),
+  duplicateTargets: dupes(moves.map(([, b]) => b)),
 };
-for (const [from, [dir, name]] of Object.entries(KITS)) writeStub(`${OLD}/templates/${from}.html`, `public/${dir}/${name}.html`, from);
-for (const [from, name] of Object.entries(MOCKUPS)) writeStub(`${OLD}/examples/${from}.html`, `public/blueprints/dashboard/mockups/${name}.html`, from);
-writeStub(`${OLD}/index.html`, 'public/html/index.html', 'Catálogo');
-const legacy = path.join(repo, 'public/templates-index.html');
-if (fs.lstatSync(legacy).isSymbolicLink()) { git('rm', '-q', '--cached', 'public/templates-index.html'); fs.unlinkSync(legacy); writeStub('public/templates-index.html', 'public/html/index.html', 'Catálogo'); }
-console.log(`moved=${moves.length}`);
+if (Object.values(problems).some((l) => l.length)) stop(JSON.stringify(problems));
+if (dry) { moves.forEach(([a, b]) => console.log(`${a} -> ${b}`)); console.log(`DRY-RUN OK moves=${moves.length}`); process.exit(0); }
+
+function kitUrl([dir, name]) { return `/${dir}/${name}.html`; }
+const stub = (target, title) => `<!doctype html>\n<html lang="pt-PT">\n<head>\n  <meta charset="utf-8">\n  <meta http-equiv="refresh" content="0; url=${target}">\n  <link rel="canonical" href="${target}">\n  <title>${title} mudou de endereço</title>\n</head>\n<body>\n  <main>\n    <h1>${title} mudou de endereço</h1>\n    <p><a href="${target}">Abrir a nova página</a></p>\n  </main>\n</body>\n</html>\n`;
+const writeStub = (file, target, title) => write(file, stub(rel(file, target), title));
+
+try {
+  for (const [a, b] of moves) { fs.mkdirSync(path.dirname(path.join(repo, b)), { recursive: true }); git('mv', a, b); }
+
+  const coreRe = /(["'(])(?:\.\.\/|\.\/)(tokens\.css|du-components\.css|du-runtime\.js|vendor\/shadcn-html\.all\.css)/g;
+  for (const [from, [dir, name]] of Object.entries(KITS)) {
+    const file = `public/${dir}/${name}.html`;
+    edit(file, (s) => s
+      .replace(coreRe, (_, q, asset) => `${q}${rel(file, `public/html/core/${asset}`)}`)
+      .replaceAll(`href="${from}.css"`, `href="${name}.css"`)
+      .replaceAll(`src="${from}.js"`, `src="${name}.js"`)
+      .replace(/(href=")du-futuro-digital-galeria\.html/g, '$1galeria.html')
+      .replace(/(href=")du-futuro-digital\.html/g, '$1index.html')
+      .replaceAll('public/html-kit/', 'public/html/'));
+    for (const ext of ['html', 'css', 'js']) {
+      const f = `public/${dir}/${name}.${ext}`;
+      if (dir.startsWith('html/kits/') && exists(f)) edit(f, (s) => s.replace(/(["'(])\.\.\/\.\.\/assets\//g, '$1../../../assets/'));
+    }
+  }
+  for (const [from, name] of Object.entries(MOCKUPS)) edit(`public/blueprints/dashboard/mockups/${name}.html`, (s) => s.replaceAll(`href="${from}.css"`, `href="${name}.css"`).replaceAll(`src="${from}.js"`, `src="${name}.js"`));
+
+  for (const f of ['public/html/index.html', 'public/html/index.js', 'public/html/index.css']) {
+    if (!exists(f)) continue;
+    edit(f, (input) => {
+      let s = input.replace(/(["'(])\.\/(tokens\.css|du-components\.css|du-runtime\.js|vendor\/shadcn-html\.all\.css)/g, '$1./core/$2').replace(/(["'(])\.\/screenshots\//g, '$1../screenshots/');
+      for (const [from, target] of Object.entries(KITS)) {
+        s = s.replaceAll(`public/html-kit/templates/${from}.html`, `public${kitUrl(target)}`).replaceAll(`/html-kit/templates/${from}.html`, kitUrl(target));
+      }
+      for (const [from, to] of Object.entries(MODULES)) s = s.replaceAll(`/html-kit/recipes/${from}/`, `/html/modules/${to}/`);
+      return s.replaceAll('/html-kit/recipes/', '/html/modules/').replaceAll('/html-kit/index.html', '/html/index.html');
+    });
+  }
+
+  for (const [from, to] of Object.entries(MODULES)) {
+    const check = `public/html/modules/${to}/checklist.md`;
+    if (exists(check)) edit(check, (s) => s.replaceAll(`../recipes/${from}/`, `../../modules/${to}/`));
+  }
+  if (exists('public/html/run-dev.command')) edit('public/html/run-dev.command', (s) => s.replace('cd "$(dirname "$0")"', 'cd "$(dirname "$0")/../.."'));
+
+  edit(ROUTE, (input) => {
+    let s = input;
+    for (const [from, target] of Object.entries(KITS)) s = s.replaceAll(`open public/html-kit/templates/${from}.html`, `open public${kitUrl(target)}`);
+    return s;
+  });
+  edit(HEADER, (s) => s.replaceAll('/html-kit/templates/du-avaliacao-dashboard.html', '/html/kits/avaliacao/index.html'));
+  edit(CAPTURE, (input) => {
+    let s = input;
+    for (const [from, target] of Object.entries(KITS)) s = s.replaceAll(`/html-kit/templates/${from}.html`, kitUrl(target));
+    return s;
+  });
+  edit(CHECK, (s) => s
+    .replace("'../public/html-kit'", "'../public/html/core'")
+    .replace("'templates/du-html-app-template.html'", "'../../blueprints/dashboard/mockups/reference.html'")
+    .replace("'templates/template-app-shell.html'", "'../kits/dashboard-starter/index.html'")
+    .replace("'recipes/sse-telemetry/recipe.json'", "'../modules/live-telemetry/recipe.json'")
+    .replaceAll('public/html-kit/templates/', 'public/html/kits/')
+    .replaceAll('public/html-kit/recipes/', 'public/html/modules/')
+    .replaceAll('public/html-kit/', 'public/html/core/'));
+
+  const manifest = JSON.parse(read(MANIFEST));
+  manifest.coreDir = 'public/html/core';
+  manifest.catalog = 'public/html/index.html';
+  for (const k of manifest.kits) if (k.html) delete k.html.legacyEntries;
+  for (const m of manifest.modules) delete m.legacyPath;
+  write(MANIFEST, `${JSON.stringify(manifest, null, 2)}\n`);
+
+  for (const [from, [dir, name]] of Object.entries(KITS)) writeStub(`${OLD}/templates/${from}.html`, `public/${dir}/${name}.html`, from);
+  for (const [from, name] of Object.entries(MOCKUPS)) writeStub(`${OLD}/examples/${from}.html`, `public/blueprints/dashboard/mockups/${name}.html`, from);
+  writeStub(`${OLD}/index.html`, 'public/html/index.html', 'Catálogo');
+  const legacy = path.join(repo, 'public/templates-index.html');
+  if (fs.lstatSync(legacy).isSymbolicLink()) {
+    git('rm', '-q', '--cached', 'public/templates-index.html');
+    fs.unlinkSync(legacy);
+    writeStub('public/templates-index.html', 'public/html/index.html', 'Catálogo');
+  }
+
+  for (const [dir, target] of Object.entries(KITS).map(([, v]) => [`public/${v[0]}`, v[1]])) {
+    const page = `${dir}/${target}.html`;
+    for (const m of read(page).matchAll(/(?:src|href)="(\.\.\/\.\.\/\.\.\/assets\/[^"]+)"/g)) {
+      if (!fs.existsSync(path.resolve(repo, dir, m[1]))) throw new Error(`missing local asset ${m[1]} in ${page}`);
+    }
+  }
+
+  git('add', '--', ...touched);
+  console.log(`OK moved=${moves.length} rewritten=${touched.size}. Everything is staged. Review with: git status --short`);
+} catch (e) {
+  console.error(`FAILED: ${e.message}`);
+  git('reset', '-q', '--hard', 'HEAD');
+  git('clean', '-fdq', '--', 'public/html', 'public/blueprints');
+  console.error('ROLLED BACK to HEAD. Report BLOCKED.');
+  process.exit(1);
+}
