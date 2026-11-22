@@ -30,6 +30,7 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="system"
           enableSystem
+          storageKey="du-theme-preference"
           disableTransitionOnChange
         >
           <TooltipProvider>{children}</TooltipProvider>

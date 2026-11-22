@@ -15,17 +15,20 @@
   const THEME_KEY = 'du-theme-preference';
 
   // 1. Theme Management
-  const savedTheme = localStorage.getItem(THEME_KEY);
+  const readTheme = () => { try { return localStorage.getItem(THEME_KEY); } catch { return null; } };
+  const writeTheme = (value) => { try { localStorage.setItem(THEME_KEY, value); } catch { /* storage unavailable */ } };
+  const savedTheme = readTheme();
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-  }
+  const forcedTheme = document.documentElement.dataset.duForceTheme;
+  const useDark = forcedTheme
+    ? forcedTheme === 'dark'
+    : savedTheme === 'dark' || ((!savedTheme || savedTheme === 'system') && prefersDark);
+  document.documentElement.classList.toggle('dark', useDark);
 
   window.duToggleTheme = function() {
+    if (document.documentElement.dataset.duForceTheme) return;
     const isDark = document.documentElement.classList.toggle('dark');
-    localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+    writeTheme(isDark ? 'dark' : 'light');
   };
 
   // 2. Declarative View Switching
