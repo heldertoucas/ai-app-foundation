@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll } from 'vitest';
 import { db } from '@/lib/db';
 
 describe('SQLite Persistence & Prisma Singleton', () => {
-  it('should create and query an item in dev.db', async () => {
+  it('should create and query an item in the isolated test database', async () => {
     const testName = `Test Item ${Date.now()}`;
     const item = await db.item.create({
       data: {

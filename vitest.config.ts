@@ -4,6 +4,10 @@ import path from 'path';
 export default defineConfig({
   test: {
     environment: 'node',
+    globalSetup: ['./tests/setup/global-db.ts'],
+    env: {
+      DATABASE_URL: `file:${path.resolve(__dirname, './prisma/test.db')}`,
+    },
     fileParallelism: false,
     pool: 'threads',
     poolOptions: {
