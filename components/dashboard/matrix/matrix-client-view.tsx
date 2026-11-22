@@ -70,10 +70,10 @@ export function MatrixClientView({ initialData }: MatrixClientViewProps) {
                   variant="outline"
                   className={
                     item.status === "live"
-                      ? "border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 font-mono text-[11px] uppercase"
+                      ? "border-status-live/30 text-status-live-foreground dark:text-status-live-foreground bg-status-live/10 font-mono text-xs uppercase"
                       : item.status === "drift"
-                      ? "border-amber-500/30 text-amber-600 dark:text-amber-400 bg-amber-500/10 font-mono text-[11px] uppercase"
-                      : "border-rose-500/30 text-rose-600 dark:text-rose-400 bg-rose-500/10 font-mono text-[11px] uppercase"
+                      ? "border-status-drift/30 text-status-drift-foreground dark:text-status-drift-foreground bg-status-drift/10 font-mono text-xs uppercase"
+                      : "border-status-missing/30 text-status-missing-foreground dark:text-status-missing-foreground bg-status-missing/10 font-mono text-xs uppercase"
                   }
                 >
                   {item.status}

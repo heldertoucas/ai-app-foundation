@@ -142,12 +142,12 @@ ${ruleSyncData.harnessStatuses.map((h) => `- **${h.name}**: ${h.status} (Last sy
       </div>
 
       {/* 2. Markdown Reader & Masked Secret */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="flex flex-col gap-3">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-w-0">
+        <div className="flex flex-col gap-3 min-w-0">
           <h2 className="text-lg font-semibold font-heading text-foreground">Canonical Memory Specification</h2>
           <MarkdownReader content={sampleMarkdown} />
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 min-w-0">
           <h2 className="text-lg font-semibold font-heading text-foreground">Masked Secret Viewer (Server-Redacted)</h2>
           <MaskedSecretViewer label="ANTHROPIC_API_KEY" value="demo-anthropic-key-placeholder-0000" />
           <MaskedSecretViewer label="GEMINI_API_KEY" value="demo-gemini-key-placeholder-0000" />

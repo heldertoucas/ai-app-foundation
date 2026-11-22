@@ -207,12 +207,12 @@ export function LibraryClientView() {
                       : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
                   )}
                 >
-                  <span className="font-mono text-[10px] opacity-70">0{idx + 1}</span>
+                  <span className="font-mono text-xs opacity-70">0{idx + 1}</span>
                   <span>{cat.label}</span>
                   <Badge
                     variant="secondary"
                     className={cn(
-                      "font-mono text-[10px] px-1 py-0",
+                      "font-mono text-xs px-1 py-0",
                       isActive
                         ? "bg-primary-foreground/20 text-primary-foreground"
                         : "bg-background/80 text-muted-foreground"

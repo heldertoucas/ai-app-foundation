@@ -32,39 +32,39 @@
 
 /* Generated from inline style attributes. Triple class keeps inline-like priority, and JS style changes still win. */
 .x-s1.x-s1.x-s1 { max-width: 440px; margin: 3rem auto; text-align: center; }
-.x-s2.x-s2.x-s2 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+.x-s2.x-s2.x-s2 { font-size: 2.25rem; margin-bottom: 0.5rem; }
 .x-s3.x-s3.x-s3 { font-size: 1.5rem; font-weight: 700; margin: 0 0 0.25rem 0; }
-.x-s4.x-s4.x-s4 { font-size: 0.85rem; color: var(--muted-foreground); margin: 0 0 1.5rem 0; }
+.x-s4.x-s4.x-s4 { font-size: 0.875rem; color: var(--muted-foreground); margin: 0 0 1.5rem 0; }
 .x-s5.x-s5.x-s5 { text-align: left; }
 .x-s6.x-s6.x-s6 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; background: var(--muted); padding: 0.25rem; border-radius: 0.5rem; margin-bottom: 1.25rem; }
-.x-s7.x-s7.x-s7 { font-size: 0.8rem; font-weight: 600; }
-.x-s8.x-s8.x-s8 { font-size: 0.8rem; }
-.x-s9.x-s9.x-s9 { display: none; padding: 0.75rem; border-radius: 0.5rem; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); color: #ef4444; font-size: 0.8rem; margin-bottom: 1rem; }
-.x-s10.x-s10.x-s10 { display: none; padding: 0.75rem; border-radius: 0.5rem; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.25); color: #d97706; font-size: 0.8rem; margin-bottom: 1rem; }
+.x-s7.x-s7.x-s7 { font-size: 0.75rem; font-weight: 600; }
+.x-s8.x-s8.x-s8 { font-size: 0.75rem; }
+.x-s9.x-s9.x-s9 { display: none; padding: 0.75rem; border-radius: 0.5rem; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); color: #ef4444; font-size: 0.75rem; margin-bottom: 1rem; }
+.x-s10.x-s10.x-s10 { display: none; padding: 0.75rem; border-radius: 0.5rem; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.25); color: #d97706; font-size: 0.75rem; margin-bottom: 1rem; }
 .x-s11.x-s11.x-s11 { font-size: 0.75rem; font-weight: 600; color: var(--muted-foreground); text-transform: uppercase; }
 .x-s12.x-s12.x-s12 { margin-top: 0.25rem; text-align: center; font-family: monospace; font-weight: 700; text-transform: uppercase; }
 .x-s13.x-s13.x-s13 { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
-.x-s14.x-s14.x-s14 { font-size: 0.7rem; color: var(--muted-foreground); }
+.x-s14.x-s14.x-s14 { font-size: 0.75rem; color: var(--muted-foreground); }
 .x-s15.x-s15.x-s15 { font-size: 0.75rem; }
-.x-s16.x-s16.x-s16 { font-size: 0.85rem; }
+.x-s16.x-s16.x-s16 { font-size: 0.875rem; }
 .x-s17.x-s17.x-s17 { width: 100%; margin-top: 1.25rem; font-weight: 600; }
 .x-s18.x-s18.x-s18 { display: none; }
 .x-s19.x-s19.x-s19 { display: flex; justify-content: space-between; align-items: center; }
 .x-s20.x-s20.x-s20 { margin-top: 0.25rem; text-align: center; font-family: monospace; }
 .x-s21.x-s21.x-s21 { font-size: 1.5rem; }
 .x-s22.x-s22.x-s22 { margin: 0; font-size: 1.125rem; font-weight: 700; }
-.x-s23.x-s23.x-s23 { margin: 0; font-size: 0.8rem; color: var(--muted-foreground); }
-.x-s24.x-s24.x-s24 { font-family: monospace; font-size: 0.8rem; }
+.x-s23.x-s23.x-s23 { margin: 0; font-size: 0.75rem; color: var(--muted-foreground); }
+.x-s24.x-s24.x-s24 { font-family: monospace; font-size: 0.75rem; }
 .x-s25.x-s25.x-s25 { font-size: 0.75rem; color: #ef4444; }
 .x-s26.x-s26.x-s26 { font-size: 0.75rem; color: var(--muted-foreground); text-transform: uppercase; }
-.x-s27.x-s27.x-s27 { font-size: 1.75rem; font-weight: 700; font-family: monospace; }
+.x-s27.x-s27.x-s27 { font-size: 1.875rem; font-weight: 700; font-family: monospace; }
 .x-s28.x-s28.x-s28 { font-size: 0.75rem; color: var(--muted-foreground); }
-.x-s29.x-s29.x-s29 { font-size: 1.75rem; font-weight: 700; font-family: monospace; color: #10b981; }
-.x-s30.x-s30.x-s30 { font-size: 1.75rem; font-weight: 700; font-family: monospace; color: #3b82f6; }
+.x-s29.x-s29.x-s29 { font-size: 1.875rem; font-weight: 700; font-family: monospace; color: #10b981; }
+.x-s30.x-s30.x-s30 { font-size: 1.875rem; font-weight: 700; font-family: monospace; color: #3b82f6; }
 .x-s31.x-s31.x-s31 { display: none; margin-bottom: 2rem; }
 .x-s32.x-s32.x-s32 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 .x-s33.x-s33.x-s33 { font-size: 1.125rem; font-weight: 700; margin: 0; }
-.x-s34.x-s34.x-s34 { font-size: 0.8rem; color: var(--muted-foreground); margin: 0; }
+.x-s34.x-s34.x-s34 { font-size: 0.75rem; color: var(--muted-foreground); margin: 0; }
 .x-s35.x-s35.x-s35 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
 .x-s36.x-s36.x-s36 { font-size: 0.875rem; }
 .x-s37.x-s37.x-s37 { font-size: 0.75rem; color: var(--muted-foreground); font-family: monospace; }

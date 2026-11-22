@@ -103,7 +103,7 @@ export function NavMain({
                                     >
                                       <span className="truncate">{subItem.title}</span>
                                       {subItem.code && (
-                                        <span className="font-mono text-[10px] text-muted-foreground/50 group-hover:text-muted-foreground">
+                                        <span className="font-mono text-xs text-muted-foreground">
                                           {subItem.code}
                                         </span>
                                       )}

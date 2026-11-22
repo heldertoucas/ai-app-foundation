@@ -43,7 +43,7 @@ export default function AvaliacaoDashboardTrainerPage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <Card className="bg-card/60">
               <CardContent className="p-4 flex items-center gap-3">
-                <div className="p-2.5 rounded-lg bg-blue-500/10 text-blue-500">
+                <div className="p-2.5 rounded-lg bg-primary/10 text-primary">
                   <Users size={20} />
                 </div>
                 <div>
@@ -55,12 +55,12 @@ export default function AvaliacaoDashboardTrainerPage() {
 
             <Card className="bg-card/60">
               <CardContent className="p-4 flex items-center gap-3">
-                <div className="p-2.5 rounded-lg bg-emerald-500/10 text-emerald-500">
+                <div className="p-2.5 rounded-lg bg-status-live/10 text-status-live-foreground">
                   <Clock size={20} className="animate-pulse" />
                 </div>
                 <div>
                   <div className="text-xs text-muted-foreground">Em Prova</div>
-                  <div className="text-xl font-bold font-mono text-emerald-600 dark:text-emerald-400">
+                  <div className="text-xl font-bold font-mono text-status-live-foreground dark:text-status-live-foreground">
                     {metrics.inProgressCount}
                   </div>
                 </div>
@@ -69,7 +69,7 @@ export default function AvaliacaoDashboardTrainerPage() {
 
             <Card className="bg-card/60">
               <CardContent className="p-4 flex items-center gap-3">
-                <div className="p-2.5 rounded-lg bg-blue-500/10 text-blue-500">
+                <div className="p-2.5 rounded-lg bg-primary/10 text-primary">
                   <CheckCircle size={20} />
                 </div>
                 <div>
@@ -81,12 +81,12 @@ export default function AvaliacaoDashboardTrainerPage() {
 
             <Card className="bg-card/60">
               <CardContent className="p-4 flex items-center gap-3">
-                <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-500">
+                <div className="p-2.5 rounded-lg bg-status-drift/10 text-status-drift-foreground">
                   <Hourglass size={20} />
                 </div>
                 <div>
                   <div className="text-xs text-muted-foreground">Pendentes / Ausentes</div>
-                  <div className="text-xl font-bold font-mono text-amber-600 dark:text-amber-400">
+                  <div className="text-xl font-bold font-mono text-status-drift-foreground dark:text-status-drift-foreground">
                     {metrics.pendingCount + metrics.timedOutCount}
                   </div>
                 </div>

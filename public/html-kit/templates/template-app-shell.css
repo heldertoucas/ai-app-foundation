@@ -1,14 +1,14 @@
 
 /* Generated from inline style attributes. Triple class keeps inline-like priority, and JS style changes still win. */
 .x-s1.x-s1.x-s1 { background-color: var(--primary); color: var(--primary-foreground); font-weight: 700; }
-.x-s2.x-s2.x-s2 { font-weight: 600; font-size: 0.8125rem; }
-.x-s3.x-s3.x-s3 { font-size: 0.6875rem; color: var(--muted-foreground); }
+.x-s2.x-s2.x-s2 { font-weight: 600; font-size: 0.875rem; }
+.x-s3.x-s3.x-s3 { font-size: 0.75rem; color: var(--muted-foreground); }
 .x-s4.x-s4.x-s4 { display: flex; align-items: center; gap: 0.5rem; }
 .x-s5.x-s5.x-s5 { display: inline-block; width: 0.5rem; height: 0.5rem; border-radius: 9999px; background-color: var(--status-live); }
-.x-s6.x-s6.x-s6 { font-family: var(--font-mono); font-size: 0.6875rem; }
+.x-s6.x-s6.x-s6 { font-family: var(--font-mono); font-size: 0.75rem; }
 .x-s7.x-s7.x-s7 { display: flex; align-items: center; gap: 0.75rem; }
 .x-s8.x-s8.x-s8 { font-size: 1.5rem; font-weight: 700; margin: 0; }
-.x-s9.x-s9.x-s9 { color: var(--muted-foreground); font-size: 0.8125rem; margin-top: 0.25rem; }
+.x-s9.x-s9.x-s9 { color: var(--muted-foreground); font-size: 0.875rem; margin-top: 0.25rem; }
 .x-s10.x-s10.x-s10 { font-size: 1rem; color: var(--muted-foreground); margin-left: 0.25rem; }
 .x-s11.x-s11.x-s11 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
 .x-s12.x-s12.x-s12 { width: 140px; height: 140px; }
@@ -25,12 +25,12 @@
 .x-s23.x-s23.x-s23 { font-family: var(--font-mono); font-weight: 600; }
 .x-s24.x-s24.x-s24 { width: 28%; background-color: var(--primary); }
 .x-s25.x-s25.x-s25 { display: flex; flex-direction: column; justify-content: space-between; gap: 1rem; }
-.x-s26.x-s26.x-s26 { font-family: var(--font-mono); font-size: 2rem; font-weight: 700; }
-.x-s27.x-s27.x-s27 { font-size: 0.8125rem; font-weight: 400; color: var(--muted-foreground); }
+.x-s26.x-s26.x-s26 { font-family: var(--font-mono); font-size: 1.875rem; font-weight: 700; }
+.x-s27.x-s27.x-s27 { font-size: 0.875rem; font-weight: 400; color: var(--muted-foreground); }
 .x-s28.x-s28.x-s28 { font-size: 0.75rem; color: var(--muted-foreground); display: flex; justify-content: space-between; }
 .x-s29.x-s29.x-s29 { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
 .x-s30.x-s30.x-s30 { text-align: right; }
-.x-s31.x-s31.x-s31 { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted-foreground); }
+.x-s31.x-s31.x-s31 { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted-foreground); }
 .x-s32.x-s32.x-s32 { max-width: 32rem; padding: 1.25rem; }
 .x-s33.x-s33.x-s33 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 .x-s34.x-s34.x-s34 { font-weight: 600; font-size: 1rem; margin: 0; }

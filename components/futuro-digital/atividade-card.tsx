@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Download } from "@phosphor-icons/react/dist/ssr";
+import { Download, Trophy } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -21,7 +21,7 @@ export function AtividadeCard({
   number,
   title,
   description,
-  gradientClass = "from-[#748ffc] to-[#4263eb]",
+  gradientClass = "from-[var(--fd-gradient-blue-from)] to-[var(--fd-gradient-blue-to)]",
   badge,
   openTitle = "Abrir Atividade",
   onOpen,
@@ -36,15 +36,15 @@ export function AtividadeCard({
       )}
     >
       {badge && (
-        <div className="absolute top-3 left-3 bg-[#ffd43b] text-black px-2.5 py-1 rounded-full text-xs font-bold shadow z-10 flex items-center gap-1">
-          <span>🏆</span> {badge}
+        <div className="absolute top-3 left-3 bg-[var(--fd-highlight)] text-foreground px-2.5 py-1 rounded-full text-xs font-bold shadow z-10 flex items-center gap-1">
+          <Trophy className="size-3.5" aria-hidden="true" /> {badge}
         </div>
       )}
 
       {/* Header com Gradiente e Número Gigante */}
       <div
         className={cn(
-          "relative p-5 min-h-[130px] flex items-end justify-end text-white/75 bg-gradient-to-tr select-none",
+          "relative p-5 min-h-[130px] flex items-end justify-end text-primary-foreground/75 bg-gradient-to-tr select-none",
           gradientClass
         )}
       >
@@ -76,6 +76,7 @@ export function AtividadeCard({
             onClick={onDownload}
             className="rounded-lg shrink-0 border-border"
             title="Descarregar Ficheiro de Apoio"
+            aria-label="Descarregar Ficheiro de Apoio"
           >
             <Download className="w-5 h-5 text-foreground" />
           </Button>

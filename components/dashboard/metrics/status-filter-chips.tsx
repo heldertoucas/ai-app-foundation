@@ -46,11 +46,11 @@ export function StatusFilterChips({
         // Semantic styling matching preset b27Gdgd6
         const badgeColors =
           opt.id === "live"
-            ? "border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10"
+            ? "border-status-live/30 text-status-live-foreground dark:text-status-live-foreground bg-status-live/10"
             : opt.id === "drift"
-            ? "border-amber-500/30 text-amber-600 dark:text-amber-400 bg-amber-500/10"
+            ? "border-status-drift/30 text-status-drift-foreground dark:text-status-drift-foreground bg-status-drift/10"
             : opt.id === "missing"
-            ? "border-rose-500/30 text-rose-600 dark:text-rose-400 bg-rose-500/10"
+            ? "border-status-missing/30 text-status-missing-foreground dark:text-status-missing-foreground bg-status-missing/10"
             : "border-border text-muted-foreground bg-muted/40";
 
         return (
@@ -66,7 +66,7 @@ export function StatusFilterChips({
           >
             <span>{opt.label}</span>
             {opt.count !== undefined && (
-              <span className="font-mono text-[11px] opacity-80 tabular-nums">
+              <span className="font-mono text-xs opacity-80 tabular-nums">
                 ({opt.count})
               </span>
             )}

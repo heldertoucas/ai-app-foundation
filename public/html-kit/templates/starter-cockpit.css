@@ -11,7 +11,7 @@
 /* Generated from inline style attributes. Triple class keeps inline-like priority, and JS style changes still win. */
 .x-s1.x-s1.x-s1 { font-size: 1.5rem; }
 .x-s2.x-s2.x-s2 { margin: 0; font-size: 1.125rem; font-weight: 700; }
-.x-s3.x-s3.x-s3 { margin: 0; font-size: 0.8rem; color: var(--muted-foreground); }
+.x-s3.x-s3.x-s3 { margin: 0; font-size: 0.75rem; color: var(--muted-foreground); }
 .x-s4.x-s4.x-s4 { font-size: 0.875rem; font-weight: 400; color: var(--status-live-foreground); }
 .x-s5.x-s5.x-s5 { font-size: 0.875rem; font-weight: 400; color: var(--muted-foreground); }
 .x-s6.x-s6.x-s6 { background-color: var(--status-live); color: #000; }
@@ -22,7 +22,7 @@
 .x-s11.x-s11.x-s11 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 .x-s12.x-s12.x-s12 { margin: 0; font-size: 1.125rem; }
 .x-s13.x-s13.x-s13 { font-size: 0.875rem; color: var(--muted-foreground); margin-bottom: 1rem; }
-.x-s14.x-s14.x-s14 { background-color: var(--muted); padding: 0.75rem; border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.8rem; margin-bottom: 1.5rem; }
+.x-s14.x-s14.x-s14 { background-color: var(--muted); padding: 0.75rem; border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.75rem; margin-bottom: 1.5rem; }
 .x-s15.x-s15.x-s15 { display: flex; justify-content: flex-end; gap: 0.5rem; }
 .x-s16.x-s16.x-s16 { margin-bottom: 1rem; }
 .x-s17.x-s17.x-s17 { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem; }

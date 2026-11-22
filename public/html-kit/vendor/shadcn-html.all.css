@@ -134,7 +134,7 @@
   border-radius: 9999px;
   border: none;
   padding: 0.15rem 0.5rem;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   transition: all 150ms ease;
   background-color: var(--muted);
@@ -206,7 +206,7 @@ details.ui-accordion summary::-webkit-details-marker {
 
 details.ui-accordion summary::after {
   content: '▼';
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   transition: transform 200ms ease;
   color: var(--muted-foreground);
 }

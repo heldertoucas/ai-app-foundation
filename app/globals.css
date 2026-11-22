@@ -187,12 +187,43 @@
 
 /* Theme Futuro Digital (CML Brand Parity) */
 [data-theme="futuro-digital"] {
-  --primary: oklch(0.62 0.21 264);
-  --primary-foreground: oklch(1 0 0);
-  --accent: oklch(0.62 0.21 264);
-  --accent-foreground: oklch(1 0 0);
-  --ring: oklch(0.62 0.21 264);
+  color-scheme: light;
+  --background: #ffffff;
+  --foreground: #151515;
+  --card: #ffffff;
+  --card-foreground: #151515;
+  --popover: #ffffff;
+  --popover-foreground: #151515;
+  --primary: #3a5de0;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f4;
+  --secondary-foreground: #151515;
+  --muted: #f4f4f4;
+  --muted-foreground: #575757;
+  --accent: #3a5de0;
+  --accent-foreground: #ffffff;
+  --border: #e0e0e0;
+  --input: #e0e0e0;
+  --ring: #3a5de0;
   --radius: 0.5rem;
+  --fd-brand: #5271ff;
+  --fd-primary-hover: #2f4fc4;
+  --fd-surface-soft: #fafbff;
+  --fd-footer: #1b1b1b;
+  --fd-footer-foreground: #a9a9a9;
+  --fd-success: #1f7a18;
+  --fd-success-surface: #1f7a18;
+  --fd-warning: #9a5b00;
+  --fd-rating: #f39c12;
+  --fd-footer-border: #333333;
+  --fd-highlight: #ffd43b;
+  --fd-gradient-blue-from: #748ffc;
+  --fd-gradient-blue-to: #4263eb;
+  --fd-gradient-green-from: #63e6be;
+  --fd-gradient-green-to: #20c997;
+  --fd-gradient-purple-from: #e599f7;
+  --fd-gradient-purple-to: #be4bdb;
+  --font-sans: var(--font-fira), 'Fira Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-family: var(--font-fira), 'Fira Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -200,13 +231,13 @@
   font-size: 3.5rem !important;
   font-weight: 800 !important;
   line-height: 1.2 !important;
-  color: #151515 !important;
+  color: var(--foreground) !important;
 }
 
 [data-theme="futuro-digital"] .fd-hero-desc-exact {
   font-size: 1.2rem !important;
   line-height: 1.6 !important;
-  color: #575757 !important;
+  color: var(--muted-foreground) !important;
 }
 
 

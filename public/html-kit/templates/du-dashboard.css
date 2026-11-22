@@ -49,7 +49,7 @@
       gap: 1.25rem;
     }
     .du-nav-section-title {
-      font-size: 0.6875rem;
+      font-size: 0.75rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -68,7 +68,7 @@
       justify-content: space-between;
       padding: 0.5rem 0.625rem;
       border-radius: calc(var(--radius) * 0.8);
-      font-size: 0.8125rem;
+      font-size: 0.875rem;
       font-weight: 500;
       color: var(--muted-foreground);
       background: transparent;
@@ -83,7 +83,7 @@
     .du-nav-item:hover { background-color: var(--muted); color: var(--foreground); }
     .du-nav-item.active { background-color: var(--secondary); color: var(--foreground); font-weight: 600; }
     .du-nav-item-content { display: flex; align-items: center; gap: 0.625rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; flex: 1; }
-    .du-nav-badge { font-family: var(--font-mono); font-size: 0.6875rem; padding: 0.125rem 0.375rem; border-radius: calc(var(--radius) * 0.6); background-color: var(--muted); color: var(--muted-foreground); white-space: nowrap; flex-shrink: 0; }
+    .du-nav-badge { font-family: var(--font-mono); font-size: 0.75rem; padding: 0.125rem 0.375rem; border-radius: calc(var(--radius) * 0.6); background-color: var(--muted); color: var(--muted-foreground); white-space: nowrap; flex-shrink: 0; }
     .du-sidebar-footer { padding: 0.75rem 1rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: var(--muted-foreground); }
     
     .du-main-layout {
@@ -109,7 +109,7 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      font-size: 0.8125rem;
+      font-size: 0.875rem;
       color: var(--muted-foreground);
       overflow: hidden;
       text-overflow: ellipsis;
@@ -163,21 +163,21 @@
     .du-stat-header { display: flex; align-items: center; justify-content: space-between; }
     .du-stat-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted-foreground); }
     .du-stat-icon-wrapper { display: flex; align-items: center; justify-content: center; width: 1.875rem; height: 1.875rem; border-radius: calc(var(--radius) * 0.8); background-color: var(--muted); color: var(--foreground); }
-    .du-stat-value { font-family: var(--font-mono); font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+    .du-stat-value { font-family: var(--font-mono); font-size: 1.875rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
     .du-stat-footer { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--muted-foreground); flex-wrap: wrap; }
-    .du-stat-trend { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.125rem 0.5rem; border-radius: 9999px; font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; border: none; }
+    .du-stat-trend { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.125rem 0.5rem; border-radius: 9999px; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; border: none; }
     .du-trend-up { background-color: oklch(0.72 0.17 150 / 0.14); color: oklch(0.72 0.17 150); }
     .du-trend-down { background-color: oklch(0.65 0.22 25 / 0.14); color: oklch(0.65 0.22 25); }
     .du-trend-neutral { background-color: var(--muted); color: var(--muted-foreground); }
 
     /* 4. UI Primitives & Borderless Tags */
-    .ui-badge { display: inline-flex; align-items: center; border-radius: 9999px; padding: 0.15rem 0.5rem; font-size: 0.6875rem; font-weight: 600; border: none; background: var(--muted); color: var(--muted-foreground); }
+    .ui-badge { display: inline-flex; align-items: center; border-radius: 9999px; padding: 0.15rem 0.5rem; font-size: 0.75rem; font-weight: 600; border: none; background: var(--muted); color: var(--muted-foreground); }
     .ui-badge-secondary { background-color: var(--secondary); color: var(--secondary-foreground); border: none; }
     .ui-badge-status-live { background-color: oklch(0.72 0.17 150 / 0.15); color: var(--status-live-foreground); border: none; }
     .ui-badge-status-drift { background-color: oklch(0.78 0.16 75 / 0.15); color: var(--status-drift-foreground); border: none; }
     .ui-card { border-radius: var(--radius); border: 1px solid var(--border); background-color: var(--card); color: var(--card-foreground); display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
     .ui-card-header { padding: 1.125rem 1.125rem 0.625rem 1.125rem; display: flex; flex-direction: column; gap: 0.25rem; }
-    .ui-card-title { font-size: 0.9375rem; font-weight: 600; margin: 0; }
+    .ui-card-title { font-size: 1rem; font-weight: 600; margin: 0; }
     .ui-card-description { font-size: 0.75rem; color: var(--muted-foreground); margin: 0; }
     .ui-card-content { padding: 1.125rem; flex: 1; min-width: 0; }
     .ui-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem; border-radius: calc(var(--radius) * 0.8); font-size: 0.75rem; font-weight: 500; padding: 0.375rem 0.75rem; cursor: pointer; border: 1px solid transparent; background: var(--primary); color: var(--primary-foreground); transition: opacity 120ms; }
@@ -185,7 +185,7 @@
     .ui-btn-outline { border-color: var(--border); background: transparent; color: var(--foreground); }
     .ui-btn-outline:hover { background-color: var(--muted); }
     .ui-btn-ghost { background: transparent; color: var(--foreground); }
-    .ui-btn-sm { padding: 0.25rem 0.5rem; font-size: 0.6875rem; }
+    .ui-btn-sm { padding: 0.25rem 0.5rem; font-size: 0.75rem; }
 
     /* 5. Outline Monochromatic Icons */
     .du-icon {
@@ -213,7 +213,7 @@
     .du-table-search-input { background-color: var(--background); border: 1px solid var(--border); color: var(--foreground); border-radius: calc(var(--radius) * 0.8); padding: 0.375rem 0.75rem; font-size: 0.75rem; width: 16rem; max-width: 100%; }
     .du-table-search-input:focus { outline: none; border-color: var(--ring); }
     .du-table { width: 100%; min-width: 540px; border-collapse: collapse; font-size: 0.75rem; text-align: left; }
-    .du-table th { background-color: var(--muted); color: var(--muted-foreground); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.6875rem; padding: 0.625rem 0.875rem; border-bottom: 1px solid var(--border); }
+    .du-table th { background-color: var(--muted); color: var(--muted-foreground); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.75rem; padding: 0.625rem 0.875rem; border-bottom: 1px solid var(--border); }
     .du-table td { padding: 0.75rem 0.875rem; border-bottom: 1px solid var(--border); color: var(--foreground); }
     .du-table tr:last-child td { border-bottom: none; }
     .du-table tbody tr:hover { background-color: var(--muted); }
@@ -231,7 +231,7 @@
     .du-gauge-circle-fill { fill: transparent; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 0.8s ease-in-out; stroke: var(--status-live); }
     .du-gauge-center { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
     .du-gauge-val { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; line-height: 1; }
-    .du-gauge-label { font-size: 0.625rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; color: var(--muted-foreground); margin-top: 0.25rem; }
+    .du-gauge-label { font-size: 0.75rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; color: var(--muted-foreground); margin-top: 0.25rem; }
 
     .du-stacked-bar-container { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; min-width: 0; }
     .du-stacked-bar-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; }
@@ -240,7 +240,7 @@
     .du-bar-live { background-color: var(--status-live); }
     .du-bar-drift { background-color: var(--status-drift); }
     .du-bar-missing { background-color: var(--status-missing); }
-    .du-stacked-legend { display: flex; align-items: center; gap: 1rem; font-size: 0.6875rem; color: var(--muted-foreground); flex-wrap: wrap; }
+    .du-stacked-legend { display: flex; align-items: center; gap: 1rem; font-size: 0.75rem; color: var(--muted-foreground); flex-wrap: wrap; }
     .du-legend-item { display: flex; align-items: center; gap: 0.375rem; }
     .du-legend-dot { width: 0.5rem; height: 0.5rem; border-radius: 9999px; }
 
@@ -303,11 +303,11 @@
     .du-modal-overlay.open { display: flex; }
     .du-modal-card { background-color: var(--card); border: 1px solid var(--border); border-radius: var(--radius); max-width: 36rem; width: 100%; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4); display: flex; flex-direction: column; overflow: hidden; }
     .du-modal-header { padding: 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .du-modal-body { padding: 1.25rem; overflow-y: auto; max-height: 70vh; font-size: 0.8125rem; display: flex; flex-direction: column; gap: 1rem; }
+    .du-modal-body { padding: 1.25rem; overflow-y: auto; max-height: 70vh; font-size: 0.875rem; display: flex; flex-direction: column; gap: 1rem; }
     .du-modal-footer { padding: 1rem 1.25rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 0.5rem; }
 
-    .du-command-bar { display: flex; align-items: center; gap: 0.5rem; border: 1px solid var(--border); background-color: var(--card); padding: 0.375rem 0.75rem; border-radius: var(--radius); font-size: 0.8125rem; color: var(--muted-foreground); cursor: pointer; }
-    .du-command-shortcut { font-family: var(--font-mono); font-size: 0.7rem; background-color: var(--muted); color: var(--muted-foreground); padding: 0.1rem 0.35rem; border-radius: calc(var(--radius) * 0.6); margin-left: auto; }
+    .du-command-bar { display: flex; align-items: center; gap: 0.5rem; border: 1px solid var(--border); background-color: var(--card); padding: 0.375rem 0.75rem; border-radius: var(--radius); font-size: 0.875rem; color: var(--muted-foreground); cursor: pointer; }
+    .du-command-shortcut { font-family: var(--font-mono); font-size: 0.75rem; background-color: var(--muted); color: var(--muted-foreground); padding: 0.1rem 0.35rem; border-radius: calc(var(--radius) * 0.6); margin-left: auto; }
 
     /* Slide-Over Information Drawer */
     .du-drawer-overlay {
@@ -358,7 +358,7 @@
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
-      font-size: 0.8125rem;
+      font-size: 0.875rem;
     }
     .du-drawer-footer {
       padding: 1rem 1.25rem;
@@ -373,17 +373,17 @@
 
 /* Generated from inline style attributes. Triple class keeps inline-like priority, and JS style changes still win. */
 .x-s1.x-s1.x-s1 { background-color: var(--primary); color: var(--primary-foreground); font-weight: 700; }
-.x-s2.x-s2.x-s2 { font-weight: 600; font-size: 0.8125rem; }
-.x-s3.x-s3.x-s3 { font-size: 0.6875rem; color: var(--muted-foreground); }
+.x-s2.x-s2.x-s2 { font-weight: 600; font-size: 0.875rem; }
+.x-s3.x-s3.x-s3 { font-size: 0.75rem; color: var(--muted-foreground); }
 .x-s4.x-s4.x-s4 { display: flex; align-items: center; gap: 0.5rem; }
 .x-s5.x-s5.x-s5 { display: inline-block; width: 0.5rem; height: 0.5rem; border-radius: 9999px; background-color: var(--status-live); }
-.x-s6.x-s6.x-s6 { font-family: var(--font-mono); font-size: 0.6875rem; }
+.x-s6.x-s6.x-s6 { font-family: var(--font-mono); font-size: 0.75rem; }
 .x-s7.x-s7.x-s7 { display: flex; align-items: center; gap: 0.75rem; }
 .x-s8.x-s8.x-s8 { gap: 0.375rem; padding: 0.25rem 0.625rem; }
 .x-s9.x-s9.x-s9 { display: inline-block; width: 0.45rem; height: 0.45rem; border-radius: 9999px; background-color: var(--status-live); }
 .x-s10.x-s10.x-s10 { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
 .x-s11.x-s11.x-s11 { font-size: 1.5rem; font-weight: 700; margin: 0; }
-.x-s12.x-s12.x-s12 { color: var(--muted-foreground); font-size: 0.8125rem; margin-top: 0.25rem; }
+.x-s12.x-s12.x-s12 { color: var(--muted-foreground); font-size: 0.875rem; margin-top: 0.25rem; }
 .x-s13.x-s13.x-s13 { display: flex; flex-direction: column; gap: 1.25rem; }
 .x-s14.x-s14.x-s14 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem; }
 .x-s15.x-s15.x-s15 { flex-direction: row; justify-content: space-between; align-items: center; }
@@ -392,22 +392,22 @@
 .x-s18.x-s18.x-s18 { text-decoration: none; }
 .x-s19.x-s19.x-s19 { padding: 0.625rem; border-radius: var(--radius); background: var(--muted); }
 .x-s20.x-s20.x-s20 { display: flex; justify-content: space-between; margin-bottom: 0.25rem; }
-.x-s21.x-s21.x-s21 { font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; color: oklch(0.78 0.16 75); }
+.x-s21.x-s21.x-s21 { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; color: oklch(0.78 0.16 75); }
 .x-s22.x-s22.x-s22 { font-weight: 500; font-size: 0.75rem; }
 .x-s23.x-s23.x-s23 { display: none; }
 .x-s24.x-s24.x-s24 { display: flex; justify-content: space-between; align-items: center; }
-.x-s25.x-s25.x-s25 { display: flex; justify-content: space-between; font-size: 0.6875rem; color: var(--muted-foreground); font-family: var(--font-mono); }
+.x-s25.x-s25.x-s25 { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted-foreground); font-family: var(--font-mono); }
 .x-s26.x-s26.x-s26 { flex-direction: row; justify-content: space-between; align-items: flex-start; }
 .x-s27.x-s27.x-s27 { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; }
 .x-s28.x-s28.x-s28 { font-size: 1.125rem; }
 .x-s29.x-s29.x-s29 { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted-foreground); }
-.x-s30.x-s30.x-s30 { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 0.25rem; }
-.x-s31.x-s31.x-s31 { font-size: 0.8125rem; line-height: 1.5; }
+.x-s30.x-s30.x-s30 { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 0.25rem; }
+.x-s31.x-s31.x-s31 { font-size: 0.875rem; line-height: 1.5; }
 .x-s32.x-s32.x-s32 { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; }
 .x-s33.x-s33.x-s33 { padding: 0.75rem; border-radius: var(--radius); background: var(--muted); }
 .x-s34.x-s34.x-s34 { font-family: var(--font-mono); font-size: 1.125rem; font-weight: 700; color: var(--status-live-foreground); }
 .x-s35.x-s35.x-s35 { font-family: var(--font-mono); font-size: 1.125rem; font-weight: 700; }
-.x-s36.x-s36.x-s36 { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 0.5rem; }
+.x-s36.x-s36.x-s36 { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 0.5rem; }
 .x-s37.x-s37.x-s37 { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 .x-s38.x-s38.x-s38 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
 .x-s39.x-s39.x-s39 { width: 140px; height: 140px; }
@@ -424,14 +424,14 @@
 .x-s50.x-s50.x-s50 { display: flex; justify-content: space-between; font-size: 0.75rem; }
 .x-s51.x-s51.x-s51 { font-family: var(--font-mono); font-weight: 600; }
 .x-s52.x-s52.x-s52 { width: 28%; background-color: var(--primary); }
-.x-s53.x-s53.x-s53 { display: flex; justify-content: space-between; font-size: 0.6875rem; color: var(--muted-foreground); }
+.x-s53.x-s53.x-s53 { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted-foreground); }
 .x-s54.x-s54.x-s54 { display: flex; flex-direction: column; justify-content: space-between; gap: 1rem; }
-.x-s55.x-s55.x-s55 { font-family: var(--font-mono); font-size: 2rem; font-weight: 700; }
-.x-s56.x-s56.x-s56 { font-size: 0.8125rem; font-weight: 400; color: var(--muted-foreground); }
+.x-s55.x-s55.x-s55 { font-family: var(--font-mono); font-size: 1.875rem; font-weight: 700; }
+.x-s56.x-s56.x-s56 { font-size: 0.875rem; font-weight: 400; color: var(--muted-foreground); }
 .x-s57.x-s57.x-s57 { font-size: 0.75rem; color: var(--status-live-foreground); margin-top: 0.25rem; }
 .x-s58.x-s58.x-s58 { font-size: 0.75rem; color: var(--muted-foreground); display: flex; justify-content: space-between; font-family: var(--font-mono); }
 .x-s59.x-s59.x-s59 { text-align: right; }
-.x-s60.x-s60.x-s60 { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted-foreground); }
+.x-s60.x-s60.x-s60 { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted-foreground); }
 .x-s61.x-s61.x-s61 { font-family: var(--font-mono); color: var(--status-live-foreground); }
 .x-s62.x-s62.x-s62 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
 .x-s63.x-s63.x-s63 { font-family: var(--font-mono); }
@@ -448,25 +448,25 @@
 .x-s74.x-s74.x-s74 { display: flex; flex-direction: column; gap: 1rem; }
 .x-s75.x-s75.x-s75 { width: 100%; background-color: var(--status-live); }
 .x-s76.x-s76.x-s76 { display: grid; grid-template-columns: 240px 1fr; gap: 1.25rem; min-height: 480px; }
-.x-s77.x-s77.x-s77 { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.8125rem; }
-.x-s78.x-s78.x-s78 { font-size: 0.8125rem; line-height: 1.6; display: flex; flex-direction: column; gap: 1rem; }
+.x-s77.x-s77.x-s77 { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.875rem; }
+.x-s78.x-s78.x-s78 { font-size: 0.875rem; line-height: 1.6; display: flex; flex-direction: column; gap: 1rem; }
 .x-s79.x-s79.x-s79 { font-size: 1.125rem; font-weight: 700; }
 .x-s80.x-s80.x-s80 { padding: 0.75rem; background: var(--muted); border-radius: var(--radius); border-left: 3px solid var(--primary); font-size: 0.75rem; }
 .x-s81.x-s81.x-s81 { max-width: 32rem; padding: 1.25rem; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); color: var(--foreground); margin: auto; }
 .x-s82.x-s82.x-s82 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.x-s83.x-s83.x-s83 { font-weight: 600; font-size: 0.9375rem; margin: 0; }
+.x-s83.x-s83.x-s83 { font-weight: 600; font-size: 1rem; margin: 0; }
 .x-s84.x-s84.x-s84 { width: 100%; margin-bottom: 1rem; }
 .x-s85.x-s85.x-s85 { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem; }
 .x-s86.x-s86.x-s86 { font-weight: 700; margin: 0; font-size: 1rem; }
 .x-s87.x-s87.x-s87 { font-weight: 600; font-size: 0.75rem; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 0.25rem; }
 .x-s88.x-s88.x-s88 { color: var(--foreground); line-height: 1.5; }
 .x-s89.x-s89.x-s89 { font-family: var(--font-mono); font-size: 0.75rem; background: var(--muted); padding: 0.25rem 0.5rem; border-radius: calc(var(--radius) * 0.6); display: block; word-break: break-all; }
-.x-s90.x-s90.x-s90 { font-size: 0.6875rem; color: var(--muted-foreground); margin-top: 0.25rem; }
-.x-s91.x-s91.x-s91 { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; color: var(--muted-foreground); letter-spacing: 0.05em; }
+.x-s90.x-s90.x-s90 { font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.25rem; }
+.x-s91.x-s91.x-s91 { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--muted-foreground); letter-spacing: 0.05em; }
 .x-s92.x-s92.x-s92 { display: flex; flex-direction: column; gap: 0.5rem; }
 .x-s93.x-s93.x-s93 { padding: 0.625rem; border-radius: var(--radius); background: var(--muted); display: flex; justify-content: space-between; align-items: center; }
 .x-s94.x-s94.x-s94 { font-weight: 600; font-size: 0.75rem; }
-.x-s95.x-s95.x-s95 { font-size: 0.6875rem; color: var(--muted-foreground); font-family: var(--font-mono); }
+.x-s95.x-s95.x-s95 { font-size: 0.75rem; color: var(--muted-foreground); font-family: var(--font-mono); }
 .x-s96.x-s96.x-s96 { display: flex; flex-direction: column; gap: 0.375rem; font-size: 0.75rem; }
 .x-s97.x-s97.x-s97 { padding: 0.5rem; background: var(--muted); border-radius: var(--radius); }
 .x-s98.x-s98.x-s98 { font-family: var(--font-mono); font-weight: 700; color: var(--primary); }

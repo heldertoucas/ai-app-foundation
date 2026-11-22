@@ -39,14 +39,14 @@ export function CodeDiffViewer({
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/60 bg-muted/40 px-3 py-2">
         <div className="flex items-center gap-2">
           <span className="font-semibold text-foreground">{title}</span>
-          <span className="text-[11px] text-muted-foreground">{oldFilename} → {newFilename}</span>
+          <span className="text-xs text-muted-foreground">{oldFilename} → {newFilename}</span>
         </div>
         <div className="flex items-center gap-1">
           <button
             type="button"
             onClick={() => setViewMode("unified")}
             className={cn(
-              "inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium transition-all cursor-pointer",
+              "inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-all cursor-pointer",
               viewMode === "unified" ? "bg-background text-foreground shadow-xs font-semibold" : "text-muted-foreground hover:text-foreground"
             )}
           >
@@ -57,7 +57,7 @@ export function CodeDiffViewer({
             type="button"
             onClick={() => setViewMode("split")}
             className={cn(
-              "inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium transition-all cursor-pointer",
+              "inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-all cursor-pointer",
               viewMode === "split" ? "bg-background text-foreground shadow-xs font-semibold" : "text-muted-foreground hover:text-foreground"
             )}
           >
@@ -74,29 +74,29 @@ export function CodeDiffViewer({
             {visibleLines.map((line, idx) => {
               const bgClass =
                 line.type === "added"
-                  ? "bg-emerald-500/10 dark:bg-emerald-500/15"
+                  ? "bg-status-live/10 dark:bg-status-live/15"
                   : line.type === "removed"
-                  ? "bg-rose-500/10 dark:bg-rose-500/15"
+                  ? "bg-status-missing/10 dark:bg-status-missing/15"
                   : "bg-transparent";
 
               const textClass =
                 line.type === "added"
-                  ? "text-emerald-700 dark:text-emerald-400 font-semibold"
+                  ? "text-status-live-foreground dark:text-status-live-foreground font-semibold"
                   : line.type === "removed"
-                  ? "text-rose-700 dark:text-rose-400 line-through opacity-80"
+                  ? "text-status-missing-foreground dark:text-status-missing-foreground line-through opacity-80"
                   : "text-foreground";
 
               const prefix = line.type === "added" ? "+" : line.type === "removed" ? "-" : " ";
 
               return (
                 <tr key={idx} className={cn("leading-5 hover:bg-muted/40 transition-colors", bgClass)}>
-                  <td className="w-10 select-none py-0.5 pr-2 pl-3 text-right text-[10px] text-muted-foreground/60 border-r border-border/40">
+                  <td className="w-10 select-none py-0.5 pr-2 pl-3 text-right text-xs text-muted-foreground border-r border-border/40">
                     {line.oldLineNumber ?? ""}
                   </td>
-                  <td className="w-10 select-none py-0.5 pr-2 pl-2 text-right text-[10px] text-muted-foreground/60 border-r border-border/40">
+                  <td className="w-10 select-none py-0.5 pr-2 pl-2 text-right text-xs text-muted-foreground border-r border-border/40">
                     {line.newLineNumber ?? ""}
                   </td>
-                  <td className="w-4 select-none py-0.5 text-center font-bold text-muted-foreground/80">
+                  <td className="w-4 select-none py-0.5 text-center font-bold text-muted-foreground">
                     {prefix}
                   </td>
                   <td className={cn("py-0.5 pr-3 pl-1 whitespace-pre", textClass)}>

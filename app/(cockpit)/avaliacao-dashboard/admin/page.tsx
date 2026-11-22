@@ -35,7 +35,7 @@ export default function AvaliacaoDashboardAdminPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold font-mono">1</div>
-                <p className="text-[11px] text-muted-foreground mt-1">FD-2026-TURMA4</p>
+                <p className="text-xs text-muted-foreground mt-1">FD-2026-TURMA4</p>
               </CardContent>
             </Card>
 
@@ -44,11 +44,11 @@ export default function AvaliacaoDashboardAdminPage() {
                 <CardTitle className="text-xs font-medium text-muted-foreground uppercase">
                   Total de Formandos
                 </CardTitle>
-                <ChartBar size={16} className="text-blue-500" />
+                <ChartBar size={16} className="text-primary" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold font-mono">{metrics.total}</div>
-                <p className="text-[11px] text-muted-foreground mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   {metrics.completedCount} concluídos / {metrics.inProgressCount} em prova
                 </p>
               </CardContent>
@@ -59,13 +59,13 @@ export default function AvaliacaoDashboardAdminPage() {
                 <CardTitle className="text-xs font-medium text-muted-foreground uppercase">
                   Taxa Média de Sucesso
                 </CardTitle>
-                <CheckCircle size={16} className="text-emerald-500" />
+                <CheckCircle size={16} className="text-status-live-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400">
+                <div className="text-2xl font-bold font-mono text-status-live-foreground dark:text-status-live-foreground">
                   {metrics.approvalRate.toFixed(1)}%
                 </div>
-                <p className="text-[11px] text-muted-foreground mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Média: {metrics.averageScore.toFixed(1)} / 20 valores
                 </p>
               </CardContent>
@@ -80,7 +80,7 @@ export default function AvaliacaoDashboardAdminPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold font-mono">18 ms</div>
-                <p className="text-[11px] text-muted-foreground mt-1">SQLite WAL local</p>
+                <p className="text-xs text-muted-foreground mt-1">SQLite WAL local</p>
               </CardContent>
             </Card>
           </div>

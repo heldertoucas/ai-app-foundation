@@ -33,9 +33,9 @@ export function TelemetrySyncCard({
   const getIcon = (id: string) => {
     switch (id) {
       case 'srv-sheets':
-        return <Table size={20} className="text-emerald-500" />;
+        return <Table size={20} className="text-status-live-foreground" />;
       case 'srv-db':
-        return <Database size={20} className="text-blue-500" />;
+        return <Database size={20} className="text-primary" />;
       default:
         return <Cpu size={20} className="text-purple-500" />;
     }
@@ -86,15 +86,15 @@ export function TelemetrySyncCard({
 
               {/* Status Pill Canónico DU */}
               <div
-                className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium ${
+                className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium ${
                   svc.status === 'healthy'
-                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
-                    : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
+                    ? 'bg-status-live/10 text-status-live-foreground dark:text-status-live-foreground border border-status-live/20'
+                    : 'bg-status-drift/10 text-status-drift-foreground dark:text-status-drift-foreground border border-status-drift/20'
                 }`}
               >
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
-                    svc.status === 'healthy' ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'
+                    svc.status === 'healthy' ? 'bg-status-live animate-pulse' : 'bg-status-drift'
                   }`}
                 />
                 <span className="capitalize">{svc.status === 'healthy' ? 'Live' : 'Drift'}</span>
@@ -147,11 +147,11 @@ export function TelemetrySyncCard({
                 <div className="flex items-start gap-2.5">
                   <span className="mt-0.5 text-muted-foreground">
                     {event.type === 'sync' ? (
-                      <ArrowsClockwise size={14} className="text-blue-500" />
+                      <ArrowsClockwise size={14} className="text-primary" />
                     ) : event.type === 'exam_reopen' ? (
-                      <Warning size={14} className="text-amber-500" />
+                      <Warning size={14} className="text-status-drift-foreground" />
                     ) : (
-                      <CheckCircle size={14} className="text-emerald-500" />
+                      <CheckCircle size={14} className="text-status-live-foreground" />
                     )}
                   </span>
                   <div>

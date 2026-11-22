@@ -47,10 +47,10 @@ export function AgentRuntimeCardGrid({ agents, className }: AgentRuntimeCardGrid
               <Badge
                 variant="outline"
                 className={cn(
-                  "gap-1 text-[10px] font-mono capitalize",
-                  agent.status === "active" && "border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10",
-                  agent.status === "idle" && "border-amber-500/30 text-amber-600 dark:text-amber-400 bg-amber-500/10",
-                  agent.status === "error" && "border-rose-500/30 text-rose-600 dark:text-rose-400 bg-rose-500/10"
+                  "gap-1 text-xs font-mono capitalize",
+                  agent.status === "active" && "border-status-live/30 text-status-live-foreground dark:text-status-live-foreground bg-status-live/10",
+                  agent.status === "idle" && "border-status-drift/30 text-status-drift-foreground dark:text-status-drift-foreground bg-status-drift/10",
+                  agent.status === "error" && "border-status-missing/30 text-status-missing-foreground dark:text-status-missing-foreground bg-status-missing/10"
                 )}
               >
                 {agent.status === "active" && <CheckCircle className="size-3" />}
@@ -61,17 +61,17 @@ export function AgentRuntimeCardGrid({ agents, className }: AgentRuntimeCardGrid
             </div>
           </CardHeader>
           <CardContent className="flex flex-col gap-2 pt-0 text-xs">
-            <div className="flex items-center justify-between font-mono text-[11px] text-muted-foreground border-t border-border/40 pt-2">
+            <div className="flex items-center justify-between font-mono text-xs text-muted-foreground border-t border-border/40 pt-2">
               <span>Model Tier</span>
-              <Badge variant="secondary" className="font-mono text-[10px] px-1.5 py-0 uppercase">
+              <Badge variant="secondary" className="font-mono text-xs px-1.5 py-0 uppercase">
                 {agent.modelTier}
               </Badge>
             </div>
-            <div className="flex items-center justify-between font-mono text-[11px] text-muted-foreground">
+            <div className="flex items-center justify-between font-mono text-xs text-muted-foreground">
               <span>Config Path</span>
               <span className="truncate max-w-[160px] text-foreground">{agent.configPath}</span>
             </div>
-            <div className="flex items-center justify-between font-mono text-[11px] text-muted-foreground">
+            <div className="flex items-center justify-between font-mono text-xs text-muted-foreground">
               <span>Capabilities</span>
               <span className="font-semibold text-foreground">{agent.capabilitiesCount} rules synced</span>
             </div>

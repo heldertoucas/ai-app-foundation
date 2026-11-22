@@ -77,21 +77,21 @@ export function TraineeMonitorTable({
     switch (status) {
       case 'em_curso':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-status-live/10 text-status-live-foreground dark:text-status-live-foreground border border-status-live/20">
+            <span className="w-1.5 h-1.5 rounded-full bg-status-live animate-pulse" />
             Em Curso
           </span>
         );
       case 'concluido':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary dark:text-primary border border-primary/20">
             <CheckCircle size={12} weight="bold" />
             Concluído
           </span>
         );
       case 'pendente':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-status-drift/10 text-status-drift-foreground dark:text-status-drift-foreground border border-status-drift/20">
             <Hourglass size={12} weight="bold" />
             Pendente
           </span>
@@ -204,7 +204,7 @@ export function TraineeMonitorTable({
                   </TableCell>
                   <TableCell className="text-right font-mono font-bold">
                     {trainee.score !== undefined ? (
-                      <span className={trainee.score >= 9.5 ? 'text-emerald-600 dark:text-emerald-400' : 'text-destructive'}>
+                      <span className={trainee.score >= 9.5 ? 'text-status-live-foreground dark:text-status-live-foreground' : 'text-destructive'}>
                         {trainee.score.toFixed(1)}
                       </span>
                     ) : (

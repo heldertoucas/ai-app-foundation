@@ -52,9 +52,9 @@ export function KpiStatCard({
               <Badge
                 variant="secondary"
                 className={cn(
-                  "gap-0.5 px-1.5 py-0 font-mono text-[11px] font-medium",
-                  computedTrend === "up" && "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
-                  computedTrend === "down" && "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
+                  "gap-0.5 px-1.5 py-0 font-mono text-xs font-medium",
+                  computedTrend === "up" && "bg-status-live/10 text-status-live-foreground dark:text-status-live-foreground border-status-live/20",
+                  computedTrend === "down" && "bg-status-missing/10 text-status-missing-foreground dark:text-status-missing-foreground border-status-missing/20",
                   computedTrend === "neutral" && "bg-muted text-muted-foreground"
                 )}
               >
