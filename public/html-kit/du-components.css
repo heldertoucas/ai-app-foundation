@@ -1169,3 +1169,6 @@
 
 .du-icon { width: 1rem; height: 1rem; flex-shrink: 0; stroke: currentColor; fill: none; }
 .du-icon-lg { width: 1.25rem; height: 1.25rem; }
+
+.du-drawer-overlay:not(.open) { visibility: hidden; transition: opacity 200ms ease, visibility 0s linear 200ms; }
+.du-drawer-overlay.open { visibility: visible; transition: opacity 200ms ease, visibility 0s; }

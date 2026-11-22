@@ -131,14 +131,17 @@
     const copyBtn = e.target.closest('[data-du-copy]');
     if (copyBtn) {
       const text = copyBtn.getAttribute('data-du-copy');
+      if (copyBtn.dataset.duCopying || !navigator.clipboard?.writeText) return;
+      const original = [...copyBtn.childNodes];
+      copyBtn.dataset.duCopying = 'true';
       navigator.clipboard.writeText(text).then(() => {
-        const originalText = copyBtn.textContent;
-        copyBtn.textContent = 'Copied!';
-        copyBtn.style.opacity = '0.7';
+        copyBtn.replaceChildren(document.createTextNode('Copiado'));
         setTimeout(() => {
-          copyBtn.textContent = originalText;
-          copyBtn.style.opacity = '1';
+          copyBtn.replaceChildren(...original);
+          delete copyBtn.dataset.duCopying;
         }, 1500);
+      }).catch(() => {
+        delete copyBtn.dataset.duCopying;
       });
       return;
     }
@@ -201,7 +204,7 @@
       }
     }
     if (e.key === 'Escape') {
-      document.querySelectorAll('.du-modal-overlay.open').forEach(m => m.classList.remove('open'));
+      document.querySelectorAll('.du-modal-overlay.open, .du-drawer-overlay.open').forEach((m) => m.classList.remove('open'));
     }
   });
 
