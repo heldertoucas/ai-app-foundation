@@ -91,15 +91,17 @@ FOUNDATION   filosofia, linguagem de design, vocabulário
 
 | ID | Decisão | Estado |
 |---|---|---|
-| **D1** | Sentinel é Product. O Mission Cockpit proposto dá origem ao Blueprint Cockpit e a um Kit | Acordado em conversa, falta `/ai-decide` |
+| **D1** | Sentinel é Product. O Mission Cockpit proposto dá origem ao Blueprint Cockpit e a um Kit | Aprovada pelo utilizador, falta `/ai-decide` |
 | **D2** | Regras do HTML que alteram o design do Sentinel | **Aberta**, bloqueia M8 |
-| **D3** | Migração completa em fases independentes | Acordado em conversa, falta `/ai-decide` |
-| **D4** | `du-dashboard.html` carrega `core/` ou continua num só ficheiro | **Aberta**, bloqueia M3 |
-| **D5** | Emenda à DEC-0027, PAT-0104 e PAT-0105 | **Aberta**, bloqueia M1 |
-| **D6** | Tipografia canónica | **Aberta**, bloqueia M2 |
-| **D7** | Idioma das interfaces | **Aberta**, bloqueia M2 |
-| **D8** | Futuro Digital offline e tema escuro | **Aberta**, bloqueia M2 |
-| **D9** | Experiência de referência de Mission Control | **Aberta**, bloqueia a reconstrução do Kit |
+| **D3** | Migração completa em fases independentes | Aprovada pelo utilizador, falta `/ai-decide` |
+| **D4** | `du-dashboard.html` carrega `core/` | Aprovada pelo utilizador, falta `/ai-decide` |
+| **D5** | Emenda à DEC-0027, PAT-0104 e PAT-0105 | Aprovada pelo utilizador, a executar em WP-72 |
+| **D6** | Geist local nas duas Stacks | Aprovada pelo utilizador, falta `/ai-decide` |
+| **D7** | Interface em pt-PT | Aprovada pelo utilizador, falta `/ai-decide` |
+| **D8** | Futuro Digital com recursos locais e só tema claro | Aprovada pelo utilizador, falta `/ai-decide` |
+| **D9** | Mission Control segue uma nova especificação comum | Aprovada pelo utilizador, falta `/ai-decide` |
+
+**Execução:** [`execution/README.md`](./execution/README.md) contém os pacotes de trabalho para agentes.
 
 As opções de D2 mantêm-se como definidas na versão anterior desta proposta. As opções de D4 estão em [`design.md`](./design.md).
 

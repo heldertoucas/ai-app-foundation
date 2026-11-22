@@ -1,5 +1,7 @@
 # Tasks: migração Foundation
 
+**Execução detalhada:** use os pacotes `WP-*` em [`execution/README.md`](./execution/README.md). Esta lista acompanha o progresso global.
+
 **Regra de execução:** cada fase termina com `foundation:check`, `typecheck`, `test` e `build` verdes. Nenhuma fase começa com a anterior por fechar.
 
 ## 1. M0: Pré-condições e decisões
