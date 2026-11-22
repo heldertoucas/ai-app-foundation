@@ -1,0 +1,6 @@
+{
+  "prefix": "AI_APP_FOUNDATION",
+  "requires": [
+    "DATABASE_URL"
+  ]
+}
