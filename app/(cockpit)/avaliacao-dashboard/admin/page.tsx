@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { SessionHeader } from '@/components/avaliacao-dashboard/session-header';
-import { AuthGuard } from '@/components/avaliacao-dashboard/auth-guard';
-import { TelemetrySyncCard } from '@/components/avaliacao-dashboard/telemetry-sync-card';
-import { useAvaliacaoRepository } from '@/lib/avaliacao/repository';
+import { SessionHeader } from '@/components/kits/avaliacao/session-header';
+import { AuthGuard } from '@/components/kits/avaliacao/auth-guard';
+import { TelemetrySyncCard } from '@/components/kits/avaliacao/telemetry-sync-card';
+import { useAvaliacaoRepository } from '@/lib/kits/avaliacao/repository';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Users, CheckCircle, Clock, ChartBar } from '@phosphor-icons/react';
 

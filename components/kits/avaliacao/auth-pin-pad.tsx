@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { LockKey, ChalkboardTeacher, ShieldCheck, Backspace, CircleNotch } from '@phosphor-icons/react';
-import { authStore, useSession } from '@/lib/avaliacao/auth-store';
+import { authStore, useSession } from '@/lib/kits/avaliacao/auth-store';
 
 interface AuthPinPadProps {
   onSuccessTrainer?: () => void;

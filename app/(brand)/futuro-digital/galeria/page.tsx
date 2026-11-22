@@ -2,11 +2,11 @@ import React from "react";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { CourseIntro } from "@/components/futuro-digital/course-intro";
-import { StepByStep, Step } from "@/components/futuro-digital/step-by-step";
-import { FeatureSlide } from "@/components/futuro-digital/feature-slide";
-import { ProTip } from "@/components/futuro-digital/protip";
-import { AtividadeCard } from "@/components/futuro-digital/atividade-card";
+import { CourseIntro } from "@/components/kits/futuro-digital/course-intro";
+import { StepByStep, Step } from "@/components/kits/futuro-digital/step-by-step";
+import { FeatureSlide } from "@/components/kits/futuro-digital/feature-slide";
+import { ProTip } from "@/components/kits/futuro-digital/protip";
+import { AtividadeCard } from "@/components/kits/futuro-digital/atividade-card";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {

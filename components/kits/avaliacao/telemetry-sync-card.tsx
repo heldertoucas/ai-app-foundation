@@ -15,7 +15,7 @@ import {
   Cpu,
   ClockAfternoon,
 } from '@phosphor-icons/react';
-import { SyncServiceHealth, AuditEvent } from '@/lib/avaliacao/types';
+import { SyncServiceHealth, AuditEvent } from '@/lib/kits/avaliacao/types';
 
 interface TelemetrySyncCardProps {
   services: SyncServiceHealth[];

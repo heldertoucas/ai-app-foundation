@@ -2,8 +2,8 @@
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from '@/lib/avaliacao/auth-store';
-import { SessionRole } from '@/lib/avaliacao/types';
+import { useSession } from '@/lib/kits/avaliacao/auth-store';
+import { SessionRole } from '@/lib/kits/avaliacao/types';
 import { CircleNotch } from '@phosphor-icons/react';
 
 interface AuthGuardProps {

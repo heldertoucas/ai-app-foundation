@@ -12,7 +12,7 @@ import {
   Clock,
   ArrowSquareOut,
 } from '@phosphor-icons/react';
-import { authStore, useSession } from '@/lib/avaliacao/auth-store';
+import { authStore, useSession } from '@/lib/kits/avaliacao/auth-store';
 import Link from 'next/link';
 
 export function SessionHeader() {

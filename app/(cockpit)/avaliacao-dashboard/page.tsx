@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { AuthPinPad } from '@/components/avaliacao-dashboard/auth-pin-pad';
-import { useSession } from '@/lib/avaliacao/auth-store';
+import { AuthPinPad } from '@/components/kits/avaliacao/auth-pin-pad';
+import { useSession } from '@/lib/kits/avaliacao/auth-store';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, GraduationCap } from '@phosphor-icons/react';
 

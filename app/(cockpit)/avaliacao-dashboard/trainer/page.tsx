@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { SessionHeader } from '@/components/avaliacao-dashboard/session-header';
-import { AuthGuard } from '@/components/avaliacao-dashboard/auth-guard';
-import { TraineeMonitorTable } from '@/components/avaliacao-dashboard/trainee-monitor-table';
-import { useAvaliacaoRepository } from '@/lib/avaliacao/repository';
-import { useSession } from '@/lib/avaliacao/auth-store';
+import { SessionHeader } from '@/components/kits/avaliacao/session-header';
+import { AuthGuard } from '@/components/kits/avaliacao/auth-guard';
+import { TraineeMonitorTable } from '@/components/kits/avaliacao/trainee-monitor-table';
+import { useAvaliacaoRepository } from '@/lib/kits/avaliacao/repository';
+import { useSession } from '@/lib/kits/avaliacao/auth-store';
 import { Card, CardContent } from '@/components/ui/card';
 import { Users, Clock, CheckCircle, Hourglass, WarningCircle } from '@phosphor-icons/react';
 

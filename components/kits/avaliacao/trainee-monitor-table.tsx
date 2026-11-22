@@ -23,7 +23,7 @@ import {
   CaretLeft,
   CaretRight,
 } from '@phosphor-icons/react';
-import { Trainee, TraineeStatus } from '@/lib/avaliacao/types';
+import { Trainee, TraineeStatus } from '@/lib/kits/avaliacao/types';
 
 interface TraineeMonitorTableProps {
   trainees: Trainee[];
