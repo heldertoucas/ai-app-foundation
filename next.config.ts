@@ -12,7 +12,13 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: '/blueprints/dashboard/mockups/:file(clean|mission-control).html',
+        source: '/blueprints/:blueprint/mockups/:path*',
+        headers: [
+          { key: 'Content-Security-Policy', value: "sandbox allow-scripts; frame-ancestors 'none'" },
+        ],
+      },
+      {
+        source: '/html-kit/examples/:path*',
         headers: [
           { key: 'Content-Security-Policy', value: "sandbox allow-scripts; frame-ancestors 'none'" },
         ],

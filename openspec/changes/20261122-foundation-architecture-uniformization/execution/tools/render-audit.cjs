@@ -7,11 +7,11 @@ const { chromium } = require(path.join(repo, 'node_modules/@playwright/test'));
 
 const moved = fs.existsSync(path.join(repo, 'public/html/core/tokens.css'));
 const htmlPages = (moved
-  ? ['public/html/index.html', 'public/html/kits/avaliacao/index.html', 'public/html/kits/mission-control/index.html', 'public/html/kits/futuro-digital/galeria.html', 'public/html/kits/futuro-digital/index.html', 'public/blueprints/dashboard/mockups/reference.html', 'public/html/kits/cockpit-starter/index.html', 'public/html/kits/dashboard-starter/index.html', 'public/blueprints/dashboard/mockups/clean.html', 'public/blueprints/dashboard/mockups/mission-control.html']
+  ? ['public/html/index.html', 'public/html/kits/avaliacao/index.html', 'public/html/kits/mission-control/index.html', 'public/html/kits/futuro-digital/galeria.html', 'public/html/kits/futuro-digital/index.html', 'public/blueprints/dashboard/mockups/reference.html', 'public/html/kits/cockpit-starter/index.html', 'public/html/kits/dashboard-starter/index.html', 'public/blueprints/dashboard/mockups/clean.html', 'public/blueprints/cockpit/mockups/mission-control.html']
   : ['index.html', ...['du-avaliacao-dashboard', 'du-dashboard', 'du-futuro-digital-galeria', 'du-futuro-digital', 'du-html-app-template', 'starter-cockpit', 'template-app-shell'].map((n) => `templates/${n}.html`), 'examples/du-clean-dashboard-mockup.html', 'examples/du-cockpit-mockup.html'].map((p) => `public/html-kit/${p}`))
   .map((p) => ({ id: 'html:' + p.replace(/^public\/html-kit\//, '').replace(/^public\//, ''), url: 'file://' + path.join(repo, p) }));
 const routes = ['/', '/dashboard', '/dashboard/actions', '/dashboard/agents', '/dashboard/charts', '/dashboard/inspection', '/dashboard/library', '/dashboard/matrix', '/dashboard/metrics', '/dashboard/workflow', '/dashboard/workshops', '/avaliacao-dashboard', '/avaliacao-dashboard/admin', '/avaliacao-dashboard/trainer', '/futuro-digital', '/futuro-digital/galeria']
-  .map((r) => ({ id: 'react:' + r, url: 'http://localhost:4300' + r }));
+  .map((r) => ({ id: 'react:' + r, url: 'http://127.0.0.1:4300' + r }));
 const viewports = { desktop: { width: 1440, height: 900 }, mobile: { width: 390, height: 844 } };
 
 function inspect() {
@@ -74,7 +74,7 @@ function inspect() {
       await ctx.route('**/*', (r) => {
         const u = new URL(r.request().url());
         if (r.request().method() !== 'GET' && u.protocol !== 'file:') return r.abort();
-        if (u.protocol === 'file:' || u.protocol === 'data:' || u.protocol === 'blob:' || u.hostname === 'localhost') return r.continue();
+        if (u.protocol === 'file:' || u.protocol === 'data:' || u.protocol === 'blob:' || u.hostname === 'localhost' || u.hostname === '127.0.0.1') return r.continue();
         if (!external.includes(u.host)) external.push(u.host);
         return r.abort();
       });

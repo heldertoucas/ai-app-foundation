@@ -18,7 +18,10 @@ const KITS = {
   'du-futuro-digital-galeria': ['html/kits/futuro-digital', 'galeria'],
   'du-html-app-template': ['blueprints/dashboard/mockups', 'reference'],
 };
-const MOCKUPS = { 'du-clean-dashboard-mockup': 'clean', 'du-cockpit-mockup': 'mission-control' };
+const MOCKUPS = {
+  'du-clean-dashboard-mockup': ['blueprints/dashboard/mockups', 'clean'],
+  'du-cockpit-mockup': ['blueprints/cockpit/mockups', 'mission-control'],
+};
 const MODULES = { 'auth-pin-lock': 'auth-pin', 'datatable-fetch': 'data-table', 'localstorage-state': 'state-sync', 'sse-telemetry': 'live-telemetry' };
 const CORE = ['tokens.css', 'du-components.css', 'du-runtime.js', 'vendor', 'fonts'];
 const CHECK = 'scripts/foundation-check.js';
@@ -70,7 +73,7 @@ for (const ext of ['css', 'js']) if (exists(`${OLD}/index.${ext}`)) moves.push([
 if (exists(`${OLD}/run-dev.command`)) moves.push([`${OLD}/run-dev.command`, 'public/html/run-dev.command']);
 for (const [from, to] of Object.entries(MODULES)) moves.push([`${OLD}/recipes/${from}`, `public/html/modules/${to}`]);
 for (const [from, [dir, name]] of Object.entries(KITS)) for (const ext of ['html', 'css', 'js']) if (exists(`${OLD}/templates/${from}.${ext}`)) moves.push([`${OLD}/templates/${from}.${ext}`, `public/${dir}/${name}.${ext}`]);
-for (const [from, name] of Object.entries(MOCKUPS)) for (const ext of ['html', 'css', 'js']) if (exists(`${OLD}/examples/${from}.${ext}`)) moves.push([`${OLD}/examples/${from}.${ext}`, `public/blueprints/dashboard/mockups/${name}.${ext}`]);
+for (const [from, [dir, name]] of Object.entries(MOCKUPS)) for (const ext of ['html', 'css', 'js']) if (exists(`${OLD}/examples/${from}.${ext}`)) moves.push([`${OLD}/examples/${from}.${ext}`, `public/${dir}/${name}.${ext}`]);
 
 const dupes = (list) => list.filter((x, i) => list.indexOf(x) !== i);
 const problems = {
@@ -107,7 +110,7 @@ try {
       if (dir.startsWith('html/kits/') && exists(f)) edit(f, (s) => s.replace(/(["'(])\.\.\/\.\.\/assets\//g, '$1../../../assets/'));
     }
   }
-  for (const [from, name] of Object.entries(MOCKUPS)) edit(`public/blueprints/dashboard/mockups/${name}.html`, (s) => s.replaceAll(`href="${from}.css"`, `href="${name}.css"`).replaceAll(`src="${from}.js"`, `src="${name}.js"`));
+  for (const [from, [dir, name]] of Object.entries(MOCKUPS)) edit(`public/${dir}/${name}.html`, (s) => s.replaceAll(`href="${from}.css"`, `href="${name}.css"`).replaceAll(`src="${from}.js"`, `src="${name}.js"`));
 
   for (const f of ['public/html/index.html', 'public/html/index.js', 'public/html/index.css']) {
     if (!exists(f)) continue;
@@ -155,7 +158,7 @@ try {
   write(MANIFEST, `${JSON.stringify(manifest, null, 2)}\n`);
 
   for (const [from, [dir, name]] of Object.entries(KITS)) writeStub(`${OLD}/templates/${from}.html`, `public/${dir}/${name}.html`, from);
-  for (const [from, name] of Object.entries(MOCKUPS)) writeStub(`${OLD}/examples/${from}.html`, `public/blueprints/dashboard/mockups/${name}.html`, from);
+  for (const [from, [dir, name]] of Object.entries(MOCKUPS)) writeStub(`${OLD}/examples/${from}.html`, `public/${dir}/${name}.html`, from);
   writeStub(`${OLD}/index.html`, 'public/html/index.html', 'Catálogo');
   const legacy = path.join(repo, 'public/templates-index.html');
   if (fs.lstatSync(legacy).isSymbolicLink()) {

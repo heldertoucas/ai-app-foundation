@@ -60,9 +60,9 @@ recipes/                          add-ai, add-auth, migrate-postgres, deploy-ver
 | `templates/du-futuro-digital-galeria.html` | `kits/futuro-digital/galeria.html` |
 | `templates/du-html-app-template.html` | `public/blueprints/dashboard/mockups/reference.html` |
 | `examples/du-clean-dashboard-mockup.html` | `public/blueprints/dashboard/mockups/clean.html` |
-| `examples/du-cockpit-mockup.html` | `public/blueprints/dashboard/mockups/mission-control.html` |
+| `examples/du-cockpit-mockup.html` | `public/blueprints/cockpit/mockups/mission-control.html` |
 
-**Nota:** `du-cockpit-mockup.html` tem barra lateral e título Mission Control. Pertence ao Blueprint Dashboard, apesar do nome.
+**Nota:** `du-cockpit-mockup.html` usa topbar, grelha principal e gaveta lateral sem barra de navegação lateral (`Cockpit v1.0`), pelo que pertence ao Blueprint Cockpit.
 
 **Recipes:** as 4 pastas HTML passam a Modules porque têm código executável. As 4 pastas React continuam Recipes porque só têm instruções. `recipe.json` passa a `module.json` nas pastas HTML.
 
@@ -209,3 +209,13 @@ Cada pacote é um commit independente, e `git revert` repõe-o. WP-40 é a exce�
 **Risco residual aceite na especificação:** os endpoints internos de `next dev` correm antes de `proxy.ts`.
 
 **Concerns da ronda 2:** ver a revisão de proteção por Host, recuperação de WP-40, baselines idempotentes, foco do drawer, topbar móvel, handlers duplicados em Mission Control, escala tipográfica e alinhamento de `design.md` e `tasks.md` com os pacotes.
+
+### Ronda 4 (`/ai-council` pós-piloto M0/M1)
+
+**Veredito:** **APROVADO APÓS CORREÇÕES APLICADAS** (Red Teamer `pro`, Software Architect `pro`, Resilience Engineer `flash`).
+
+| Dimensão | Estado inicial | Correção aplicada |
+|---|---|---|
+| **Security** | Blocker (bypass de trailing slash / `%2e` / `/html-kit/examples/` sem sandbox) | `proxy.ts` normaliza caminhos, valida `x-forwarded-host` e bloqueia mockups CDN sobre HTTP (`404`); `next.config.ts` alarga `sandbox` CSP para `/blueprints/:blueprint/mockups/:path*` e `/html-kit/examples/:path*` |
+| **Resilience** | Blocker (`stop-dev-server.sh` tratava `cwd` vazio como `$ROOT` via `cd ""`) | `stop-dev-server.sh` exige `[ -n "$cwd" ] && [ -d "$cwd" ]` e aguarda saída com fallback `SIGKILL`; `with-server.sh` deteta saída prematura e usa `--noproxy '*'`; `render-audit.cjs` usa `127.0.0.1:4300` |
+| **Architecture** | Blocker (`foundation-contract.cjs` não validava `moduleExceptions` nem regiões de `avaliacao`; `du-cockpit-mockup` mal classificado; `WP-28`/`WP-35`/`WP-52`) | `foundation-contract.cjs` valida `moduleExceptions` e `[gate, topbar, summary, content]`; `du-cockpit-mockup` movido para `cockpit/mockups/`; `M2.md` e `M3-M8.md` alinhados |

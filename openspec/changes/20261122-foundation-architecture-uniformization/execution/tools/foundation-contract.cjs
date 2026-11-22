@@ -42,6 +42,7 @@ for (const b of manifest.blueprints) {
   if (!has(b.spec)) structureFinding(`blueprint ${b.id}: missing spec ${b.spec}`);
 }
 
+const moduleIds = new Set(manifest.modules.map((m) => m.id));
 const htmlPages = [];
 for (const k of manifest.kits) {
   if (!blueprints.has(k.blueprint)) error(`kit ${k.id}: unknown blueprint ${k.blueprint}`);
@@ -49,6 +50,10 @@ for (const k of manifest.kits) {
   if (!k.html && !k.react) error(`kit ${k.id}: no implementation`);
   if (k.parity === 'single-stack' && k.html && k.react) error(`kit ${k.id}: single-stack with two implementations`);
   if (['partial', 'divergent'].includes(k.parity) && !(k.differences || []).length) error(`kit ${k.id}: ${k.parity} parity requires differences`);
+  for (const ex of k.moduleExceptions || []) {
+    if (!moduleIds.has(ex.module)) error(`kit ${k.id}: unknown moduleException ${ex.module}`);
+    if (!String(ex.reason || '').trim()) error(`kit ${k.id}: moduleException ${ex.module} missing reason`);
+  }
   for (const stack of ['html', 'react']) {
     if (!k[stack]) continue;
     k[stack].entries.forEach((entry, i) => {
@@ -149,7 +154,8 @@ for (const { kit, file } of htmlPages) {
 
   if (!html.includes(`data-blueprint="${kit.blueprint}"`)) structureFinding(`${label}: missing data-blueprint`);
   if (!html.includes(`data-kit="${kit.id}"`)) structureFinding(`${label}: missing data-kit`);
-  const required = kit.gateFirst ? ['gate'] : blueprints.get(kit.blueprint)?.regions || [];
+  const baseRegions = blueprints.get(kit.blueprint)?.regions || [];
+  const required = kit.gateFirst ? [...new Set(['gate', ...baseRegions])] : baseRegions;
   for (const region of required) if (!html.includes(`data-region="${region}"`)) structureFinding(`${label}: missing region ${region}`);
 }
 
