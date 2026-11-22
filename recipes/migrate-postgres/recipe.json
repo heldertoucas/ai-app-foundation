@@ -1,5 +1,5 @@
 {
-  "name": "postgres",
+  "name": "migrate-postgres",
   "version": "1.0.0",
   "description": "Production PostgreSQL migration recipe (Supabase / Neon / self-hosted)",
   "dependencies": {

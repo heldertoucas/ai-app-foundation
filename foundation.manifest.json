@@ -265,23 +265,19 @@
   "recipes": [
     {
       "id": "add-ai",
-      "path": "recipes/add-ai",
-      "legacyPath": "recipes/ai"
+      "path": "recipes/add-ai"
     },
     {
       "id": "add-auth",
-      "path": "recipes/add-auth",
-      "legacyPath": "recipes/auth"
+      "path": "recipes/add-auth"
     },
     {
       "id": "migrate-postgres",
-      "path": "recipes/migrate-postgres",
-      "legacyPath": "recipes/postgres"
+      "path": "recipes/migrate-postgres"
     },
     {
       "id": "deploy-vercel",
-      "path": "recipes/deploy-vercel",
-      "legacyPath": "recipes/vercel"
+      "path": "recipes/deploy-vercel"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "name": "auth",
+  "name": "add-auth",
   "version": "1.0.0",
   "description": "Authentication integration recipe (Clerk / Auth.js)",
   "dependencies": {},
