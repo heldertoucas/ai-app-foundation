@@ -239,7 +239,7 @@ function ChartTooltipContent({
                     </div>
                     {item.value && (
                       <span className="font-mono font-medium tabular-nums text-foreground">
-                        {item.value.toLocaleString()}
+                        {new Intl.NumberFormat("pt-PT").format(item.value)}
                       </span>
                     )}
                   </div>

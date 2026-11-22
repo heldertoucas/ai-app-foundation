@@ -1,7 +1,0 @@
-{
-  "name": "vercel",
-  "version": "1.0.0",
-  "description": "Production Vercel deployment and caching recipe",
-  "dependencies": {},
-  "env": {}
-}

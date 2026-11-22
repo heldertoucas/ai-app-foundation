@@ -56,7 +56,7 @@ export function GlobalCommandPalette({ items }: GlobalCommandPaletteProps) {
       >
         <MagnifyingGlass className="size-3.5" />
         <span className="hidden sm:inline">Quick search or command...</span>
-        <kbd className="pointer-events-none inline-flex h-4 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+        <kbd className="pointer-events-none inline-flex h-4 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-xs font-medium text-muted-foreground">
           Ctrl+K
         </kbd>
       </button>
@@ -71,6 +71,7 @@ export function GlobalCommandPalette({ items }: GlobalCommandPaletteProps) {
           <MagnifyingGlass className="size-4 text-muted-foreground" />
           <input
             type="text"
+            aria-label="Pesquisar comandos"
             placeholder="Type a command or search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -79,6 +80,7 @@ export function GlobalCommandPalette({ items }: GlobalCommandPaletteProps) {
           />
           <button
             type="button"
+            aria-label="Fechar paleta"
             onClick={() => setOpen(false)}
             className="text-muted-foreground hover:text-foreground cursor-pointer"
           >
@@ -108,7 +110,7 @@ export function GlobalCommandPalette({ items }: GlobalCommandPaletteProps) {
                   <Command className="size-3.5 text-muted-foreground" />
                   <span className="font-medium">{item.title}</span>
                 </div>
-                <span className="text-[10px] font-mono uppercase text-muted-foreground">
+                <span className="text-xs font-mono uppercase text-muted-foreground">
                   {item.category}
                 </span>
               </button>

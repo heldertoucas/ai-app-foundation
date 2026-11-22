@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-PT" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; font-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai-app-foundation — Catálogo por Blueprint</title>
+  <link rel="stylesheet" href="./core/tokens.css">
+  <link rel="stylesheet" href="./core/vendor/shadcn-html.all.css">
+  <link rel="stylesheet" href="./core/du-components.css">
+  <script src="./core/du-runtime.js" defer></script>
+  <link rel="stylesheet" href="index.css">
+  <script src="index.js" defer></script>
+</head>
+<body>
+  <button id="theme-toggle" class="floating-theme-btn" aria-label="Alternar tema" title="Alternar Dark/Light">
+    <svg class="du-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+  </button>
+
+  <div class="container">
+    <header class="hero">
+      <div class="hero-icon">DU</div>
+      <h1 class="hero-title">ai-app-foundation</h1>
+      <div class="hero-search-wrapper">
+        <input id="search-input" type="search" class="hero-search-input" placeholder="Pesquisar por Blueprint, Kit, Mockup, Module ou Recipe..." aria-label="Pesquisar catálogo" autocomplete="off" />
+      </div>
+      <nav class="filter-bar" aria-label="Filtro de Stack">
+        <button class="filter-chip active" data-stack-filter="all">Todos</button>
+        <button class="filter-chip" data-stack-filter="html">HTML</button>
+        <button class="filter-chip" data-stack-filter="react">React</button>
+      </nav>
+      <nav class="filter-bar" aria-label="Filtro de Tipo">
+        <button class="filter-chip active" data-kind-filter="all">Todos</button>
+        <button class="filter-chip" data-kind-filter="kit">Kits</button>
+        <button class="filter-chip" data-kind-filter="mockup">Mockups</button>
+        <button class="filter-chip" data-kind-filter="module">Modules</button>
+        <button class="filter-chip" data-kind-filter="recipe">Recipes</button>
+      </nav>
+    </header>
+
+    <main id="catalog-main">
+      <!-- DASHBOARD -->
+      <section class="category-section" data-section="dashboard">
+        <div class="category-header">
+          <div class="category-title-group">
+            <h2 class="category-title">Dashboard — Kits e Mockups</h2>
+            <span class="category-stack-tag">Sidebar · Topbar · Page Header · Content</span>
+          </div>
+          <span class="category-count">5 entradas</span>
+        </div>
+        <div class="cards-grid">
+          <article class="model-card" data-kit="dashboard-starter" data-kind="kit" data-stacks="html" data-keywords="dashboard starter kit html sidebar">
+            <div class="card-top"><h3 class="card-title">dashboard-starter</h3><span class="card-badge badge-zerobuild">Starter Kit · HTML</span></div>
+            <div class="card-screenshot-wrapper"><img src="../blueprints/dashboard/mockups/reference.png" alt="Dashboard Starter" class="card-screenshot" loading="lazy"></div>
+            <p class="text-xs text-muted-foreground">Blueprint: Dashboard · Paridade: single-stack · Diferenças: Sem implementação React nesta migração</p>
+            <div class="card-launcher-bar">
+              <a class="cmd-copy-btn" href="./kits/dashboard-starter/index.html">Abrir</a>
+              <button type="button" class="cmd-copy-btn" data-du-on-click='[["copyLaunchCommand",["pnpm dev",{"$this":true}]]]'>Copiar comando</button>
+            </div>
+          </article>
+
+          <article class="model-card" data-kit="mission-control" data-kind="kit" data-stacks="html,react" data-keywords="mission control dashboard html react">
+            <div class="card-top"><h3 class="card-title">mission-control</h3><span class="card-badge badge-zerobuild">Kit · HTML + React</span></div>
+            <div class="card-screenshot-wrapper"><img src="../screenshots/mission-control-dashboard.png" alt="Mission Control" class="card-screenshot" loading="lazy"></div>
+            <p class="text-xs text-muted-foreground">Blueprint: Dashboard · Paridade: partial · Diferenças: React lê adaptadores DU e mantém CRUD Prisma; HTML usa fixtures</p>
+            <div class="card-launcher-bar">
+              <a class="cmd-copy-btn" href="./kits/mission-control/index.html">Abrir HTML</a>
+              <a class="cmd-copy-btn" href="/dashboard">Abrir React</a>
+              <button type="button" class="terminal-launch-btn" data-command="pnpm dev">Arrancar servidor</button>
+            </div>
+          </article>
+
+          <article class="model-card" data-mockup="reference" data-kind="mockup" data-stacks="html" data-keywords="mockup dashboard reference">
+            <div class="card-top"><h3 class="card-title">Mockup: Reference</h3><span class="card-badge">Mockup · Dashboard</span></div>
+            <div class="card-screenshot-wrapper"><img src="../blueprints/dashboard/mockups/reference.png" alt="Reference Mockup" class="card-screenshot" loading="lazy"></div>
+            <div class="card-launcher-bar"><a class="cmd-copy-btn" href="../blueprints/dashboard/mockups/reference.html">Abrir</a></div>
+          </article>
+
+          <article class="model-card" data-mockup="clean" data-kind="mockup" data-stacks="html" data-keywords="mockup dashboard clean">
+            <div class="card-top"><h3 class="card-title">Mockup: Clean</h3><span class="card-badge">Mockup · Dashboard</span></div>
+            <div class="card-screenshot-wrapper"><img src="../blueprints/dashboard/mockups/clean.png" alt="Clean Mockup" class="card-screenshot" loading="lazy"></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- COCKPIT -->
+      <section class="category-section" data-section="cockpit">
+        <div class="category-header">
+          <div class="category-title-group">
+            <h2 class="category-title">Cockpit — Kits e Mockups</h2>
+            <span class="category-stack-tag">Topbar · Summary · Content</span>
+          </div>
+          <span class="category-count">4 entradas</span>
+        </div>
+        <div class="cards-grid">
+          <article class="model-card" data-kit="cockpit-starter" data-kind="kit" data-stacks="html" data-keywords="cockpit starter kit html">
+            <div class="card-top"><h3 class="card-title">cockpit-starter</h3><span class="card-badge badge-zerobuild">Starter Kit · HTML</span></div>
+            <div class="card-screenshot-wrapper"><img src="../blueprints/cockpit/mockups/overview.png" alt="Cockpit Starter" class="card-screenshot" loading="lazy"></div>
+            <p class="text-xs text-muted-foreground">Blueprint: Cockpit · Paridade: single-stack · Diferenças: Sem implementação React nesta migração</p>
+            <div class="card-launcher-bar">
+              <a class="cmd-copy-btn" href="./kits/cockpit-starter/index.html">Abrir</a>
+              <button type="button" class="cmd-copy-btn" data-du-on-click='[["copyLaunchCommand",["pnpm foundation:check",{"$this":true}]]]'>Copiar comando</button>
+            </div>
+          </article>
+
+          <article class="model-card" data-kit="avaliacao" data-kind="kit" data-stacks="html,react" data-keywords="avaliacao cockpit html react pin">
+            <div class="card-top"><h3 class="card-title">avaliacao</h3><span class="card-badge badge-zerobuild">Kit · HTML + React</span></div>
+            <div class="card-screenshot-wrapper"><img src="../screenshots/du-avaliacao-zero-build.png" alt="Avaliação" class="card-screenshot" loading="lazy"></div>
+            <p class="text-xs text-muted-foreground">Blueprint: Cockpit · Paridade: partial · Diferenças: React separa acesso, formador e admin em rotas; HTML usa vistas</p>
+            <div class="card-launcher-bar">
+              <a class="cmd-copy-btn" href="./kits/avaliacao/index.html">Abrir HTML</a>
+              <a class="cmd-copy-btn" href="/avaliacao-dashboard">Abrir React</a>
+              <button type="button" class="terminal-launch-btn" data-command="pnpm start">Produção</button>
+            </div>
+          </article>
+
+          <article class="model-card" data-mockup="overview" data-kind="mockup" data-stacks="html" data-keywords="mockup cockpit overview">
+            <div class="card-top"><h3 class="card-title">Mockup: Overview</h3><span class="card-badge">Mockup · Cockpit</span></div>
+            <div class="card-screenshot-wrapper"><img src="../blueprints/cockpit/mockups/overview.png" alt="Cockpit Overview" class="card-screenshot" loading="lazy"></div>
+          </article>
+
+          <article class="model-card" data-mockup="mission-control-cockpit" data-kind="mockup" data-stacks="html" data-keywords="mockup cockpit mission control">
+            <div class="card-top"><h3 class="card-title">Mockup: Mission Control Cockpit</h3><span class="card-badge">Mockup · Cockpit</span></div>
+            <div class="card-screenshot-wrapper"><img src="../blueprints/cockpit/mockups/mission-control.png" alt="Cockpit Mission Control" class="card-screenshot" loading="lazy"></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- WEBSITE -->
+      <section class="category-section" data-section="website">
+        <div class="category-header">
+          <div class="category-title-group">
+            <h2 class="category-title">Website — Kits e Mockups</h2>
+            <span class="category-stack-tag">Header · Hero · Sections · Footer</span>
+          </div>
+          <span class="category-count">3 entradas</span>
+        </div>
+        <div class="cards-grid">
+          <article class="model-card" data-kit="website-starter" data-kind="kit" data-stacks="react" data-keywords="website starter kit react landing">
+            <div class="card-top"><h3 class="card-title">website-starter</h3><span class="card-badge">Starter Kit · React</span></div>
+            <div class="card-screenshot-wrapper"><img src="../screenshots/landing-page.png" alt="Website Starter" class="card-screenshot" loading="lazy"></div>
+            <p class="text-xs text-muted-foreground">Blueprint: Website · Paridade: single-stack · Diferenças: Sem implementação HTML nesta migração</p>
+            <div class="card-launcher-bar">
+              <a class="cmd-copy-btn" href="/">Abrir React</a>
+              <button type="button" class="terminal-launch-btn" data-command="pnpm dev">Arrancar servidor</button>
+            </div>
+          </article>
+
+          <article class="model-card" data-kit="futuro-digital" data-kind="kit" data-stacks="html,react" data-keywords="futuro digital website html react">
+            <div class="card-top"><h3 class="card-title">futuro-digital</h3><span class="card-badge badge-zerobuild">Kit · HTML + React</span></div>
+            <div class="card-screenshot-wrapper"><img src="../screenshots/futuro-digital-portal.png" alt="Futuro Digital" class="card-screenshot" loading="lazy"></div>
+            <p class="text-xs text-muted-foreground">Blueprint: Website · Paridade: partial · Diferenças: Tema apenas claro nas duas Stacks por decisão D8</p>
+            <div class="card-launcher-bar">
+              <a class="cmd-copy-btn" href="./kits/futuro-digital/index.html">Abrir HTML</a>
+              <a class="cmd-copy-btn" href="/futuro-digital">Abrir React</a>
+              <button type="button" class="cmd-copy-btn" data-du-on-click='[["copyLaunchCommand",["pnpm dev",{"$this":true}]]]'>Copiar comando</button>
+            </div>
+          </article>
+
+          <article class="model-card" data-mockup="landing" data-kind="mockup" data-stacks="react" data-keywords="mockup website landing">
+            <div class="card-top"><h3 class="card-title">Mockup: Landing</h3><span class="card-badge">Mockup · Website</span></div>
+            <div class="card-screenshot-wrapper"><img src="../blueprints/website/mockups/landing.png" alt="Website Landing" class="card-screenshot" loading="lazy"></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- MODULES -->
+      <section class="category-section" data-section="modules">
+        <div class="category-header">
+          <div class="category-title-group">
+            <h2 class="category-title">Modules</h2>
+            <span class="category-stack-tag">Blocos reutilizáveis HTML e React</span>
+          </div>
+          <span class="category-count">5 modules</span>
+        </div>
+        <div class="cards-grid">
+          <article class="model-card" data-module="auth-pin" data-kind="module" data-stacks="html,react" data-keywords="module auth-pin"><div class="card-top"><h3 class="card-title">auth-pin</h3><span class="card-badge">HTML + React</span></div><div class="card-launcher-bar"><a class="cmd-copy-btn" href="./modules/auth-pin/checklist.md">Checklist</a></div></article>
+          <article class="model-card" data-module="data-table" data-kind="module" data-stacks="html,react" data-keywords="module data-table"><div class="card-top"><h3 class="card-title">data-table</h3><span class="card-badge">HTML + React</span></div><div class="card-launcher-bar"><a class="cmd-copy-btn" href="./modules/data-table/checklist.md">Checklist</a></div></article>
+          <article class="model-card" data-module="state-sync" data-kind="module" data-stacks="html,react" data-keywords="module state-sync"><div class="card-top"><h3 class="card-title">state-sync</h3><span class="card-badge">HTML + React</span></div><div class="card-launcher-bar"><a class="cmd-copy-btn" href="./modules/state-sync/checklist.md">Checklist</a></div></article>
+          <article class="model-card" data-module="live-telemetry" data-kind="module" data-stacks="html" data-keywords="module live-telemetry"><div class="card-top"><h3 class="card-title">live-telemetry</h3><span class="card-badge">HTML</span></div><div class="card-launcher-bar"><a class="cmd-copy-btn" href="./modules/live-telemetry/checklist.md">Checklist</a></div></article>
+          <article class="model-card" data-module="du-connector" data-kind="module" data-stacks="react" data-keywords="module du-connector"><div class="card-top"><h3 class="card-title">du-connector</h3><span class="card-badge">React</span></div><div class="card-launcher-bar"><button type="button" class="terminal-launch-btn" data-command="pnpm foundation:check">Verificar</button></div></article>
+        </div>
+      </section>
+
+      <!-- RECIPES -->
+      <section class="category-section" data-section="recipes">
+        <div class="category-header">
+          <div class="category-title-group">
+            <h2 class="category-title">Recipes</h2>
+            <span class="category-stack-tag">Guias de evolução React</span>
+          </div>
+          <span class="category-count">4 recipes</span>
+        </div>
+        <div class="cards-grid">
+          <article class="model-card" data-recipe="add-ai" data-kind="recipe" data-stacks="react" data-keywords="recipe add-ai"><div class="card-top"><h3 class="card-title">add-ai</h3><span class="card-badge">Recipe · React</span></div></article>
+          <article class="model-card" data-recipe="add-auth" data-kind="recipe" data-stacks="react" data-keywords="recipe add-auth"><div class="card-top"><h3 class="card-title">add-auth</h3><span class="card-badge">Recipe · React</span></div></article>
+          <article class="model-card" data-recipe="migrate-postgres" data-kind="recipe" data-stacks="react" data-keywords="recipe migrate-postgres"><div class="card-top"><h3 class="card-title">migrate-postgres</h3><span class="card-badge">Recipe · React</span></div></article>
+          <article class="model-card" data-recipe="deploy-vercel" data-kind="recipe" data-stacks="react" data-keywords="recipe deploy-vercel"><div class="card-top"><h3 class="card-title">deploy-vercel</h3><span class="card-badge">Recipe · React</span></div></article>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

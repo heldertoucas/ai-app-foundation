@@ -27,30 +27,30 @@ export interface AgentRuntimeCardGridProps {
 
 export function AgentRuntimeCardGrid({ agents, className }: AgentRuntimeCardGridProps) {
   return (
-    <div className={cn("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4", className)}>
+    <div className={cn("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full min-w-0", className)}>
       {agents.map((agent) => (
         <Card
           key={agent.id}
-          className="shadow-xs hover:border-foreground/20 transition-all duration-150 relative overflow-hidden"
+          className="min-w-0 shadow-xs hover:border-foreground/20 transition-all duration-150 relative overflow-hidden"
         >
           <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary border border-primary/20">
+            <div className="flex flex-wrap items-center justify-between gap-2 min-w-0">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary border border-primary/20">
                   <Robot className="size-4" />
                 </div>
-                <div>
-                  <CardTitle className="text-sm font-semibold">{agent.name}</CardTitle>
-                  <CardDescription className="text-xs">{agent.role}</CardDescription>
+                <div className="min-w-0">
+                  <CardTitle className="text-sm font-semibold truncate">{agent.name}</CardTitle>
+                  <CardDescription className="text-xs truncate">{agent.role}</CardDescription>
                 </div>
               </div>
               <Badge
                 variant="outline"
                 className={cn(
-                  "gap-1 text-[10px] font-mono capitalize",
-                  agent.status === "active" && "border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10",
-                  agent.status === "idle" && "border-amber-500/30 text-amber-600 dark:text-amber-400 bg-amber-500/10",
-                  agent.status === "error" && "border-rose-500/30 text-rose-600 dark:text-rose-400 bg-rose-500/10"
+                  "gap-1 text-xs font-mono capitalize",
+                  agent.status === "active" && "border-status-live/30 text-status-live-foreground dark:text-status-live-foreground bg-status-live/10",
+                  agent.status === "idle" && "border-status-drift/30 text-status-drift-foreground dark:text-status-drift-foreground bg-status-drift/10",
+                  agent.status === "error" && "border-status-missing/30 text-status-missing-foreground dark:text-status-missing-foreground bg-status-missing/10"
                 )}
               >
                 {agent.status === "active" && <CheckCircle className="size-3" />}
@@ -61,17 +61,17 @@ export function AgentRuntimeCardGrid({ agents, className }: AgentRuntimeCardGrid
             </div>
           </CardHeader>
           <CardContent className="flex flex-col gap-2 pt-0 text-xs">
-            <div className="flex items-center justify-between font-mono text-[11px] text-muted-foreground border-t border-border/40 pt-2">
+            <div className="flex items-center justify-between font-mono text-xs text-muted-foreground border-t border-border/40 pt-2">
               <span>Model Tier</span>
-              <Badge variant="secondary" className="font-mono text-[10px] px-1.5 py-0 uppercase">
+              <Badge variant="secondary" className="font-mono text-xs px-1.5 py-0 uppercase">
                 {agent.modelTier}
               </Badge>
             </div>
-            <div className="flex items-center justify-between font-mono text-[11px] text-muted-foreground">
+            <div className="flex items-center justify-between font-mono text-xs text-muted-foreground">
               <span>Config Path</span>
               <span className="truncate max-w-[160px] text-foreground">{agent.configPath}</span>
             </div>
-            <div className="flex items-center justify-between font-mono text-[11px] text-muted-foreground">
+            <div className="flex items-center justify-between font-mono text-xs text-muted-foreground">
               <span>Capabilities</span>
               <span className="font-semibold text-foreground">{agent.capabilitiesCount} rules synced</span>
             </div>

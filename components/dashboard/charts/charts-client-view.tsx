@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { DuContextTelemetry, DuGraphifyData } from "@/lib/du/types";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { formatNumber } from "@/lib/format";
 
 interface ChartsClientViewProps {
   contextTelemetry: DuContextTelemetry;
@@ -101,24 +102,24 @@ export function ChartsClientView({
           <CardContent className="space-y-4 font-mono text-xs">
             <div className="flex justify-between items-center py-1.5 border-b border-border/50">
               <span className="text-muted-foreground">System Prompt:</span>
-              <span className="font-semibold text-foreground">{contextTelemetry.tokenBudget.system.toLocaleString()} tok</span>
+              <span className="font-semibold text-foreground">{formatNumber(contextTelemetry.tokenBudget.system)} tok</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-border/50">
               <span className="text-muted-foreground">Durable Memory:</span>
-              <span className="font-semibold text-foreground">{contextTelemetry.tokenBudget.memory.toLocaleString()} tok</span>
+              <span className="font-semibold text-foreground">{formatNumber(contextTelemetry.tokenBudget.memory)} tok</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-border/50">
               <span className="text-muted-foreground">Workspace State:</span>
-              <span className="font-semibold text-foreground">{contextTelemetry.tokenBudget.workspace.toLocaleString()} tok</span>
+              <span className="font-semibold text-foreground">{formatNumber(contextTelemetry.tokenBudget.workspace)} tok</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-border/50">
               <span className="text-muted-foreground">Headroom:</span>
-              <span className="font-semibold text-emerald-500">{contextTelemetry.tokenBudget.headroom.toLocaleString()} tok</span>
+              <span className="font-semibold text-emerald-500">{formatNumber(contextTelemetry.tokenBudget.headroom)} tok</span>
             </div>
             <div className="pt-2 flex justify-between items-center">
               <span className="text-muted-foreground">Utilization:</span>
               <Badge variant="outline" className="font-mono text-xs">
-                {contextTelemetry.tokenBudget.usedPercent}% of {contextTelemetry.tokenBudget.totalBudget.toLocaleString()}
+                {contextTelemetry.tokenBudget.usedPercent}% of {formatNumber(contextTelemetry.tokenBudget.totalBudget)}
               </Badge>
             </div>
           </CardContent>

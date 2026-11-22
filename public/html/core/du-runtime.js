@@ -1,0 +1,275 @@
+/**
+ * DU HTML Foundation Kit — Micro-Runtime
+ * Zero dependencies / <120 LOC
+ *
+ * Capabilities:
+ * 1. Dark/Light theme toggle with LocalStorage persistence.
+ * 2. Declarative view routing (data-du-nav-target="view-id", updates breadcrumb).
+ * 3. Declarative instant table search filter (data-du-filter-target="table-id").
+ * 4. Declarative status filter chips (data-du-status-filter="status-value").
+ * 5. Modal manager (data-du-modal-open="modal-id", data-du-modal-close).
+ * 6. Copy-to-clipboard with tactile feedback (data-du-copy="text").
+ * 7. Keyboard shortcuts (Ctrl+K or / for command palette, Esc to close modals).
+ */
+(function() {
+  const THEME_KEY = 'du-theme-preference';
+
+  // 1. Theme Management
+  const readTheme = () => { try { return localStorage.getItem(THEME_KEY); } catch { return null; } };
+  const writeTheme = (value) => { try { localStorage.setItem(THEME_KEY, value); } catch { /* storage unavailable */ } };
+  const savedTheme = readTheme();
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const forcedTheme = document.documentElement.dataset.duForceTheme;
+  const useDark = forcedTheme
+    ? forcedTheme === 'dark'
+    : savedTheme === 'dark' || ((!savedTheme || savedTheme === 'system') && prefersDark);
+  document.documentElement.classList.toggle('dark', useDark);
+
+  window.duToggleTheme = function() {
+    if (document.documentElement.dataset.duForceTheme) return;
+    const isDark = document.documentElement.classList.toggle('dark');
+    writeTheme(isDark ? 'dark' : 'light');
+  };
+
+  // 2. Declarative View Switching
+  window.duSwitchView = function(viewId, customTitle) {
+    document.querySelectorAll('.du-view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.du-nav-item').forEach(btn => btn.classList.remove('active'));
+
+    const targetView = document.getElementById(viewId);
+    if (targetView) targetView.classList.add('active');
+
+    const activeNav = document.querySelector(`[data-du-nav-target="${viewId}"]`);
+    if (activeNav) {
+      activeNav.classList.add('active');
+      const title = customTitle || activeNav.getAttribute('data-du-nav-title') || activeNav.querySelector('.du-nav-label')?.textContent || viewId;
+      const breadcrumbEl = document.getElementById('du-breadcrumb-title');
+      if (breadcrumbEl) breadcrumbEl.textContent = title;
+    }
+  };
+
+  // 3. Tab Switching (.ui-tabs)
+  window.duActivateTab = function(triggerEl, targetId) {
+    const parent = triggerEl.closest('.ui-tabs') || document;
+    parent.querySelectorAll('.ui-tab-trigger').forEach(el => el.classList.remove('active'));
+    parent.querySelectorAll('.ui-tab-content').forEach(el => el.classList.remove('active'));
+    triggerEl.classList.add('active');
+    const target = document.getElementById(targetId);
+    if (target) target.classList.add('active');
+  };
+
+  // 4. Modal Management
+  window.duOpenModal = function(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      if (typeof modal.showModal === 'function') {
+        modal.showModal();
+      } else {
+        modal.classList.add('open');
+      }
+    }
+  };
+
+  window.duCloseModal = function(modalId) {
+    const modal = typeof modalId === 'string' ? document.getElementById(modalId) : modalId.closest('.du-modal-overlay, dialog');
+    if (modal) {
+      if (typeof modal.close === 'function') {
+        modal.close();
+      } else {
+        modal.classList.remove('open');
+      }
+    }
+  };
+
+  // 5. Global Delegated Event Listeners
+  document.addEventListener('click', (e) => {
+    // Navigation items
+    const navBtn = e.target.closest('[data-du-nav-target]');
+    if (navBtn) {
+      const viewId = navBtn.getAttribute('data-du-nav-target');
+      window.duSwitchView(viewId);
+      return;
+    }
+
+    // Modal triggers
+    const modalOpenBtn = e.target.closest('[data-du-modal-open]');
+    if (modalOpenBtn) {
+      const modalId = modalOpenBtn.getAttribute('data-du-modal-open');
+      window.duOpenModal(modalId);
+      return;
+    }
+
+    const modalCloseBtn = e.target.closest('[data-du-modal-close]');
+    if (modalCloseBtn) {
+      window.duCloseModal(modalCloseBtn);
+      return;
+    }
+
+    // Drawer triggers
+    const drawerOpenBtn = e.target.closest('[data-du-drawer-open]');
+    if (drawerOpenBtn) {
+      const drawerId = drawerOpenBtn.getAttribute('data-du-drawer-open');
+      const drawer = document.getElementById(drawerId);
+      if (drawer) drawer.classList.add('open');
+      return;
+    }
+
+    const drawerCloseBtn = e.target.closest('[data-du-drawer-close]');
+    if (drawerCloseBtn) {
+      const drawer = drawerCloseBtn.closest('.du-drawer-overlay');
+      if (drawer) drawer.classList.remove('open');
+      return;
+    }
+
+    if (e.target.classList.contains('du-drawer-overlay')) {
+      e.target.classList.remove('open');
+      return;
+    }
+
+
+    // Copy to clipboard
+    const copyBtn = e.target.closest('[data-du-copy]');
+    if (copyBtn) {
+      const text = copyBtn.getAttribute('data-du-copy');
+      if (copyBtn.dataset.duCopying || !navigator.clipboard?.writeText) return;
+      const original = [...copyBtn.childNodes];
+      copyBtn.dataset.duCopying = 'true';
+      navigator.clipboard.writeText(text).then(() => {
+        copyBtn.replaceChildren(document.createTextNode('Copiado'));
+        setTimeout(() => {
+          copyBtn.replaceChildren(...original);
+          delete copyBtn.dataset.duCopying;
+        }, 1500);
+      }).catch(() => {
+        delete copyBtn.dataset.duCopying;
+      });
+      return;
+    }
+
+    // Status filter chips
+    const chipBtn = e.target.closest('[data-du-status-filter]');
+    if (chipBtn) {
+      const group = chipBtn.closest('.du-status-chips-group');
+      const tableId = group?.getAttribute('data-du-filter-target') || chipBtn.getAttribute('data-du-filter-target');
+      const statusVal = chipBtn.getAttribute('data-du-status-filter');
+      
+      if (group) {
+        group.querySelectorAll('.du-status-chip').forEach(c => c.classList.remove('active'));
+      }
+      chipBtn.classList.add('active');
+
+      if (tableId) {
+        const table = document.getElementById(tableId);
+        if (table) {
+          const rows = table.querySelectorAll('tbody tr');
+          rows.forEach(row => {
+            const rowStatus = row.getAttribute('data-status');
+            if (!statusVal || statusVal === 'all' || rowStatus === statusVal) {
+              row.style.display = '';
+            } else {
+              row.style.display = 'none';
+            }
+          });
+        }
+      }
+    }
+  });
+
+  // 6. Live Search Filtering
+  document.addEventListener('input', (e) => {
+    const searchInput = e.target.closest('[data-du-filter-target]');
+    if (searchInput && searchInput.tagName === 'INPUT') {
+      const targetTableId = searchInput.getAttribute('data-du-filter-target');
+      const query = searchInput.value.toLowerCase().trim();
+      const table = document.getElementById(targetTableId);
+      if (table) {
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+          const rowText = row.textContent.toLowerCase();
+          row.style.display = rowText.includes(query) ? '' : 'none';
+        });
+      }
+    }
+  });
+
+  // 7. Keyboard Shortcuts (Ctrl+K or / to search, Esc to close modal)
+  document.addEventListener('keydown', (e) => {
+    if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || (e.key === '/' && document.activeElement.tagName !== 'INPUT')) {
+      e.preventDefault();
+      const searchDialog = document.getElementById('du-command-dialog');
+      if (searchDialog) {
+        window.duOpenModal('du-command-dialog');
+        const input = searchDialog.querySelector('input');
+        if (input) input.focus();
+      }
+    }
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.du-modal-overlay.open, .du-drawer-overlay.open').forEach((m) => m.classList.remove('open'));
+    }
+  });
+
+  // 7b. Responsive sidebar drawer
+  let sidebarOpener = null;
+  function setSidebar(open, opener) {
+    const shell = document.querySelector('.du-app-shell');
+    if (!shell) return;
+    const main = shell.querySelector('.du-main-layout');
+    if (open) sidebarOpener = opener || document.querySelector('[data-du-sidebar-toggle]');
+    shell.classList.toggle('du-sidebar-open', open);
+    if (main) main.inert = open;
+    document.querySelectorAll('[data-du-sidebar-toggle]').forEach((b) => b.setAttribute('aria-expanded', String(open)));
+    if (open) {
+      requestAnimationFrame(() => shell.querySelector('.du-sidebar .du-nav-item')?.focus());
+    } else {
+      const target = sidebarOpener && sidebarOpener.offsetParent !== null
+        ? sidebarOpener
+        : shell.querySelector('.du-sidebar .du-nav-item.active');
+      target?.focus?.();
+      sidebarOpener = null;
+    }
+  }
+  const isSidebarOpen = () => Boolean(document.querySelector('.du-sidebar-open'));
+  document.addEventListener('click', (e) => {
+    const toggle = e.target.closest('[data-du-sidebar-toggle]');
+    if (toggle) {
+      setSidebar(!isSidebarOpen(), toggle);
+    } else if (isSidebarOpen() && (e.target.closest('.du-sidebar-backdrop') || e.target.closest('.du-sidebar [data-du-nav-target]'))) {
+      setSidebar(false);
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || !isSidebarOpen()) return;
+    if (document.querySelector('dialog[open], .du-modal-overlay.open, .du-drawer-overlay.open')) return;
+    setSidebar(false);
+  });
+  window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+    if (e.matches && isSidebarOpen()) setSidebar(false);
+  });
+
+  // 8. Declarative actions (CSP-safe replacement for inline event handlers)
+  window.duActions = Object.assign(window.duActions || {}, {
+    duToggleTheme: () => window.duToggleTheme(),
+    duOpenModal: (id) => window.duOpenModal(id),
+    duCloseModal: (id) => window.duCloseModal(id),
+    duCloseClosest: (el, selector) => el.closest(selector)?.close?.(),
+    duSwitchView: (...args) => window.duSwitchView(...args),
+    duActivateTab: (...args) => window.duActivateTab(...args),
+  });
+  function runDeclaredActions(event, attribute) {
+    const el = event.target.closest?.(`[${attribute}]`);
+    if (!el) return;
+    let steps;
+    try { steps = JSON.parse(el.getAttribute(attribute)); } catch { return; }
+    if (!Array.isArray(steps)) return;
+    for (const step of steps) {
+      if (!Array.isArray(step)) continue;
+      const [name, args] = step;
+      if (!Array.isArray(args)) continue;
+      const action = Object.prototype.hasOwnProperty.call(window.duActions, name) ? window.duActions[name] : null;
+      if (!action) { console.error(`Unknown DU action: ${name}`); return; }
+      action(...args.map((arg) => (arg && arg.$this === true ? el : arg)));
+    }
+  }
+  document.addEventListener('click', (e) => runDeclaredActions(e, 'data-du-on-click'));
+  document.addEventListener('input', (e) => runDeclaredActions(e, 'data-du-on-input'));
+})();

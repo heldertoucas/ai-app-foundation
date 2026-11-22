@@ -45,6 +45,7 @@ export function MaskedSecretViewer({
             type="button"
             variant="ghost"
             size="icon-xs"
+            aria-label={revealed ? "Ocultar segredo" : "Revelar segredo"}
             onClick={() => setRevealed(!revealed)}
             className="text-muted-foreground hover:text-foreground"
           >
@@ -54,13 +55,14 @@ export function MaskedSecretViewer({
             type="button"
             variant="ghost"
             size="icon-xs"
+            aria-label="Copiar segredo"
             onClick={handleCopy}
             className={cn(
               "text-muted-foreground hover:text-foreground transition-colors",
-              copied && "text-emerald-500 font-bold"
+              copied && "text-status-live-foreground font-bold"
             )}
           >
-            {copied ? <Check className="size-3.5 text-emerald-500" /> : <Copy className="size-3.5" />}
+            {copied ? <Check className="size-3.5 text-status-live-foreground" /> : <Copy className="size-3.5" />}
           </Button>
         </div>
       </div>

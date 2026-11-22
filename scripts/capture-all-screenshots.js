@@ -2,10 +2,9 @@ const { chromium } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
 
-const BRAIN_DIR = '/Users/heldertoucas/.gemini/antigravity-cli/brain/db0f14b1-2607-4f55-a928-93f960060a9d/screenshots';
-const REPO_DIR = '/Users/heldertoucas/dev/ai-app-foundation/public/screenshots';
+const REPO_DIR = path.resolve(__dirname, '../public/screenshots');
 
-[BRAIN_DIR, REPO_DIR].forEach((dir) => {
+[REPO_DIR].forEach((dir) => {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 });
 
@@ -14,11 +13,9 @@ async function capture(page, url, filename, preAction = null) {
     await page.goto(url, { waitUntil: 'networkidle', timeout: 15000 });
     if (preAction) await preAction(page);
     await page.waitForTimeout(600);
-    const brainPath = path.join(BRAIN_DIR, filename);
     const repoPath = path.join(REPO_DIR, filename);
-    await page.screenshot({ path: brainPath, fullPage: false });
-    fs.copyFileSync(brainPath, repoPath);
-    console.log(`✓ Captured ${filename} (${fs.statSync(brainPath).size} bytes)`);
+    await page.screenshot({ path: repoPath, fullPage: false });
+    console.log(`✓ Captured ${filename} (${fs.statSync(repoPath).size} bytes)`);
   } catch (err) {
     console.error(`✗ Error on ${filename}:`, err.message);
   }
@@ -97,7 +94,7 @@ async function run() {
   });
 
   // 15. Zero-Build Avaliação Standalone
-  await capture(page, 'http://localhost:4300/html-kit/templates/du-avaliacao-dashboard.html', 'du-avaliacao-zero-build.png', async (p) => {
+  await capture(page, 'http://localhost:4300/html/kits/avaliacao/index.html', 'du-avaliacao-zero-build.png', async (p) => {
     await p.evaluate(() => {
       if (typeof mountDashboard === 'function') {
         currentUserRole = 'trainer';
@@ -107,16 +104,16 @@ async function run() {
   });
 
   // 16. Zero-Build DU Dashboard
-  await capture(page, 'http://localhost:4300/html-kit/templates/du-dashboard.html', 'du-dashboard-standalone.png');
+  await capture(page, 'http://localhost:4300/html/kits/mission-control/index.html', 'du-dashboard-standalone.png');
 
   // 17. Zero-Build Starter Cockpit
-  await capture(page, 'http://localhost:4300/html-kit/templates/starter-cockpit.html', 'starter-cockpit.png');
+  await capture(page, 'http://localhost:4300/html/kits/cockpit-starter/index.html', 'starter-cockpit.png');
 
   // 18. Zero-Build App Shell
-  await capture(page, 'http://localhost:4300/html-kit/templates/template-app-shell.html', 'template-app-shell.png');
+  await capture(page, 'http://localhost:4300/html/kits/dashboard-starter/index.html', 'template-app-shell.png');
 
   // 19. Zero-Build Canónico HTML App
-  await capture(page, 'http://localhost:4300/html-kit/templates/du-html-app-template.html', 'html-app-template.png');
+  await capture(page, 'http://localhost:4300/blueprints/dashboard/mockups/reference.html', 'html-app-template.png');
 
   await browser.close();
   console.log('ALL SCREENSHOTS CAPTURED!');

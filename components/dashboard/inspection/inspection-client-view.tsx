@@ -98,7 +98,7 @@ ${ruleSyncData.harnessStatuses.map((h) => `- **${h.name}**: ${h.status} (Last sy
 `;
 
   return (
-    <div className="flex flex-col gap-8 max-w-7xl mx-auto px-4 py-8 sm:px-6">
+    <div className="flex flex-col gap-8 w-full min-w-0 max-w-7xl mx-auto px-4 py-8 sm:px-6">
       <div>
         <div className="flex items-center gap-2">
           <span className="rounded-md bg-primary/10 px-2 py-0.5 font-mono text-xs font-semibold text-primary">
@@ -131,7 +131,7 @@ ${ruleSyncData.harnessStatuses.map((h) => `- **${h.name}**: ${h.status} (Last sy
       </div>
 
       {/* 1. Code Diff Viewer */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 min-w-0">
         <h2 className="text-lg font-semibold font-heading text-foreground">RuleSync Config Verification</h2>
         <CodeDiffViewer
           title="RuleSync Drift Inspection"
@@ -142,12 +142,12 @@ ${ruleSyncData.harnessStatuses.map((h) => `- **${h.name}**: ${h.status} (Last sy
       </div>
 
       {/* 2. Markdown Reader & Masked Secret */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="flex flex-col gap-3">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-w-0">
+        <div className="flex flex-col gap-3 min-w-0">
           <h2 className="text-lg font-semibold font-heading text-foreground">Canonical Memory Specification</h2>
           <MarkdownReader content={sampleMarkdown} />
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 min-w-0">
           <h2 className="text-lg font-semibold font-heading text-foreground">Masked Secret Viewer (Server-Redacted)</h2>
           <MaskedSecretViewer label="ANTHROPIC_API_KEY" value="demo-anthropic-key-placeholder-0000" />
           <MaskedSecretViewer label="GEMINI_API_KEY" value="demo-gemini-key-placeholder-0000" />

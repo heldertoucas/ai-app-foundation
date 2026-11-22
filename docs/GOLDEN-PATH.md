@@ -57,10 +57,10 @@ pnpm test:e2e
 
 ### 9. Consult Operable Expansion Recipes
 If requested to add Auth, PostgreSQL, AI SDK, or Vercel deployment, follow the self-contained operational guides in `recipes/`:
-- `recipes/auth/README.md`
-- `recipes/postgres/README.md`
-- `recipes/ai/README.md`
-- `recipes/vercel/README.md`
+- `recipes/add-auth/README.md`
+- `recipes/migrate-postgres/README.md`
+- `recipes/add-ai/README.md`
+- `recipes/deploy-vercel/README.md`
 
 ### 10. Commit & Record Provenance
 Commit changes with clean Conventional Commit messages.

@@ -71,7 +71,7 @@ export class CardErrorBoundary extends React.Component<
           <div className="text-xs font-semibold text-destructive">
             Preview unavailable
           </div>
-          <div className="text-[11px] text-muted-foreground max-w-xs truncate">
+          <div className="text-xs text-muted-foreground max-w-xs truncate">
             {this.state.error?.message ||
               "An unexpected error occurred while rendering this component."}
           </div>
@@ -134,7 +134,7 @@ export function ComponentPreviewCard({ item, className }: ComponentPreviewCardPr
   return (
     <Card
       className={cn(
-        "flex flex-col overflow-hidden border-border/80 shadow-xs hover:border-foreground/20 transition-all duration-150",
+        "flex flex-col min-w-0 w-full overflow-hidden border-border/80 shadow-xs hover:border-foreground/20 transition-all duration-150",
         className
       )}
       id={item.id}
@@ -146,7 +146,7 @@ export function ComponentPreviewCard({ item, className }: ComponentPreviewCardPr
             <CardTitle className="text-base font-semibold font-mono tracking-tight text-foreground">
               {item.name}
             </CardTitle>
-            <Badge variant="outline" className="text-[10px] font-mono px-1.5 py-0 capitalize">
+            <Badge variant="outline" className="text-xs font-mono px-1.5 py-0 capitalize">
               {item.categoryLabel}
             </Badge>
           </div>
@@ -218,18 +218,18 @@ export function ComponentPreviewCard({ item, className }: ComponentPreviewCardPr
 
         {/* TAB 2: Code Snippet */}
         {activeTab === "code" && (
-          <div className="relative flex flex-col rounded-xl border border-neutral-800 bg-neutral-950 text-neutral-100 overflow-hidden font-mono text-xs">
-            <div className="flex items-center justify-between border-b border-neutral-800/80 bg-neutral-900/80 px-3 py-1.5">
-              <span className="text-[11px] text-neutral-400">JSX / TSX Blueprint</span>
+          <div className="relative flex flex-col rounded-xl border border-border bg-card text-muted-foreground overflow-hidden font-mono text-xs">
+            <div className="flex items-center justify-between border-b border-border bg-muted px-3 py-1.5">
+              <span className="text-xs text-muted-foreground">JSX / TSX Blueprint</span>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleCopyCode}
-                className="h-6 text-[11px] gap-1 text-neutral-300 hover:text-neutral-100 hover:bg-neutral-800 px-2"
+                className="h-6 text-xs gap-1 text-muted-foreground hover:text-muted-foreground hover:bg-muted px-2"
               >
                 {copiedCode ? (
                   <>
-                    <Check className="size-3 text-emerald-400" />
+                    <Check className="size-3 text-status-live-foreground" />
                     <span>Copied!</span>
                   </>
                 ) : (
@@ -240,7 +240,7 @@ export function ComponentPreviewCard({ item, className }: ComponentPreviewCardPr
                 )}
               </Button>
             </div>
-            <pre className="p-3 overflow-x-auto text-[11px] leading-relaxed text-neutral-200 selection:bg-primary selection:text-primary-foreground">
+            <pre className="p-3 overflow-x-auto text-xs leading-relaxed text-muted-foreground selection:bg-primary selection:text-primary-foreground">
               <code>{item.snippet}</code>
             </pre>
           </div>
@@ -264,7 +264,7 @@ export function ComponentPreviewCard({ item, className }: ComponentPreviewCardPr
                     <TableRow key={p.name}>
                       <TableCell className="font-semibold text-foreground">
                         {p.name}
-                        {p.required && <span className="text-rose-500 ml-0.5">*</span>}
+                        {p.required && <span className="text-status-missing-foreground ml-0.5">*</span>}
                       </TableCell>
                       <TableCell className="text-primary truncate max-w-[140px]" title={p.type}>
                         {p.type}
@@ -289,7 +289,7 @@ export function ComponentPreviewCard({ item, className }: ComponentPreviewCardPr
 
         {/* Requirements Block */}
         <div className="mt-4 rounded-xl border border-border/60 bg-muted/30 p-3 space-y-2 text-xs">
-          <div className="flex items-center justify-between text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+          <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             <span className="flex items-center gap-1.5">
               <Package className="size-3.5 text-primary" />
               Requirements & Setup
@@ -297,7 +297,7 @@ export function ComponentPreviewCard({ item, className }: ComponentPreviewCardPr
           </div>
 
           {/* CLI Command */}
-          <div className="flex items-center justify-between gap-2 rounded-lg border border-border/60 bg-background/80 px-2.5 py-1.5 font-mono text-[11px]">
+          <div className="flex items-center justify-between gap-2 rounded-lg border border-border/60 bg-background/80 px-2.5 py-1.5 font-mono text-xs">
             <div className="flex items-center gap-2 truncate text-foreground">
               <Terminal className="size-3.5 text-primary shrink-0" />
               <span className="truncate">{item.requirements.shadcnCommand}</span>
@@ -309,7 +309,7 @@ export function ComponentPreviewCard({ item, className }: ComponentPreviewCardPr
               title="Copy shadcn CLI command"
             >
               {copiedShadcn ? (
-                <Check className="size-3 text-emerald-500" />
+                <Check className="size-3 text-status-live-foreground" />
               ) : (
                 <Copy className="size-3" />
               )}
@@ -317,7 +317,7 @@ export function ComponentPreviewCard({ item, className }: ComponentPreviewCardPr
           </div>
 
           {/* Import Path */}
-          <div className="flex items-center justify-between gap-2 rounded-lg border border-border/60 bg-background/80 px-2.5 py-1.5 font-mono text-[11px]">
+          <div className="flex items-center justify-between gap-2 rounded-lg border border-border/60 bg-background/80 px-2.5 py-1.5 font-mono text-xs">
             <span className="truncate text-muted-foreground select-all">
               {item.requirements.importPath}
             </span>
@@ -328,7 +328,7 @@ export function ComponentPreviewCard({ item, className }: ComponentPreviewCardPr
               title="Copy import statement"
             >
               {copiedImport ? (
-                <Check className="size-3 text-emerald-500" />
+                <Check className="size-3 text-status-live-foreground" />
               ) : (
                 <Copy className="size-3" />
               )}
@@ -337,13 +337,13 @@ export function ComponentPreviewCard({ item, className }: ComponentPreviewCardPr
 
           {/* Peer Packages */}
           {item.requirements.peerDependencies.length > 0 && (
-            <div className="flex flex-wrap items-center gap-1 text-[11px] pt-1">
+            <div className="flex flex-wrap items-center gap-1 text-xs pt-1">
               <span className="text-muted-foreground">Peers:</span>
               {item.requirements.peerDependencies.map((peer) => (
                 <Badge
                   key={peer}
                   variant="secondary"
-                  className="font-mono text-[10px] px-1.5 py-0"
+                  className="font-mono text-xs px-1.5 py-0"
                 >
                   {peer}
                 </Badge>

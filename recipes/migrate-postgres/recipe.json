@@ -1,0 +1,15 @@
+{
+  "name": "migrate-postgres",
+  "version": "1.0.0",
+  "description": "Production PostgreSQL migration recipe (Supabase / Neon / self-hosted)",
+  "dependencies": {
+    "@prisma/adapter-pg": "^6.4.0",
+    "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.0"
+  },
+  "env": {
+    "DATABASE_URL": "postgresql://user:password@host:5432/dbname?schema=public"
+  }
+}

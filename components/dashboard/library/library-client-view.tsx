@@ -97,7 +97,7 @@ export function LibraryClientView() {
   const isSearching = Boolean(deferredSearch.trim());
 
   return (
-    <div className="relative flex flex-col gap-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
+    <div className="relative flex flex-col gap-8 w-full min-w-0 max-w-7xl mx-auto px-4 py-6 sm:px-6">
       {/* 1. Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -207,12 +207,12 @@ export function LibraryClientView() {
                       : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
                   )}
                 >
-                  <span className="font-mono text-[10px] opacity-70">0{idx + 1}</span>
+                  <span className="font-mono text-xs opacity-70">0{idx + 1}</span>
                   <span>{cat.label}</span>
                   <Badge
                     variant="secondary"
                     className={cn(
-                      "font-mono text-[10px] px-1 py-0",
+                      "font-mono text-xs px-1 py-0",
                       isActive
                         ? "bg-primary-foreground/20 text-primary-foreground"
                         : "bg-background/80 text-muted-foreground"

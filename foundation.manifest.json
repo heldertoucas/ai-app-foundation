@@ -1,0 +1,283 @@
+{
+  "schemaVersion": 1,
+  "coreDir": "public/html/core",
+  "catalog": "public/html/index.html",
+  "assignedPorts": [
+    4000,
+    4010,
+    4020,
+    4030,
+    4040,
+    4050,
+    4100,
+    4101,
+    4102,
+    4103,
+    4110,
+    4111,
+    4120,
+    4130,
+    4140,
+    4150,
+    4200,
+    4210,
+    4220,
+    4230,
+    4235,
+    4300,
+    7013,
+    7020,
+    7025,
+    7029,
+    7050,
+    7060,
+    7100,
+    7101,
+    7102,
+    7103,
+    7110,
+    7120,
+    7130,
+    7140,
+    7150,
+    7200,
+    7210,
+    7220,
+    7230,
+    7235,
+    7300,
+    7319,
+    9222,
+    9223
+  ],
+  "blueprints": [
+    {
+      "id": "dashboard",
+      "name": "Dashboard",
+      "spec": "public/blueprints/dashboard/README.md",
+      "regions": [
+        "sidebar",
+        "topbar",
+        "page-header",
+        "content"
+      ]
+    },
+    {
+      "id": "cockpit",
+      "name": "Cockpit",
+      "spec": "public/blueprints/cockpit/README.md",
+      "regions": [
+        "topbar",
+        "summary",
+        "content"
+      ]
+    },
+    {
+      "id": "website",
+      "name": "Website",
+      "spec": "public/blueprints/website/README.md",
+      "regions": [
+        "header",
+        "hero",
+        "sections",
+        "footer"
+      ]
+    }
+  ],
+  "kits": [
+    {
+      "id": "dashboard-starter",
+      "name": "Dashboard Starter",
+      "blueprint": "dashboard",
+      "starter": true,
+      "parity": "single-stack",
+      "html": {
+        "entries": [
+          "public/html/kits/dashboard-starter/index.html"
+        ]
+      },
+      "react": null,
+      "differences": [
+        "Sem implementação React nesta migração"
+      ]
+    },
+    {
+      "id": "mission-control",
+      "name": "Mission Control",
+      "blueprint": "dashboard",
+      "starter": false,
+      "parity": "partial",
+      "html": {
+        "entries": [
+          "public/html/kits/mission-control/index.html"
+        ]
+      },
+      "react": {
+        "routes": [
+          "/dashboard"
+        ],
+        "entries": [
+          "app/(dashboard)/dashboard/page.tsx"
+        ]
+      },
+      "differences": [
+        "React lê adaptadores DU e mantém CRUD Prisma de projetos; HTML usa fixtures estáticas e vistas numa só página"
+      ]
+    },
+    {
+      "id": "cockpit-starter",
+      "name": "Cockpit Starter",
+      "blueprint": "cockpit",
+      "starter": true,
+      "parity": "single-stack",
+      "html": {
+        "entries": [
+          "public/html/kits/cockpit-starter/index.html"
+        ]
+      },
+      "react": null,
+      "differences": [
+        "Sem implementação React nesta migração"
+      ]
+    },
+    {
+      "id": "avaliacao",
+      "name": "Avaliação",
+      "blueprint": "cockpit",
+      "starter": false,
+      "parity": "partial",
+      "gateFirst": true,
+      "html": {
+        "entries": [
+          "public/html/kits/avaliacao/index.html"
+        ]
+      },
+      "react": {
+        "routes": [
+          "/avaliacao-dashboard",
+          "/avaliacao-dashboard/trainer",
+          "/avaliacao-dashboard/admin"
+        ],
+        "entries": [
+          "app/(cockpit)/avaliacao-dashboard/page.tsx"
+        ]
+      },
+      "differences": [
+        "React separa acesso, formador e administrador em rotas; HTML usa vistas numa só página"
+      ],
+      "moduleExceptions": [
+        {
+          "module": "auth-pin",
+          "reason": "O Kit usa credenciais por perfil, hash e bloqueio temporário que o Module ainda não suporta"
+        },
+        {
+          "module": "data-table",
+          "reason": "A tabela do Kit tem ações por linha e renderização DOM segura desde WP-22"
+        }
+      ]
+    },
+    {
+      "id": "website-starter",
+      "name": "Website Starter",
+      "blueprint": "website",
+      "starter": true,
+      "parity": "single-stack",
+      "html": null,
+      "react": {
+        "routes": [
+          "/"
+        ],
+        "entries": [
+          "app/(site)/page.tsx"
+        ]
+      },
+      "differences": [
+        "Sem implementação HTML nesta migração"
+      ]
+    },
+    {
+      "id": "futuro-digital",
+      "name": "Futuro Digital",
+      "blueprint": "website",
+      "starter": false,
+      "parity": "partial",
+      "html": {
+        "entries": [
+          "public/html/kits/futuro-digital/index.html",
+          "public/html/kits/futuro-digital/galeria.html"
+        ]
+      },
+      "react": {
+        "routes": [
+          "/futuro-digital",
+          "/futuro-digital/galeria"
+        ],
+        "entries": [
+          "app/(brand)/futuro-digital/page.tsx",
+          "app/(brand)/futuro-digital/galeria/page.tsx"
+        ]
+      },
+      "differences": [
+        "Tema apenas claro nas duas Stacks por decisão D8"
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "id": "auth-pin",
+      "stacks": [
+        "html",
+        "react"
+      ],
+      "path": "public/html/modules/auth-pin"
+    },
+    {
+      "id": "data-table",
+      "stacks": [
+        "html",
+        "react"
+      ],
+      "path": "public/html/modules/data-table"
+    },
+    {
+      "id": "state-sync",
+      "stacks": [
+        "html",
+        "react"
+      ],
+      "path": "public/html/modules/state-sync"
+    },
+    {
+      "id": "live-telemetry",
+      "stacks": [
+        "html"
+      ],
+      "path": "public/html/modules/live-telemetry"
+    },
+    {
+      "id": "du-connector",
+      "stacks": [
+        "react"
+      ],
+      "path": "lib/du"
+    }
+  ],
+  "recipes": [
+    {
+      "id": "add-ai",
+      "path": "recipes/add-ai"
+    },
+    {
+      "id": "add-auth",
+      "path": "recipes/add-auth"
+    },
+    {
+      "id": "migrate-postgres",
+      "path": "recipes/migrate-postgres"
+    },
+    {
+      "id": "deploy-vercel",
+      "path": "recipes/deploy-vercel"
+    }
+  ]
+}

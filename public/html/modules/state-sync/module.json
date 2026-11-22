@@ -1,0 +1,7 @@
+{
+  "id": "state-sync",
+  "version": "1.0.0",
+  "stack": "html",
+  "entry": "state-sync.js",
+  "description": "Zero-dependency automatic state persistence for tabs, table filters, and UI toggles using localStorage"
+}

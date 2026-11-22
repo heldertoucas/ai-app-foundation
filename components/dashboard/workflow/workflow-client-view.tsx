@@ -16,6 +16,12 @@ interface WorkflowClientViewProps {
   initialCandidates: DuMemoryCandidate[];
 }
 
+const recentEvents = [
+  { id: 'e1', title: 'Memory candidate MEM-0280 staged from AI Grill stress-testing', timestamp: '2026-09-11T10:00:00.000Z', description: 'Hybrid Safe Subprocess Execution with Read-Only Default.', tag: 'Decision' },
+  { id: 'e2', title: 'Memory candidate MEM-0279 staged from Session SES-2026-09-10-002', timestamp: '2026-09-11T09:30:00.000Z', description: 'Root-Delegated Hovercard State for High-Density Grid Displays.', tag: 'Pattern' },
+  { id: 'e3', title: 'Canonical ADR DEC-0015 verified in vault', timestamp: '2026-09-11T08:00:00.000Z', description: 'Secure Session Cookie Requirement enforced across boundaries.', tag: 'Governance' },
+];
+
 export function WorkflowClientView({ initialCandidates }: WorkflowClientViewProps) {
   const initialChanges: KanbanChangeItem[] = initialCandidates.map((c) => ({
     id: c.id,
@@ -50,32 +56,8 @@ export function WorkflowClientView({ initialCandidates }: WorkflowClientViewProp
     { id: "4", label: "Canonical Memory", description: "Promoted to 00-04 durable knowledge" },
   ];
 
-  const recentEvents = [
-    {
-      id: "e1",
-      title: "Memory candidate MEM-0280 staged from AI Grill stress-testing",
-      timestamp: new Date().toISOString(),
-      description: "Hybrid Safe Subprocess Execution with Read-Only Default.",
-      tag: "Decision",
-    },
-    {
-      id: "e2",
-      title: "Memory candidate MEM-0279 staged from Session SES-2026-09-10-002",
-      timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-      description: "Root-Delegated Hovercard State for High-Density Grid Displays.",
-      tag: "Pattern",
-    },
-    {
-      id: "e3",
-      title: "Canonical ADR DEC-0015 verified in vault",
-      timestamp: new Date(Date.now() - 120 * 60 * 1000).toISOString(),
-      description: "Secure Session Cookie Requirement enforced across boundaries.",
-      tag: "Governance",
-    },
-  ];
-
   return (
-    <div className="flex flex-col gap-8 max-w-7xl mx-auto px-4 py-8 sm:px-6">
+    <div className="flex flex-col gap-8 w-full min-w-0 max-w-7xl mx-auto px-4 py-8 sm:px-6">
       <div>
         <div className="flex items-center gap-2">
           <span className="rounded-md bg-primary/10 px-2 py-0.5 font-mono text-xs font-semibold text-primary">

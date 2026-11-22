@@ -12,6 +12,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Separator } from "@/components/ui/separator";
 import { Folder, ShieldCheck, Cpu, Clock } from "@phosphor-icons/react";
 import { DuComplianceMatrixData, DuContextTelemetry } from "@/lib/du/types";
+import { formatNumber } from "@/lib/format";
 
 interface MetricsClientViewProps {
   complianceData: DuComplianceMatrixData;
@@ -95,7 +96,7 @@ export function MetricsClientView({
           <KpiStatCard
             title="Capsule Utilization"
             value={`${contextTelemetry.tokenBudget.usedPercent}%`}
-            description={`${contextTelemetry.tokenBudget.headroom.toLocaleString()} tok headroom`}
+            description={`${formatNumber(contextTelemetry.tokenBudget.headroom)} tok headroom`}
             icon={<Cpu className="size-4 text-primary" />}
           />
           <KpiStatCard

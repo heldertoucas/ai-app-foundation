@@ -3,6 +3,7 @@
 import { isLocalMutationsEnabled } from "@/lib/du/env";
 import { FALLBACK_ACTIONS } from "@/lib/du/fixtures";
 import { DuActionCommand } from "@/lib/du/types";
+import { assertLocalAction } from "@/lib/security/assert-local-action";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 
@@ -24,6 +25,7 @@ export async function promoteCandidateAction(
   candidateId: string,
   targetType: string = "pattern"
 ): Promise<ActionResult> {
+  await assertLocalAction();
   // 1. Strict regex validation on candidate ID (SEC-02)
   if (!/^MEM-\d{4}$/.test(candidateId)) {
     return {

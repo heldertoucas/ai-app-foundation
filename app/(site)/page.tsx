@@ -44,12 +44,12 @@ import {
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col gap-20 pb-20 overflow-hidden">
+    <div className="flex flex-col gap-20 pb-20 overflow-hidden" data-blueprint="website" data-kit="website-starter" data-region="sections">
       {/* 1. Hero Section com variante Split */}
-      <Hero variant="split" className="pt-12 sm:pt-16 pb-6">
+      <Hero variant="split" className="pt-12 sm:pt-16 pb-6" data-region="hero">
         <HeroContent align="left">
           <Badge variant="outline" className="px-3.5 py-1 gap-2 rounded-full border-border/80 w-fit">
-            <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="size-2 rounded-full bg-status-live animate-pulse" />
             <span className="font-mono text-xs tracking-wide uppercase">
               ai-app-foundation • Web & Dashboard
             </span>
@@ -83,24 +83,24 @@ export default function HomePage() {
             <div className="flex items-center gap-2">
               <span className="size-3 rounded-full bg-rose-500/80" />
               <span className="size-3 rounded-full bg-amber-500/80" />
-              <span className="size-3 rounded-full bg-emerald-500/80" />
+              <span className="size-3 rounded-full bg-status-live/80" />
               <span className="text-xs font-mono text-muted-foreground ml-2">platform-overview.tsx</span>
             </div>
-            <Badge variant="secondary" className="text-[10px]">RSC Ready</Badge>
+            <Badge variant="secondary" className="text-xs">RSC Ready</Badge>
           </div>
           <div className="grid grid-cols-2 gap-3 py-4">
             <div className="rounded-lg bg-muted/40 p-3 border border-border/40">
-              <div className="text-[11px] text-muted-foreground font-medium">Arquitetura</div>
+              <div className="text-xs text-muted-foreground font-medium">Arquitetura</div>
               <div className="text-sm font-bold text-foreground mt-0.5">Compound Primitives</div>
             </div>
             <div className="rounded-lg bg-muted/40 p-3 border border-border/40">
-              <div className="text-[11px] text-muted-foreground font-medium">Acessibilidade</div>
-              <div className="text-sm font-bold text-emerald-500 mt-0.5">WCAG 2.1 AA</div>
+              <div className="text-xs text-muted-foreground font-medium">Acessibilidade</div>
+              <div className="text-sm font-bold text-status-live-foreground mt-0.5">WCAG 2.1 AA</div>
             </div>
           </div>
           <div className="rounded-lg bg-muted/30 p-3 border border-border/40 text-xs text-muted-foreground font-mono flex items-center justify-between">
             <span>pnpm typecheck && pnpm test</span>
-            <span className="text-emerald-500 font-semibold">✓ 100% Passing</span>
+            <span className="text-status-live-foreground font-semibold">✓ 100% Passing</span>
           </div>
         </HeroVisual>
       </Hero>

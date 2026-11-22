@@ -1,9 +1,0 @@
-{
-  "name": "ai",
-  "version": "1.0.0",
-  "description": "Ai / LLM SDK integration recipe",
-  "dependencies": {
-    "ai": "^4.0.0"
-  },
-  "env": {}
-}

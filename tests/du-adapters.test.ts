@@ -1,4 +1,6 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
+
+vi.mock("@/lib/security/assert-local-action", () => ({ assertLocalAction: vi.fn() }));
 import { getComplianceMatrixData } from "@/lib/du/compliance-adapter";
 import { getMemoryCandidates } from "@/lib/du/memory-adapter";
 import { getContextTelemetry } from "@/lib/du/context-adapter";

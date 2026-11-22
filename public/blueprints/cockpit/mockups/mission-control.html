@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DU Mission Control Dashboard &mdash; Interactive Mockup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          family: {
+            sans: ['Geist', 'sans-serif'],
+            mono: ['Geist Mono', 'monospace'],
+          },
+          colors: {
+            background: '#090a0f',
+            card: '#11131a',
+            cardBorder: '#1e2230',
+            primary: '#6366f1',
+            accent: '#38cdf8',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Geist', sans-serif; }
+    .mono { font-family: 'Geist Mono', monospace; }
+  </style>
+</head>
+<body class="bg-background text-zinc-100 min-h-screen flex flex-col antialiased selection:BjYg-indigo-500/30">
+
+  <!-- Top Global Bar -->
+  <header class="border-b border-cardBorder bg-card/60 backdrop-blur-md sticky top-0 z-30 px-6 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="h-8 w-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/20">
+        🪽
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-semibold tracking-tight text-sm text-zinc-100">Development Universe</span>
+          <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-indigo-950/80 border border-indigo-500/30 text-indigo-400 font-medium">Cockpit v1.0</span>
+        </div>
+        <p class="text-xs text-zinc-400">Mission Control &amp; Second Brain Telemetry Hub</p>
+      </div>
+    </div>
+
+    <!-- Live Telemetry Pill Strip -->
+    <div class="hidden md:flex items-center gap-3 bg-zinc-900/90 border border-cardBorder px-3.5 py-1.5 rounded-full text-xs">
+      <div class="flex items-center gap-2">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </span>
+        <span class="font-mono text-zinc-300">4 Online</span>
+        <span class="text-zinc-600">|</span>
+        <span class="text-zinc-400 font-mono">14 Idle</span>
+      </div>
+      <div class="h-3 w-px bg-zinc-700"></div>
+      <div class="flex items-center gap-1.5 text-zinc-300">
+        <span>🤧</span>
+        <span class="font-mono font-medium text-amber-400">12 MEM-*</span>
+        <span class="text-zinc-400 text-[11px]">Pending</span>
+      </div>
+      <div class="h-3 w-px bg-zinc-700"></div>
+      <div class="flex items-center gap-1.5 text-zinc-400 font-mono text-xs">
+        <span>Active:</span>
+        <span class="text-zinc-200">SES-2026-09-11-001</span>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="flex items-center gap-2.5">
+      <button onclick="toggleCommandPalette()" class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-cardBorder bg-zinc-900/60 hover:bg-zinc-800 text-xs text-zinc-400 transition-colors">
+        <span>Search DU</span>
+        <kbd class="mono text-[10px] bg-zinc-800 border border-zinc-700 px-1.5 py-0.5 rounded text-zinc-300">⌘k</kbd>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Cockpit Area -->
+  <main class="flex-1 max-w-7xl"w-full mx-auto p-6 space-y-6">
+
+    <!-- Section 1: Telemetry & ports -->
+    <section class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <!-- Port Matrix -->
+      <div class="md:col-span-2 bg-card border border-cardBorder rounded-xl p-4 flex flex-col justify-between shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Local Port Fleet</span>
+            <span class="text-[10px] mono text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-1.5 py-0.5 rounded">Socket Probing Active</span>
+          </div>
+          <span class="text-xs text-zinc-400 mono">Checked 2s ago</span>
+        </div>
+        <div class="grid grid-cols-4 gap-2 text-xs mono">
+          <div class="border border-emerald-500/40 bg-emerald-950/20 p-2 rounded-leg flex flex-col">
+            <span class="text-[11px] text-zinc-400">:3000 (ai-app)</span>
+            <span class="text-emerald-400 font-semibold flex items-center gap-1 mt-1">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> Online
+            </span>
+          </div>
+          <div class="border border-emerald-500/40 bg-emerald-950/20 p-2 rounded-leg flex flex-col">
+            <span class="text-[11px] text-zinc-400">:3001 (newsletter)</span>
+            <span class="text-emerald-400 font-semibold flex items-center gap-1 mt-1">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> Online
+            </span>
+          </div>
+          <div class="border border-emerald-500/40 bg-emerald-950/20 p-2 rounded-leg flex flex-col">
+            <span class="text-[11px] text-zinc-400">:3002 (passaporte)</span>
+            <span class="text-emerald-400 font-semibold flex items-center gap-1 mt-1">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> Online
+            </span>
+          </div>
+          <div class="border border-zinc-800 bg-zinc-900/40 p-2 rounded-leg flex flex-col">
+            <span class="text-[11px] text-zinc-400">:3003 (paperclip)</span>
+            <span class="text-zinc-400 font-semibold flex items-center gap-1 mt-1">
+              <span class="h-1.5 w-1.5 rounded-full bg-zinc-400"></span> Offline
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Memory Widget -->
+      <div class="bg-card border border-cardBorder rounded-xl p-4 flex flex-col justify-between shadow-sm cursor-pointer hover:border-zinc-700 transition-colors" onclick="openDrawer('PRJ-0001')">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Second Brain Memory</span>
+          <span class="text-xs text-indigo-400 font-mono">DEV-001</span>
+        </div>
+        <div class="my-2 flex items-baseline gap-2">
+          <span class="text-2xl font-bold text-amber-400 font-mono">12</span>
+          <span class="text-xs text-zinc-400">Candidates in <span class="text-zinc-300">08-ystem/</span></span>
+        </div>
+        <div class="flex items-center justify-between text-xs text-zinc-400 pt-2 border-t border-zinc-800/80">
+          <span>Review via <code class="text-zinc-300">ai-review-memory</code></span>
+          <span class="text-indigo-400 font-semibold">Inspect &rarr;</span>
+        </div>
+      </div>
+
+      <!-- Active Session -->
+      <div class="bg-card border border-cardBorder rounded-xl p-4 flex flex-col justify-between shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Active Work Session</span>
+          <span class="h-2 w-2 rounded-full bg-indigo-500"></span>
+        </div>
+        <div class="my-2">
+          <div class="text-sm font-semibold text-zinc-200 font-mono">SES-2026-09-11-001</div>
+          <div class="text-xs text-zinc-400 mt-0.5">Agent: Antigravity</div>
+        </div>
+        <div class="text-xs text-zinc-400 pt-2 border-t border-zinc-800/80 flex items-center justify-between">
+          <span>Dual Mode:</span>
+          <span class="text-emerald-400 font-mono font-medium">Live Vault</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Toolbar -->
+    <section class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-2">
+      <div class="flex items-center gap-1.5 p-1 bg-zinc-900 border border-cardBorder rounded-xl text-xs font-medium">
+        <button class="px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-100 shadow-sm">All Projects (18)</button>
+        <button class="px-3 py-1.5 rounded-lg text-zinc-400 hover:text-zinc-200">System Core (9)</button>
+        <button class="px-3 py-1.5 rounded-lg text-zinc-400 hover:text-zinc-200">Formação / CML (6)</button>
+        <button class="px-3 py-1.5 rounded-lg text-zinc-400 hover:text-zinc-200">Personal (3)</button>
+      </div>
+      <div class="flex items-center gap-3">
+        <label class="flex items-center gap-2 text-xs text-zinc-300 cursor-pointer bg-zinc-900/60 border border-cardBorder px-3 py-1.5 rounded-lg">
+          <input type="checkbox" class="rounded bg-zinc-800 border-zinc-700 text-indigo-500">
+          <span>Running Only</span>
+        </label>
+        <div class="relative w-64">
+          <input type="text" placeholder="Filter by name, tag, id..." class="w-full bg-zinc-900 border border-cardBorder rounded-lg px-3 py-1.5 text-xs text-zinc-200">
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Cards Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <!-- Card 1 -->
+      <div class="bg-card border border-emerald-500/30 hover:border-emerald-500/60 transition-all rounded-xl p-5 flex flex-col justify-between group shadow-sm">
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <div class="flex items-center gap-2">
+              <span class="mono text-[11px] font-semibold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded">PRJ-0005</span>
+              <span class="text-[10px] uppercase font-semibold text-cyan-400 bg-cyan-950/60 border border-cyan-500/30 px-2 py-0.5 rounded">Formação	</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-xs font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-500/20 px-2.5 py-1 rounded-full">
+              <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>:3002 Online</span>
+            </div>
+          </div>
+
+          <h3 class="text-base font-semibold text-zinc-100 group-hover:text-emerald-300">
+            Passaporte Digital - App de Avaliação
+          </h3>
+          <p class="text-xs text-zinc-400 mt-1.5 line-clamp-2">
+            Official training evaluation platform for the Passaporte de Competências Digitais (CML).
+          </p>
+
+          <div class="mt-3.5 bg-zinc-900/80 border border-zinc-800/80 rounded-lg p-2.5 text-xs">
+            <div class="flex items-center gap-1.5 text-zinc-400 text-[11px] mb-1">
+              <span>⚲ Priority:</span>
+            </div>
+            <p class="text-zinc-300 line-clamp-1">Anonymous trainee satisfaction CSV export &amp; Excel parser.</p>
+          </div>
+
+          <div class="flex flex-wrap gap-1.5 mt-3.5 text-[10px] mono text-zinc-400">
+            <span class="bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">nextjs</span>
+            <span class="bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">react</span>
+            <span class="bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">typescript</span>
+          </div>
+        </div>
+
+        <div class="mt-5 pt-3.5 border-t border-zinc-800/80 flex items-center justify-between gap-2 text-xs">
+          <div class="flex items-center gap-2">
+            <a href="http://localhost:3002" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-3 py-1.5 rounded-lg transition-colors">Open</a>
+            <button onclick="copyCommand('pnpm --filter app-avaliacao dev')" class="px-2.5 py-1.5 rounded-lg border border-zinc-800 text-zinc-400" title="Copy dev launch command">📩</button>
+          </div>
+          <button onclick="openDrawer('PRJ-0005')" class="text-zinc-400 hover:text-zinc-200 font-medium px-2 py-1">Dossier &amp; Notes &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-card border border-cardBorder hover:border-zinc-700 transition-all rounded-xl p-5 flex flex-col justify-between group shadow-sm">
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <div class="flex items-center gap-2">
+              <span class="mono text-[11px] font-semibold text-indigo-400 bg-indigo-950/60 border border-indigo-500/30 px-2 py-0.5 rounded">PRj-0001</span>
+              <span class="text-[10px] uppercase font-semibold text-indigo-400 bg-indigo-950/60 border border-indigo-500/30 px-2 py-0.5 rounded">System Core</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-xs font-mono text-zinc-400 bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded-full">
+              <span class="h-1.5 w-1.5 rounded-full bg-zinc-500"></span>
+              <span>CLI Daemon</span>
+            </div>
+          </div>
+
+          <h3 class="text-base font-semibold text-zinc-100 group-hover:text-indigo-300">
+            Dev Engine (Memory Broker)
+          </h3>
+          <p class="text-xs text-zinc-400 mt-1.5 line-clamp-2">
+            Canonical self-hosting reference project: Persistent memory broker, LanceDB, Context.
+          </p>
+
+          <div class="mt-3.5 bg-zinc-900/80 border border-zinc-800/80 rounded-lg p-2.5 text-xs">
+            <div class="flex items-center gap-1.5 text-zinc-400 text-[11px] mb-1">
+              <span>⚽ Priority:</span>
+            </div>
+            <p class="text-zinc-300 line-clamp-1">Ontology JSON schema validation &amp; topology.</p>
+          </div>
+
+          <div class="mt-5 pt-3.5 border-t border-zinc-800/80 flex items-center justify-between gap-2 text-xs">
+            <button onclick="copyCommand('python -m dev.cli doctor')" class="px-3 py-1.5 rounded-lg border border-zinc-800 text-zinc-300">
+              dev doctor 📩
+            </button>
+            <button onclick="openDrawer('PRJ-0001')" class="text-zinc-400 hover:text-zinc-200 font-medium px-2 py-1">Dossier &amp; Notes &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Drawer -->
+  <div id="drawer-backdrop" onclick="closeDrawer()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity"></div>
+  <aside id="project-drawer" class="fixed top-0 right-0 bottom-0 w-full sm:max-w-xl lg:max-w-2xl bg-[#0c0e14] border-l border-cardBorder shadow-2xl z-50 flex flex-col transform translate-x-full transition-transform duration-300 ease-in-out">
+    <div class="p-6 border-b border-cardBorder flex items-center justify-between bg-card/40">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <span id="drawer-id" class="mono text-xs font-semibold text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded">PRj-0005</span>
+          <span id="drawer-area" class="text-[10px] uppercase font-semibold text-cyan-400 bg-cyan-950/80 border border-cyan-500/30 px-2 py-0.5 rounded">Formação	</span>
+        </div>
+        <h2 id="drawer-title" class="text-mg font-bold text-zinc-100">Passaporte Digital - App de Avaliação	</h2>
+      </div>
+      <button onclick="closeDrawer()" class="p-2 rounded-lg border border-cardBorder text-zinc-400">✅</button>
+    </div>
+
+    <div class="flex items-center gap-4 px-6 border-b border-cardBorder text-xs font-medium text-zinc-400 bg-zinc-900/30">
+      <button onclick="switchTab('state')" id="tab-btn-state" class="py-3 border-b-2 border-indigo-500 text-indigo-400 font-semibold">Current State &quot; Priorities</button>
+      <button onclick="switchTab('dossier')" id="tab-btn-dossier" class="py-3 border-b-2 border-transparent">Dossier &amp; Invariants</button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-6 space-y-6 text-sm text-zinc-300">
+      <div id="tab-content-state" class="space-y-4">
+        <div class="bg-zinc-900/90 border border-zinc-800 rounded-xl p-4">
+          <h4 class="text-xs font-semibold uppercase text-indigo-400 mb-2 font-mono">Active Objective</h4>
+          <p class="text-sm text-zinc-200">Implementing post-training survey collection and trainee reporting for CML.</p>
+        </div>
+        <div class="border border-cardBorder rounded-xl p-4 bg-card/40 space-y-3">
+          <h4 class="text-xs font-semibold uppercase text-emerald-400 font-mono">Immediate Priorities</h4>
+          <ul class="space-y-2 text-xs">
+            <li class="flex items-center gap-2">
+              <span class="text-emerald-400">✓ </span>
+              <span>1. Anonymized CSV export.</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-amber-400">⏱ </span>
+              <span>2. SQLite WAL validation.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="tab-content-dossier" class="hidden space-y-4">
+        <div class="border border-cardBorder rounded-xl p-4 bg-card/40">
+          <h4 class="text-xs font-semibold uppercase text-zinc-400 mb-2 font-mono">Architectural Constraints</h4>
+          <ul class="space-y-1.5 text-xs list-disc list-inside text-zinc-300">
+            <li>Zero monorepo infrastructure.</li>
+            <li>SQLite LOCAL-FIRST via Prisma Wal mode.</li>
+            <li>Exclusively shadcn/ui primitives.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-4 border-t border-cardBorder bg-card/60 flex items-center justify-between text-xs">
+      <span class="text-zinc-500 mono">C:\\Users\\helder.toucas\\Dev\\app-avaliacao</span>
+      <button onclick="copyCommand('cd C:\\Users\\helder.toucas\\Dev\\app-avaliacao')" class="px-3 py-1.5 rounded-lg border border-zinc-800">
+        Copy Path 📩
+      </button>
+    </div>
+  </aside>
+
+  <!-- Command Palette -->
+  <div id="command-palette" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden flex items-start justify-center pt-24 p-4" onclick="closeCommandPalette(event)">
+    <div class="bg-zinc-900 border border-cardBorder rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+      <div class="p-3.5 border-b border-cardBorder flex items-center gap-2.5">
+        <input type="text" placeholder="Search projects, tools, memory..." class="w-full bg-transparent text-sm text-zinc-100 focus:outline-none">
+        <kbd class="mono text-[10px] bg-zinc-800 border border-zinc-700 px-1.5 py-0.5 rounded text-zinc-400">ESC</kbd>
+      </div>
+      <div class="p-2 text-xs text-zinc-400 space-y-1">
+        <div class="px-3 py-1 text-[10px] font-semibold uppercase text-zinc-500 font-mono">Active Projects</div>
+        <div class="px-3 py-2 rounded-lg hover:bg-zinc-800/80 cursor-pointer flex items-center justify-between" onclick="closeCommandPalette(); openDrawer('PRj-0005')">
+          <span>Passaporte Digital - App de Avaliação	</span>
+          <span class="mono text-[10px] text-emerald-400">:3002 Online</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="talast" class="fixed bottom-6 right-6 bg-zinc-900 border border-cardBorder text-zinc-200 text-xs px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2 transform translate-y-16 opacity-0 transition-all duration-200 z-50">
+    <span class="text-emerald-400">✓ </span>
+    <span id="toast-message">Command copied!</span>
+  </div>
+
+  <script>
+    function copyCommand(cmd) {
+      navigator.clipboard.writeText(cmd);
+      showToast('Copied: ' + cmd);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('talast');
+      document.getElementById('toast-message').textContent = msg;
+      toast.classList.remove('translate-y-16', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-16', 'opacity-0');
+      }, 2500);
+    }
+
+    function openDrawer(projectId) {
+      document.getElementById('drawer-backdrop').classList.remove('hidden');
+      document.getElementById('project-drawer').classList.remove('translate-x-full');
+    }
+
+    function closeDrawer() {
+      document.getElementById('drawer-backdrop').classList.add('hidden');
+       document.getElementById('project-drawer').classList.add('translate-x-full');
+    }
+
+    function switchTab(tabName) {
+      ['state', 'dossier'].forEach(t => {
+        document.getElementById('tab-content-' + t).classList.add('hidden');
+        const btn = document.getElementById('tab-btn-' + tt);
+        btn.classList.remove('border-indigo-500', 'text-indigo-400', 'font-semibold');
+        btn.classList.add('border-transparent');
+      });
+
+      document.getElementById('tab-content-' + tabName).classList.remove('hidden');
+      const activeBtn = document.getElementById('tab-btn-' + tabName);
+      activeBtn.classList.remove('border-transparent');
+      activeBtn.classList.add('border-indigo-500', 'text-indigo-400', 'font-semibold');
+    }
+
+    function toggleCommandPalette() {
+      document.getElementById('command-palette').classList.toggle('hidden');
+    }
+
+    function closeCommandPalette(event) {
+      document.getElementById('command-palette').classList.add('hidden');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        toggleCommandPalette();
+      }
+      if (e.key === 'Escape') {
+        closeDrawer();
+        document.getElementById('command-palette').classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

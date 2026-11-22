@@ -54,6 +54,7 @@ export function LibraryToolbar({
           <MagnifyingGlass className="absolute left-3 top-2.5 size-4 text-muted-foreground" />
           <Input
             type="text"
+            aria-label="Pesquisar componentes"
             placeholder="Search 30+ components by name, description, category..."
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
@@ -62,6 +63,7 @@ export function LibraryToolbar({
           {search && (
             <button
               type="button"
+              aria-label="Limpar pesquisa"
               onClick={() => onSearchChange("")}
               className="absolute right-2.5 top-2.5 text-muted-foreground hover:text-foreground cursor-pointer p-0.5"
             >
@@ -127,7 +129,7 @@ export function LibraryToolbar({
           <Badge
             variant="secondary"
             className={cn(
-              "font-mono text-[10px] px-1 py-0",
+              "font-mono text-xs px-1 py-0",
               selectedCategory === null
                 ? "bg-primary-foreground/20 text-primary-foreground"
                 : "bg-background/80 text-muted-foreground"
@@ -157,7 +159,7 @@ export function LibraryToolbar({
               <Badge
                 variant="secondary"
                 className={cn(
-                  "font-mono text-[10px] px-1 py-0",
+                  "font-mono text-xs px-1 py-0",
                   isSelected
                     ? "bg-primary-foreground/20 text-primary-foreground"
                     : "bg-background/80 text-muted-foreground"

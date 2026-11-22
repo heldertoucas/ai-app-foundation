@@ -26,10 +26,10 @@ export function HealthGauge({
   // Severity color tiers
   const tierColor =
     clampedValue >= 90
-      ? "text-emerald-500 stroke-emerald-500"
+      ? "text-status-live-foreground stroke-status-live"
       : clampedValue >= 75
-      ? "text-amber-500 stroke-amber-500"
-      : "text-rose-500 stroke-rose-500";
+      ? "text-status-drift-foreground stroke-status-drift"
+      : "text-status-missing-foreground stroke-status-missing";
 
   return (
     <div
@@ -67,7 +67,7 @@ export function HealthGauge({
           <span className="font-heading text-2xl font-bold font-mono tabular-nums tracking-tight">
             {clampedValue}%
           </span>
-          <span className="text-[10px] uppercase font-semibold tracking-wider text-muted-foreground">
+          <span className="text-xs uppercase font-semibold tracking-wider text-muted-foreground">
             {clampedValue >= 90 ? "Optimal" : clampedValue >= 75 ? "Warning" : "Critical"}
           </span>
         </div>

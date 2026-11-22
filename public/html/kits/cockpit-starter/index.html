@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-PT" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; font-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DU Mission Control — Zero-Build Cockpit</title>
+  
+  <!-- 1. Tokens Canónicos DU (1:1 com globals.css) -->
+  <link rel="stylesheet" href="../../core/tokens.css">
+  
+  <!-- 2. shadcn-html Core Components Bundle -->
+  <link rel="stylesheet" href="../../core/vendor/shadcn-html.all.css">
+  
+  <!-- 3. Componentes Próprios DU (KPI, Telemetria, Bento) -->
+  <link rel="stylesheet" href="../../core/du-components.css">
+  
+  <!-- 4. Micro-Runtime (<50 LOC) -->
+  <script src="../../core/du-runtime.js" defer></script>
+  
+  <link rel="stylesheet" href="index.css">
+</head>
+<body class="bg-background text-foreground">
+
+  <div class="du-container" data-blueprint="cockpit" data-kit="cockpit-starter">
+    <!-- Top Header -->
+    <header class="du-header" data-region="topbar">
+      <div class="du-flex-row">
+        <div class="x-s1"><svg class="du-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+        <div>
+          <div class="du-flex-row">
+            <h1 class="x-s2">DU Mission Control</h1>
+            <span class="ui-badge ui-badge-secondary">HTML-First Cockpit</span>
+          </div>
+          <p class="x-s3">Zero-Build / Latência &lt; 2ms / Standalone Offline</p>
+        </div>
+      </div>
+
+      <div class="du-flex-row">
+        <!-- Telemetry Pill -->
+        <div class="du-telemetry-pill du-status-live">
+          <span class="du-ping-dot">
+            <span class="du-ping-circle"></span>
+            <span class="du-ping-core"></span>
+          </span>
+          <span>4 Services Online</span>
+        </div>
+
+        <!-- Quick Filter Button -->
+        <button class="du-command-bar" data-du-on-click="[[&quot;duOpenModal&quot;,[&quot;du-command-dialog&quot;]]]">
+          <span>Quick Find...</span>
+          <span class="du-command-shortcut">Ctrl+K</span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button class="ui-btn ui-btn-outline ui-btn-sm" title="Toggle Dark/Light" data-du-on-click="[[&quot;duToggleTheme&quot;,[]]]">
+          <svg class="du-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+      </div>
+    </header>
+    <main>
+
+    <!-- Bento KPI Stats Row -->
+    <section class="du-bento-grid" data-region="summary">
+      <div class="du-kpi-card">
+        <div class="du-kpi-label">
+          <span>Active Services</span>
+          <span class="ui-badge ui-badge-secondary">Fleet</span>
+        </div>
+        <div class="du-kpi-value">
+          4 <span class="x-s4">● 100% OK</span>
+        </div>
+        <div class="du-kpi-subtext">Sentinel, Engine, Dashboard, Vault</div>
+      </div>
+
+      <div class="du-kpi-card">
+        <div class="du-kpi-label">
+          <span>Obsidian Memory</span>
+          <span class="ui-badge ui-badge-outline">Dev/home</span>
+        </div>
+        <div class="du-kpi-value">
+          142 <span class="x-s5">notes</span>
+        </div>
+        <div class="du-kpi-subtext">8 MEM-* candidates pending review</div>
+      </div>
+
+      <div class="du-kpi-card">
+        <div class="du-kpi-label">
+          <span>Render Latency</span>
+          <span class="ui-badge ui-badge-secondary">Instant</span>
+        </div>
+        <div class="du-kpi-value">
+          1.2 <span class="x-s5">ms</span>
+        </div>
+        <div class="du-kpi-subtext">Zero JavaScript Framework overhead</div>
+      </div>
+    </section>
+
+    <!-- Main Workspace Split -->
+    <div class="du-grid-2" data-region="content">
+      <!-- Left Column: Services Table & Tabs -->
+      <div class="ui-card">
+        <div class="ui-card-header">
+          <h2 class="ui-card-title">Port Fleet & Running Processes</h2>
+          <p class="ui-card-description">Passive socket inspection and runtime listeners</p>
+        </div>
+        <div class="ui-card-content">
+          <div class="ui-table-container">
+            <table class="ui-table">
+              <thead>
+                <tr>
+                  <th>Service</th>
+                  <th>Port</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>DU Mission Control</strong></td>
+                  <td><code>:4000</code></td>
+                  <td><span class="ui-badge x-s6">Active</span></td>
+                  <td><button class="ui-btn ui-btn-outline ui-btn-sm" data-du-on-click="[[&quot;alert&quot;,[&quot;Port 4000 already running!&quot;]]]">Open</button></td>
+                </tr>
+                <tr>
+                  <td><strong>Sentinel Cockpit</strong></td>
+                  <td><code>:4040</code></td>
+                  <td><span class="ui-badge x-s6">Active</span></td>
+                  <td><button class="ui-btn ui-btn-outline ui-btn-sm" data-du-on-click="[[&quot;alert&quot;,[&quot;Port 4040 already running!&quot;]]]">Open</button></td>
+                </tr>
+                <tr>
+                  <td><strong>Development Engine MCP</strong></td>
+                  <td><span>Porta por atribuir</span></td>
+                  <td><span class="ui-badge ui-badge-secondary">Standby</span></td>
+                  <td><button class="ui-btn ui-btn-outline ui-btn-sm" data-du-on-click="[[&quot;alert&quot;,[&quot;Starting Engine MCP...&quot;]]]">Start</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Accordion & Settings -->
+      <div class="ui-card">
+        <div class="ui-card-header">
+          <h2 class="ui-card-title">Cockpit Controls</h2>
+          <p class="ui-card-description">Native HTML Details & Dialogs</p>
+        </div>
+        <div class="ui-card-content">
+          <!-- Native Details Accordion -->
+          <details class="ui-accordion" open>
+            <summary>Invariantes Arquiteturais</summary>
+            <div class="ui-accordion-content">
+              Todos os componentes usam CSS tokens semânticos e APIs nativas sem dependência de build.
+            </div>
+          </details>
+
+          <details class="ui-accordion">
+            <summary>Governação de Memória</summary>
+            <div class="ui-accordion-content">
+              Candidatos a memória são validados via CLI dev.cli session/memory.
+            </div>
+          </details>
+
+          <div class="x-s7">
+            <div class="x-s8">
+              <span class="x-s9">Live Watchdog Mode</span>
+              <label class="ui-switch">
+                <input type="checkbox" checked>
+                <span class="ui-switch-slider"></span>
+              </label>
+            </div>
+
+            <button class="ui-btn ui-btn-secondary x-s10" data-du-on-click="[[&quot;duOpenModal&quot;,[&quot;du-inspect-dialog&quot;]]]">
+              <svg class="du-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Inspecionar Estado do Vault
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </main>
+  </div>
+
+  <!-- Native Modal Dialog: Inspect State -->
+  <dialog id="du-inspect-dialog" class="ui-dialog">
+    <div class="x-s11">
+      <h3 class="x-s12">Estado do Vault — Dev/home</h3>
+      <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-on-click="[[&quot;duCloseClosest&quot;,[{&quot;$this&quot;:true},&quot;dialog&quot;]]]"><svg class="du-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>
+    <p class="x-s13">
+      O repositório canónico de conhecimento encontra-se em sincronização ativa.
+    </p>
+    <div class="x-s14">
+      SES-2026-10-07-005: OK<br>
+      PRJ-0024: ai-app-foundation<br>
+      LANCEDB: Active (Indexed)
+    </div>
+    <div class="x-s15">
+      <button class="ui-btn ui-btn-outline" data-du-on-click="[[&quot;duCloseClosest&quot;,[{&quot;$this&quot;:true},&quot;dialog&quot;]]]">Fechar</button>
+      <button class="ui-btn" data-du-on-click="[[&quot;alert&quot;,[&quot;Snapshot gerado com sucesso!&quot;]],[&quot;duCloseClosest&quot;,[{&quot;$this&quot;:true},&quot;dialog&quot;]]]">Criar Snapshot</button>
+    </div>
+  </dialog>
+
+  <!-- Native Modal Dialog: Quick Command Palette -->
+  <dialog id="du-command-dialog" class="ui-dialog">
+    <div class="x-s16">
+      <input type="text" class="ui-input" placeholder="Escreva um comando ou pesquise (ex: /status, /ports, /mem)..." autofocus>
+    </div>
+    <div class="x-s17">
+      <div class="x-s18" data-du-on-click="[[&quot;alert&quot;,[&quot;Comando /ports executado&quot;]],[&quot;duCloseClosest&quot;,[{&quot;$this&quot;:true},&quot;dialog&quot;]]]">
+        <strong>/ports</strong> — Inspecionar portas abertas
+      </div>
+      <div class="x-s19" data-du-on-click="[[&quot;alert&quot;,[&quot;Comando /session executado&quot;]],[&quot;duCloseClosest&quot;,[{&quot;$this&quot;:true},&quot;dialog&quot;]]]">
+        <strong>/session</strong> — Ver sessão ativa do DU
+      </div>
+    </div>
+    <div class="x-s20">
+      <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-on-click="[[&quot;duCloseClosest&quot;,[{&quot;$this&quot;:true},&quot;dialog&quot;]]]">Fechar (Esc)</button>
+    </div>
+  </dialog>
+
+<script src="index.js"></script>
+</body>
+</html>

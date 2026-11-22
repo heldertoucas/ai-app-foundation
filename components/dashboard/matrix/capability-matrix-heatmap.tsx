@@ -170,7 +170,7 @@ export function CapabilityMatrixHeatmap({
                   <td className="sticky left-0 z-10 bg-card/95 backdrop-blur-sm py-2 px-3 font-medium text-foreground">
                     <div className="flex flex-col">
                       <span className="font-semibold">{row.capability}</span>
-                      <span className="text-[10px] text-muted-foreground font-mono uppercase">
+                      <span className="text-xs text-muted-foreground font-mono uppercase">
                         {row.category}
                       </span>
                     </div>
@@ -181,11 +181,11 @@ export function CapabilityMatrixHeatmap({
 
                     const badgeStyle =
                       status === "live"
-                        ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                        ? "bg-status-live/15 text-status-live-foreground dark:text-status-live-foreground border-status-live/30"
                         : status === "drift"
-                        ? "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30"
+                        ? "bg-status-drift/15 text-status-drift-foreground dark:text-status-drift-foreground border-status-drift/30"
                         : status === "missing"
-                        ? "bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30"
+                        ? "bg-status-missing/15 text-status-missing-foreground dark:text-status-missing-foreground border-status-missing/30"
                         : "bg-muted/60 text-muted-foreground border-border/40";
 
                     return (
@@ -242,22 +242,22 @@ export function CapabilityMatrixHeatmap({
             <Badge
               variant="outline"
               className={cn(
-                "text-[10px] uppercase font-bold",
-                hoveredCell.status === "live" && "border-emerald-500/30 text-emerald-600 dark:text-emerald-400",
-                hoveredCell.status === "drift" && "border-amber-500/30 text-amber-600 dark:text-amber-400",
-                hoveredCell.status === "missing" && "border-rose-500/30 text-rose-600 dark:text-rose-400",
+                "text-xs uppercase font-bold",
+                hoveredCell.status === "live" && "border-status-live/30 text-status-live-foreground dark:text-status-live-foreground",
+                hoveredCell.status === "drift" && "border-status-drift/30 text-status-drift-foreground dark:text-status-drift-foreground",
+                hoveredCell.status === "missing" && "border-status-missing/30 text-status-missing-foreground dark:text-status-missing-foreground",
                 hoveredCell.status === "unsupported" && "text-muted-foreground"
               )}
             >
               {hoveredCell.status}
             </Badge>
-            <span className="text-[11px] text-muted-foreground truncate max-w-[180px]">
+            <span className="text-xs text-muted-foreground truncate max-w-[180px]">
               {hoveredCell.detail}
             </span>
           </div>
           <Link
             href={`/dashboard/inspection?invariant=${encodeURIComponent(hoveredCell.rowId)}`}
-            className="mt-2 flex items-center justify-between border-t border-border/50 pt-1.5 text-[11px] font-medium text-primary hover:underline"
+            className="mt-2 flex items-center justify-between border-t border-border/50 pt-1.5 text-xs font-medium text-primary hover:underline"
           >
             <span>Inspect Raw Audit Evidence</span>
             <ArrowSquareOut className="size-3" />
