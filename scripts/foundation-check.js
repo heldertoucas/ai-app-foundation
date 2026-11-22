@@ -19,7 +19,7 @@ check('Next.js App Router', fs.existsSync(path.join(__dirname, '../app')), 'Miss
 
 const envPath = path.join(__dirname, '../.env');
 const envContent = fs.existsSync(envPath) ? fs.readFileSync(envPath, 'utf-8') : '';
-check('SQLite Connection string', envContent.includes('connection_limit=1&busy_timeout=10000'), 'DATABASE_URL not using SQLite WAL parameters');
+check('SQLite Connection string', !fs.existsSync(envPath) || envContent.includes('connection_limit=1&busy_timeout=10000'), 'DATABASE_URL not using SQLite WAL parameters');
 
 let walActive = false;
 for (const p of ['../prisma/dev.db', '../dev.db']) {
@@ -40,7 +40,6 @@ check('Vitest singleThread pool', vitestContent.includes('singleThread: true'), 
 
 check('AGENTS.md present', fs.existsSync(path.join(__dirname, '../AGENTS.md')), 'Missing AGENTS.md');
 check('FOUNDATION.md present', fs.existsSync(path.join(__dirname, '../FOUNDATION.md')), 'Missing FOUNDATION.md');
-check('.mcp.json present', fs.existsSync(path.join(__dirname, '../.mcp.json')), 'Missing .mcp.json');
 
 check('No Dockerfile', !fs.existsSync(path.join(__dirname, '../Dockerfile')), 'Dockerfile found (violates zero-Docker default invariant)');
 

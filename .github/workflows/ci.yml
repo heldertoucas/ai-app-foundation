@@ -14,6 +14,8 @@ jobs:
   verify:
     name: Typecheck & Test
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: file:./dev.db
 
     steps:
       - name: Checkout repository
@@ -27,7 +29,6 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 11.24.0
           run_install: false
 
       - name: Get pnpm store directory
@@ -47,16 +48,22 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Generate Prisma Client
-        run: pnpm --filter @repo/database build
+        run: pnpm exec prisma generate
 
       - name: Run Typecheck
         run: pnpm typecheck
 
+      - name: Run Foundation Check
+        run: pnpm foundation:check
+
       - name: Run Unit & Integration Tests
         run: pnpm test
 
+      - name: Build
+        run: pnpm build
+
       - name: Install Playwright Browsers
-        run: pnpm --filter app exec playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Run Playwright E2E Tests
-        run: pnpm --filter app test:e2e
+        run: pnpm test:e2e
