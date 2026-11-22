@@ -204,4 +204,31 @@
       document.querySelectorAll('.du-modal-overlay.open').forEach(m => m.classList.remove('open'));
     }
   });
+
+  // 8. Declarative actions (CSP-safe replacement for inline event handlers)
+  window.duActions = Object.assign(window.duActions || {}, {
+    duToggleTheme: () => window.duToggleTheme(),
+    duOpenModal: (id) => window.duOpenModal(id),
+    duCloseModal: (id) => window.duCloseModal(id),
+    duCloseClosest: (el, selector) => el.closest(selector)?.close?.(),
+    duSwitchView: (...args) => window.duSwitchView(...args),
+    duActivateTab: (...args) => window.duActivateTab(...args),
+  });
+  function runDeclaredActions(event, attribute) {
+    const el = event.target.closest?.(`[${attribute}]`);
+    if (!el) return;
+    let steps;
+    try { steps = JSON.parse(el.getAttribute(attribute)); } catch { return; }
+    if (!Array.isArray(steps)) return;
+    for (const step of steps) {
+      if (!Array.isArray(step)) continue;
+      const [name, args] = step;
+      if (!Array.isArray(args)) continue;
+      const action = Object.prototype.hasOwnProperty.call(window.duActions, name) ? window.duActions[name] : null;
+      if (!action) { console.error(`Unknown DU action: ${name}`); return; }
+      action(...args.map((arg) => (arg && arg.$this === true ? el : arg)));
+    }
+  }
+  document.addEventListener('click', (e) => runDeclaredActions(e, 'data-du-on-click'));
+  document.addEventListener('input', (e) => runDeclaredActions(e, 'data-du-on-input'));
 })();
