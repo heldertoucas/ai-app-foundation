@@ -97,7 +97,7 @@ export function LibraryClientView() {
   const isSearching = Boolean(deferredSearch.trim());
 
   return (
-    <div className="relative flex flex-col gap-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
+    <div className="relative flex flex-col gap-8 w-full min-w-0 max-w-7xl mx-auto px-4 py-6 sm:px-6">
       {/* 1. Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>

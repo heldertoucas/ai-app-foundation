@@ -27,21 +27,21 @@ export interface AgentRuntimeCardGridProps {
 
 export function AgentRuntimeCardGrid({ agents, className }: AgentRuntimeCardGridProps) {
   return (
-    <div className={cn("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4", className)}>
+    <div className={cn("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full min-w-0", className)}>
       {agents.map((agent) => (
         <Card
           key={agent.id}
-          className="shadow-xs hover:border-foreground/20 transition-all duration-150 relative overflow-hidden"
+          className="min-w-0 shadow-xs hover:border-foreground/20 transition-all duration-150 relative overflow-hidden"
         >
           <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary border border-primary/20">
+            <div className="flex flex-wrap items-center justify-between gap-2 min-w-0">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary border border-primary/20">
                   <Robot className="size-4" />
                 </div>
-                <div>
-                  <CardTitle className="text-sm font-semibold">{agent.name}</CardTitle>
-                  <CardDescription className="text-xs">{agent.role}</CardDescription>
+                <div className="min-w-0">
+                  <CardTitle className="text-sm font-semibold truncate">{agent.name}</CardTitle>
+                  <CardDescription className="text-xs truncate">{agent.role}</CardDescription>
                 </div>
               </div>
               <Badge

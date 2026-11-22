@@ -40,7 +40,7 @@ export function OpenSpecKanbanBoard({
   className,
 }: OpenSpecKanbanBoardProps) {
   return (
-    <div className={cn("flex lg:grid lg:grid-cols-5 gap-4 overflow-x-auto pb-2 snap-x snap-mandatory", className)}>
+    <div className={cn("flex lg:grid lg:grid-cols-5 gap-4 w-full min-w-0 overflow-x-auto pb-2 snap-x snap-mandatory", className)}>
       {STAGES.map((stage) => {
         const stageChanges = changes.filter((c) => c.stage === stage.id);
 

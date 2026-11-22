@@ -32,7 +32,7 @@ export function MatrixClientView({ initialData }: MatrixClientViewProps) {
   );
 
   return (
-    <div className="flex flex-col gap-8 max-w-7xl mx-auto px-4 py-8 sm:px-6">
+    <div className="flex flex-col gap-8 w-full min-w-0 max-w-7xl mx-auto px-4 py-8 sm:px-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">

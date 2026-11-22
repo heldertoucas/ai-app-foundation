@@ -134,7 +134,7 @@ export function ComponentPreviewCard({ item, className }: ComponentPreviewCardPr
   return (
     <Card
       className={cn(
-        "flex flex-col overflow-hidden border-border/80 shadow-xs hover:border-foreground/20 transition-all duration-150",
+        "flex flex-col min-w-0 w-full overflow-hidden border-border/80 shadow-xs hover:border-foreground/20 transition-all duration-150",
         className
       )}
       id={item.id}

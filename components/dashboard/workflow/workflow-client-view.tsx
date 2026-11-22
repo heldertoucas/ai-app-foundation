@@ -57,7 +57,7 @@ export function WorkflowClientView({ initialCandidates }: WorkflowClientViewProp
   ];
 
   return (
-    <div className="flex flex-col gap-8 max-w-7xl mx-auto px-4 py-8 sm:px-6">
+    <div className="flex flex-col gap-8 w-full min-w-0 max-w-7xl mx-auto px-4 py-8 sm:px-6">
       <div>
         <div className="flex items-center gap-2">
           <span className="rounded-md bg-primary/10 px-2 py-0.5 font-mono text-xs font-semibold text-primary">

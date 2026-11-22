@@ -34,7 +34,7 @@ export function CodeDiffViewer({
   const visibleLines = isTruncated ? diffLines.slice(0, maxLines) : diffLines;
 
   return (
-    <div className={cn("flex flex-col rounded-xl border border-border/70 bg-card overflow-hidden shadow-xs text-xs font-mono", className)}>
+    <div className={cn("flex flex-col min-w-0 w-full rounded-xl border border-border/70 bg-card overflow-hidden shadow-xs text-xs font-mono", className)}>
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/60 bg-muted/40 px-3 py-2">
         <div className="flex items-center gap-2">

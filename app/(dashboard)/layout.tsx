@@ -46,7 +46,7 @@ export default function DashboardLayout({
             <ThemeToggle />
           </div>
         </header>
-        <div className="flex flex-1 flex-col p-4 sm:p-6 lg:p-8">
+        <div className="flex flex-1 flex-col min-w-0 p-4 sm:p-6 lg:p-8">
           {children}
         </div>
       </SidebarInset>
