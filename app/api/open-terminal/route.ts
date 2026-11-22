@@ -10,11 +10,6 @@ const ALLOWED_COMMANDS = new Set([
   'pnpm dev',
   'pnpm start',
   'pnpm foundation:check',
-  'open public/html/kits/avaliacao/index.html',
-  'open public/html/kits/mission-control/index.html',
-  'open public/html/kits/cockpit-starter/index.html',
-  'open public/html/kits/dashboard-starter/index.html',
-  'open public/blueprints/dashboard/mockups/reference.html',
 ]);
 
 const OPEN_TERMINAL_SCRIPT = [

@@ -435,3 +435,5 @@
 .x-s1.x-s1.x-s1 { display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, var(--card) 0%, var(--muted) 100%); }
 .x-s2.x-s2.x-s2 { font-size: 3rem; margin-bottom: 0.5rem; }
 .x-s3.x-s3.x-s3 { font-family: monospace; font-size: 0.75rem; color: var(--muted-foreground); }
+
+.terminal-launch-btn { font: inherit; }
