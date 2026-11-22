@@ -2,11 +2,13 @@
 
 import { db } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
+import { assertLocalAction } from '@/lib/security/assert-local-action';
 
 const ALLOWED_STATUSES = ['Active', 'Planning', 'Completed', 'Archived'] as const;
 type ProjectStatus = (typeof ALLOWED_STATUSES)[number];
 
 export async function createAtlasProject(formData: FormData): Promise<void> {
+  await assertLocalAction();
   const rawTitle = formData.get('title');
   if (typeof rawTitle !== 'string' || !rawTitle.trim()) {
     throw new Error('Project title is required and cannot be empty.');
@@ -50,6 +52,7 @@ export async function createAtlasProject(formData: FormData): Promise<void> {
 }
 
 export async function deleteAtlasProject(formData: FormData): Promise<void> {
+  await assertLocalAction();
   const id = formData.get('id');
   if (typeof id !== 'string' || !id.trim()) {
     throw new Error('Valid project ID is required for deletion.');
