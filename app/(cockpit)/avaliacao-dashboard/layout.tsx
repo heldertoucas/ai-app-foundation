@@ -12,7 +12,7 @@ export default function AvaliacaoDashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex-1 flex flex-col w-full bg-muted/10 min-h-[calc(100vh-3.5rem)]">
+    <div className="flex-1 flex flex-col w-full bg-muted/10 min-h-screen">
       {children}
     </div>
   );

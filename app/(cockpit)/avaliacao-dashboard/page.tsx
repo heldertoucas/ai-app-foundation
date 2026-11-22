@@ -20,7 +20,7 @@ export default function AvaliacaoDashboardLoginPage() {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-4 sm:p-8">
+    <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-8">
       <div className="w-full max-w-xl mx-auto text-center mb-8">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 mb-4">
           <GraduationCap size={16} />
@@ -68,6 +68,6 @@ export default function AvaliacaoDashboardLoginPage() {
           <strong className="text-foreground">admin123</strong>
         </p>
       </div>
-    </div>
+    </main>
   );
 }

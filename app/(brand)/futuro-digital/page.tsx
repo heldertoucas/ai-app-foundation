@@ -2,7 +2,6 @@ import React from "react";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { FuturoDigitalClientToolbar } from "./client-toolbar";
 
 export const metadata: Metadata = {
   title: "Futuro Digital CMLisboa",
@@ -17,7 +16,7 @@ const COURSES = [
     description: "Domine a criação e redação de documentos profissionais com o poder da coautoria em tempo real.",
     tag: "Trabalhar em equipa",
     tagColor: "bg-[#5271FF]",
-    imageUrl: "https://ik.imagekit.io/htuazpop/banco-de-imagens/HODzPjK_dKyC9Ajn1.png",
+    imageUrl: "/assets/futuro-digital/HODzPjK_dKyC9Ajn1.png",
   },
   {
     id: "excel",
@@ -25,7 +24,7 @@ const COURSES = [
     description: "Analise dados de forma poderosa e colabore em folhas de cálculo complexas com a sua equipa na nuvem.",
     tag: "Trabalhar em equipa",
     tagColor: "bg-[#35B729]",
-    imageUrl: "https://ik.imagekit.io/htuazpop/banco-de-imagens/T4rwgD6_U3ezS0_hw.png",
+    imageUrl: "/assets/futuro-digital/T4rwgD6_U3ezS0_hw.png",
   },
   {
     id: "loop",
@@ -33,7 +32,7 @@ const COURSES = [
     description: "Trabalhe de forma colaborativa com o Microsoft Loop. Centralize informações, crie listas de tarefas e organize projetos em tempo real.",
     tag: "Trabalhar em equipa",
     tagColor: "bg-[#5271FF]",
-    imageUrl: "https://ik.imagekit.io/htuazpop/banco-de-imagens/RlBJMf0_0A2NcKXIp.png",
+    imageUrl: "/assets/futuro-digital/RlBJMf0_0A2NcKXIp.png",
   },
   {
     id: "excelforms",
@@ -41,7 +40,7 @@ const COURSES = [
     description: "Crie inquéritos, recolha respostas automaticamente e analise resultados em tempo real com o Excel na nuvem.",
     tag: "Trabalhar em equipa",
     tagColor: "bg-[#35B729]",
-    imageUrl: "https://ik.imagekit.io/htuazpop/banco-de-imagens/T4rwgD6_U3ezS0_hw.png",
+    imageUrl: "/assets/futuro-digital/T4rwgD6_U3ezS0_hw.png",
   },
 ];
 
@@ -54,7 +53,7 @@ export default function FuturoDigitalHomePage() {
           <nav className="flex justify-between items-center h-20">
             <Link href="/futuro-digital" className="h-[50px] block">
               <Image
-                src="https://ik.imagekit.io/htuazpop/banco-de-imagens/L7wNgqt_Fqk0iAmk2.png"
+                src="/assets/futuro-digital/L7wNgqt_Fqk0iAmk2.png"
                 alt="Futuro Digital CMLisboa Logo"
                 width={212}
                 height={50}
@@ -92,13 +91,11 @@ export default function FuturoDigitalHomePage() {
                   Inscrever-me
                 </a>
               </li>
-              <li>
-                <FuturoDigitalClientToolbar />
-              </li>
             </ul>
           </nav>
         </div>
       </header>
+      <main>
 
       {/* 2. HERO COMPONENT FAC-SÍMILE */}
       <section id="hero" className="py-[100px] bg-white">
@@ -128,7 +125,7 @@ export default function FuturoDigitalHomePage() {
           </div>
           <div className="flex-1 text-center">
             <Image
-              src="https://ik.imagekit.io/htuazpop/banco-de-imagens/ZJvakeb_HxbQeePGQ.png"
+              src="/assets/futuro-digital/ZJvakeb_HxbQeePGQ.png"
               alt="Ilustração de uma pessoa a interagir com elementos digitais"
               width={555}
               height={468}
@@ -202,7 +199,7 @@ export default function FuturoDigitalHomePage() {
         <div className="max-w-[1140px] mx-auto px-5 flex flex-col md:flex-row items-center gap-[60px]">
           <div className="flex-1">
             <Image
-              src="https://ik.imagekit.io/htuazpop/banco-de-imagens/9U2GzTP_0KMHhaNrD.png"
+              src="/assets/futuro-digital/9U2GzTP_0KMHhaNrD.png"
               alt="Equipa a colaborar num projeto digital"
               width={555}
               height={425}
@@ -293,18 +290,13 @@ export default function FuturoDigitalHomePage() {
           </div>
         </div>
       </section>
+      </main>
 
       {/* 7. RODAPÉ FAC-SÍMILE */}
       <footer className="bg-[#1b1b1b] text-[#a9a9a9] pt-[60px]">
         <div className="max-w-[1140px] mx-auto px-5 grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1.5fr] gap-10 pb-10">
           <div>
-            <Image
-              src="https://ik.imagekit.io/htuazpop/banco-de-imagens/tYc9GgI_Dl4bUtSCi.png"
-              alt="Câmara Municipal de Lisboa Logo"
-              width={189}
-              height={45}
-              className="h-[45px] w-auto mb-5"
-            />
+            <span className="font-semibold">Futuro Digital</span>
             <p className="mb-5 leading-relaxed">
               Programa para a Inclusão e Literacia Digital da Câmara Municipal de Lisboa.
             </p>

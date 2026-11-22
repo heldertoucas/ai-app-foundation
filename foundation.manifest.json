@@ -28,7 +28,7 @@
     {
       "id": "avaliacao", "name": "Avaliação", "blueprint": "cockpit", "starter": false, "parity": "partial", "gateFirst": true,
       "html": { "entries": ["public/html/kits/avaliacao/index.html"], "legacyEntries": ["public/html-kit/templates/du-avaliacao-dashboard.html"] },
-      "react": { "routes": ["/avaliacao-dashboard", "/avaliacao-dashboard/trainer", "/avaliacao-dashboard/admin"], "entries": ["app/(cockpit)/avaliacao-dashboard/page.tsx"], "legacyEntries": ["app/(site)/avaliacao-dashboard/page.tsx"] },
+      "react": { "routes": ["/avaliacao-dashboard", "/avaliacao-dashboard/trainer", "/avaliacao-dashboard/admin"], "entries": ["app/(cockpit)/avaliacao-dashboard/page.tsx"] },
       "differences": ["React separa acesso, formador e administrador em rotas; HTML usa vistas numa só página"],
       "moduleExceptions": [
         { "module": "auth-pin", "reason": "O Kit usa credenciais por perfil, hash e bloqueio temporário que o Module ainda não suporta" },
@@ -44,7 +44,7 @@
     {
       "id": "futuro-digital", "name": "Futuro Digital", "blueprint": "website", "starter": false, "parity": "partial",
       "html": { "entries": ["public/html/kits/futuro-digital/index.html", "public/html/kits/futuro-digital/galeria.html"], "legacyEntries": ["public/html-kit/templates/du-futuro-digital.html", "public/html-kit/templates/du-futuro-digital-galeria.html"] },
-      "react": { "routes": ["/futuro-digital", "/futuro-digital/galeria"], "entries": ["app/(brand)/futuro-digital/page.tsx", "app/(brand)/futuro-digital/galeria/page.tsx"], "legacyEntries": ["app/(site)/futuro-digital/page.tsx", "app/(site)/futuro-digital/galeria/page.tsx"] },
+      "react": { "routes": ["/futuro-digital", "/futuro-digital/galeria"], "entries": ["app/(brand)/futuro-digital/page.tsx", "app/(brand)/futuro-digital/galeria/page.tsx"] },
       "differences": ["Tema apenas claro nas duas Stacks por decisão D8"]
     }
   ],

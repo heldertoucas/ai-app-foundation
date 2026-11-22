@@ -2,7 +2,6 @@ import React from "react";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { FuturoDigitalClientToolbar } from "../client-toolbar";
 import { CourseIntro } from "@/components/futuro-digital/course-intro";
 import { StepByStep, Step } from "@/components/futuro-digital/step-by-step";
 import { FeatureSlide } from "@/components/futuro-digital/feature-slide";
@@ -24,7 +23,7 @@ export default function FuturoDigitalGaleriaPage() {
           <nav className="flex justify-between items-center h-20">
             <Link href="/futuro-digital" className="h-[50px] block">
               <Image
-                src="https://ik.imagekit.io/htuazpop/banco-de-imagens/L7wNgqt_Fqk0iAmk2.png"
+                src="/assets/futuro-digital/L7wNgqt_Fqk0iAmk2.png"
                 alt="Futuro Digital CMLisboa Logo"
                 width={212}
                 height={50}
@@ -60,9 +59,6 @@ export default function FuturoDigitalGaleriaPage() {
                   Inscrever-me
                 </Link>
               </li>
-              <li>
-                <FuturoDigitalClientToolbar />
-              </li>
             </ul>
           </nav>
         </div>
@@ -91,9 +87,9 @@ export default function FuturoDigitalGaleriaPage() {
           <div className="bg-white py-10">
             <div className="flex flex-col md:flex-row items-center gap-[40px] md:gap-[60px]">
               <div className="flex-1">
-                <h1 className="text-[2.2rem] md:text-[3.5rem] font-extrabold text-[#151515] leading-[1.2] mb-4">
+                <h2 className="text-[2.2rem] md:text-[3.5rem] font-extrabold text-[#151515] leading-[1.2] mb-4">
                   A sua jornada de capacitação digital começa aqui.
-                </h1>
+                </h2>
                 <p className="text-[1.1rem] md:text-[1.2rem] text-[#575757] leading-relaxed my-5 mb-8">
                   Conheça os cursos do programa Futuro Digital e transforme a forma como trabalha em equipa na CMLisboa com as ferramentas Microsoft.
                 </p>
@@ -108,7 +104,7 @@ export default function FuturoDigitalGaleriaPage() {
               </div>
               <div className="flex-1 text-center">
                 <Image
-                  src="https://ik.imagekit.io/htuazpop/banco-de-imagens/ZJvakeb_HxbQeePGQ.png"
+                  src="/assets/futuro-digital/ZJvakeb_HxbQeePGQ.png"
                   alt="Hero Preview"
                   width={555}
                   height={468}
@@ -129,7 +125,7 @@ export default function FuturoDigitalGaleriaPage() {
               <div className="bg-white rounded-[8px] shadow-[0_4px_12px_rgba(0,0,0,0.06)] overflow-hidden flex flex-col md:flex-row transition-all duration-300 hover:-translate-y-[5px] hover:shadow-[0_10px_20px_rgba(0,0,0,0.08)]">
                 <div className="flex-none w-full md:w-[40%] relative min-h-[200px] md:min-h-auto">
                   <Image
-                    src="https://ik.imagekit.io/htuazpop/banco-de-imagens/RlBJMf0_0A2NcKXIp.png"
+                    src="/assets/futuro-digital/RlBJMf0_0A2NcKXIp.png"
                     alt="Microsoft Loop"
                     fill
                     sizes="(max-width: 768px) 100vw, 40vw"
@@ -161,7 +157,7 @@ export default function FuturoDigitalGaleriaPage() {
               <div className="bg-white rounded-[8px] shadow-[0_4px_12px_rgba(0,0,0,0.06)] overflow-hidden flex flex-col md:flex-row transition-all duration-300 hover:-translate-y-[5px] hover:shadow-[0_10px_20px_rgba(0,0,0,0.08)]">
                 <div className="flex-none w-full md:w-[40%] relative min-h-[200px] md:min-h-auto">
                   <Image
-                    src="https://ik.imagekit.io/htuazpop/banco-de-imagens/T4rwgD6_U3ezS0_hw.png"
+                    src="/assets/futuro-digital/T4rwgD6_U3ezS0_hw.png"
                     alt="Microsoft Excel"
                     fill
                     sizes="(max-width: 768px) 100vw, 40vw"
@@ -200,7 +196,7 @@ export default function FuturoDigitalGaleriaPage() {
             <div className="flex flex-col md:flex-row items-center gap-[40px] md:gap-[60px]">
               <div className="flex-1">
                 <Image
-                  src="https://ik.imagekit.io/htuazpop/banco-de-imagens/9U2GzTP_0KMHhaNrD.png"
+                  src="/assets/futuro-digital/9U2GzTP_0KMHhaNrD.png"
                   alt="About Program"
                   width={555}
                   height={425}
@@ -323,13 +319,7 @@ export default function FuturoDigitalGaleriaPage() {
       <footer className="bg-[#1b1b1b] text-[#a9a9a9] pt-[60px] mt-16">
         <div className="max-w-[1140px] mx-auto px-5 grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1.5fr] gap-10 pb-10">
           <div>
-            <Image
-              src="https://ik.imagekit.io/htuazpop/banco-de-imagens/tYc9GgI_Dl4bUtSCi.png"
-              alt="Câmara Municipal de Lisboa Logo"
-              width={189}
-              height={45}
-              className="h-[45px] w-auto mb-5"
-            />
+            <span className="font-semibold">Futuro Digital</span>
             <p className="mb-5 leading-relaxed">
               Programa para a Inclusão e Literacia Digital da Câmara Municipal de Lisboa.
             </p>
