@@ -12,7 +12,7 @@ Execute por esta ordem. Os números identificam pacotes e **não** definem a seq
 |---|---|---|
 | **M0** Segurança e gates | [`M0-M1.md`](./M0-M1.md) | WP-00, WP-08, WP-02, WP-03, WP-01, WP-07, WP-04, WP-05, WP-06 |
 | **M1** Contrato e tokens | [`M0-M1.md`](./M0-M1.md) | WP-50, WP-10, WP-11, WP-12, WP-13, WP-14 |
-| **M2** Reparar Kits | [`M2.md`](./M2.md) | WP-20, WP-21, WP-22, WP-23, WP-24, WP-27, WP-28, WP-25, WP-26, WP-30, WP-31, WP-32, WP-33, WP-34, WP-36, WP-35, WP-37 |
+| **M2** Reparar Kits | [`M2.md`](./M2.md) | WP-20, WP-21, WP-22, WP-23, WP-24, WP-27, WP-28, WP-29, WP-25, WP-26, WP-30, WP-31, WP-32, WP-33, WP-34, WP-36, WP-35, WP-37 |
 | **M3** Mover HTML | [`M3-M8.md`](./M3-M8.md) | WP-40, WP-42, WP-43 |
 | **M4** Organizar React | [`M3-M8.md`](./M3-M8.md) | WP-45 |
 | **M5** Blueprints e Modules | [`M3-M8.md`](./M3-M8.md) | WP-51, WP-52, WP-53, WP-54, WP-55, WP-56 |
@@ -51,7 +51,7 @@ Não reabra estas decisões. WP-08 regista-as formalmente.
 6. **Processos:** nunca termine um processo que não iniciou.
 7. **Vault:** nunca escreva diretamente no Vault. Use o ciclo de memória.
 8. **Âmbito:** altere apenas os ficheiros listados no pacote.
-9. **Base de dados:** antes de WP-02 estar concluído, nunca corra `pnpm test`.
+9. **Base de dados:** antes de WP-02 estar concluído, nunca corra `pnpm test`. Para abrir a app, use sempre `bash "$T/dev-server.sh"` em segundo plano, nunca `pnpm dev`. Este script usa uma cópia descartável de `prisma/dev.db`.
 10. **Evidência:** só marque uma tarefa `[x]` depois de ver o resultado do comando de verificação.
 
 ## 4. Preparar a shell
@@ -95,6 +95,10 @@ git commit -m "<tipo>(foundation): WP-XX <título curto>"
 
 **Tipos:** `fix`, `feat`, `refactor`, `test`, `docs`, `chore`.
 
+**Pacote sem ficheiros alterados (WP-06, WP-14, WP-42):** salte esta secção e reporte `Commit: n/a`.
+
+**Antes de um commit:** confirme que `prisma/dev.db` não aparece em `git status --short`.
+
 ## 7. Recuperação
 
 Se o pacote falhar antes do commit:
@@ -105,7 +109,9 @@ Se o pacote falhar antes do commit:
 4. Confirme com `git status --short`.
 5. Reporte `BLOCKED`.
 
-**Proibido:** `git reset --hard`, `git clean` e `git stash`. Só `move-html-stack.mjs` faz rollback automático, e só depois de confirmar uma árvore limpa.
+**Proibido:** `git reset --hard`, `git clean` e `git stash`. Só `move-html-stack.mjs` faz rollback, e só depois de confirmar uma árvore limpa.
+
+**Falha em WP-40 antes do commit:** execute `node "$T/move-html-stack.mjs" "$ROOT" --rollback`. Se `$T` já não existir por causa do estado parcial, reporte `BLOCKED`.
 
 **Depois do commit:** use `git revert <hash>`.
 
@@ -164,7 +170,9 @@ Commit: <hash>
 | Ferramenta | Função |
 |---|---|
 | `tools/shell-setup.sh` | Define variáveis e a raiz |
-| `tools/make-baseline.sh` | Exporta uma baseline do commit atual |
+| `tools/make-baseline.sh` | Exporta uma baseline do commit atual, reutilizável em retry |
+| `tools/dev-server.sh` | Arranca a app em 4300 com base de dados descartável |
+| `tools/normalize-font-sizes.mjs` | Ajusta tamanhos CSS à escala canónica |
 | `tools/externalize-html.mjs` | Remove inline CSS, JS e handlers |
 | `tools/compare-renders.cjs` | Compara duas páginas em 4 combinações |
 | `tools/apply-status-foreground.mjs` | Passa texto de estado para os tokens AA |

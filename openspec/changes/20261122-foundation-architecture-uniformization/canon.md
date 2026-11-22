@@ -306,7 +306,7 @@ Nível **MUST** bloqueia a conformidade. Nível **SHOULD** exige justificação.
 
 - **MUST:** usar uma família sans e uma mono, servidas localmente (D6).
 - **MUST:** tamanho mínimo de 12px.
-- **MUST:** usar a escala 12, 14, 16, 18, 20, 24, 30, 36, 48.
+- **MUST:** usar a escala 12, 14, 16, 18, 20, 24, 30, 36, 48. Títulos display de 48px ou mais podem usar outros valores ou `clamp()`.
 - **MUST:** usar mono só em métricas, IDs, portas, código e telemetria.
 - **SHOULD:** usar números tabulares em métricas.
 

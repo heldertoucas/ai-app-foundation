@@ -36,8 +36,25 @@ const touched = new Set();
 const write = (p, s) => { fs.mkdirSync(path.dirname(path.join(repo, p)), { recursive: true }); fs.writeFileSync(path.join(repo, p), s); touched.add(p); };
 const edit = (p, fn) => { const before = read(p); const after = fn(before); if (after !== before) write(p, after); };
 
+const headFile = () => path.resolve(repo, git('rev-parse', '--git-path', 'foundation-move-head').trim());
+function rollback(head) {
+  git('reset', '-q', '--hard', head);
+  git('clean', '-fdq', '--', 'public/html', 'public/blueprints', 'public/html-kit', 'public/templates-index.html');
+}
+if (process.argv.includes('--rollback')) {
+  if (!fs.existsSync(headFile())) stop('no recorded move');
+  const recorded = fs.readFileSync(headFile(), 'utf8').trim();
+  if (git('rev-parse', 'HEAD').trim() !== recorded) stop('HEAD changed since the move; use git revert');
+  rollback(recorded);
+  fs.rmSync(headFile());
+  console.log(`ROLLED BACK to ${recorded}`);
+  process.exit(0);
+}
 if (git('branch', '--show-current').trim() === 'main') stop('run on a feature branch, never main');
-if (git('status', '--porcelain').trim()) stop('working tree must be clean');
+if (git('status', '--porcelain', '--untracked-files=all').trim()) stop('working tree must be clean');
+let portBusy = false;
+try { execFileSync('lsof', ['-nP', '-iTCP:4300', '-sTCP:LISTEN'], { stdio: 'pipe' }); portBusy = true; } catch { portBusy = false; }
+if (portBusy && !dry) stop('port 4300 is in use: stop the server you started, or ask the human');
 for (const f of [CHECK, ROUTE, HEADER, CAPTURE, MANIFEST]) if (!exists(f)) stop(`missing ${f}`);
 if (!exists(`${OLD}/fonts`)) stop('fonts directory missing: run WP-32 first');
 
@@ -59,6 +76,9 @@ const problems = {
 };
 if (Object.values(problems).some((l) => l.length)) stop(JSON.stringify(problems));
 if (dry) { moves.forEach(([a, b]) => console.log(`${a} -> ${b}`)); console.log(`DRY-RUN OK moves=${moves.length}`); process.exit(0); }
+
+const startHead = git('rev-parse', 'HEAD').trim();
+fs.writeFileSync(headFile(), `${startHead}\n`);
 
 function kitUrl([dir, name]) { return `/${dir}/${name}.html`; }
 const stub = (target, title) => `<!doctype html>\n<html lang="pt-PT">\n<head>\n  <meta charset="utf-8">\n  <meta http-equiv="refresh" content="0; url=${target}">\n  <link rel="canonical" href="${target}">\n  <title>${title} mudou de endereço</title>\n</head>\n<body>\n  <main>\n    <h1>${title} mudou de endereço</h1>\n    <p><a href="${target}">Abrir a nova página</a></p>\n  </main>\n</body>\n</html>\n`;
@@ -150,8 +170,8 @@ try {
   console.log(`OK moved=${moves.length} rewritten=${touched.size}. Everything is staged. Review with: git status --short`);
 } catch (e) {
   console.error(`FAILED: ${e.message}`);
-  git('reset', '-q', '--hard', 'HEAD');
-  git('clean', '-fdq', '--', 'public/html', 'public/blueprints');
+  rollback(startHead);
+  fs.rmSync(headFile(), { force: true });
   console.error('ROLLED BACK to HEAD. Report BLOCKED.');
   process.exit(1);
 }

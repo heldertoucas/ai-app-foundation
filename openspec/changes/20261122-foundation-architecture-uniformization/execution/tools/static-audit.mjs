@@ -19,7 +19,8 @@ const ARB_ANY = /\b[a-z]+(?:-[a-z]+)*-\[[^\]\s]+\]/g;
 const ARB_TEXT = /\btext-\[\d[^\]]*\]/g;
 const LITERAL_COLOR = /(?:#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?|oklch)\((?!var))/g;
 const PORT = /(?:localhost|127\.0\.0\.1):(\d{2,5})/g;
-const ASSIGNED = new Set(['4300', '7300']);
+const manifestFile = path.join(repo, 'foundation.manifest.json');
+const ASSIGNED = new Set(fs.existsSync(manifestFile) ? JSON.parse(fs.readFileSync(manifestFile, 'utf8')).assignedPorts.map(String) : ['4300', '7300']);
 const ports = (s) => uniq([...s.matchAll(PORT)].map((m) => m[1]));
 const stripComments = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|\s)\/\/.*$/gm, '$1');
 
@@ -59,18 +60,20 @@ const htmlFiles = MOVED
   : tracked.filter((f) => /^public\/html-kit\/(templates|examples)\/.*\.html$/.test(f) || f === 'public/html-kit/index.html');
 const html = htmlFiles.map((f) => {
   const s = read(f);
-  const styleBlocks = [...s.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)].map((m) => m[1]).join('\n');
+  const sibling = (ext) => { const p = path.join(repo, f.replace(/\.html$/, `.${ext}`)); return fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : ''; };
+  const siblingCss = sibling('css'); const siblingJs = sibling('js');
+  const styleBlocks = [...s.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)].map((m) => m[1]).concat(siblingCss).join('\n');
   const styleAttrs = [...s.matchAll(/\sstyle="([^"]*)"/gi)].map((m) => m[1]);
   const scripts = [...s.matchAll(/<script(?![^>]*\ssrc=)[^>]*>([\s\S]*?)<\/script>/gi)].map((m) => m[1]).join('\n');
   const used = uniq([...s.matchAll(/class="([^"]+)"/g)].flatMap((m) => m[1].split(/\s+/)).filter((c) => /^(ui|du)-/.test(c)));
   const local = new Set([...styleBlocks.matchAll(/\.((?:ui|du)-[A-Za-z0-9_-]+)/g)].map((m) => m[1]));
   const undefinedClasses = used.filter((c) => !defined.has(c) && !local.has(c));
   const localOverrides = [...local].filter((c) => defined.has(c));
-  const p = ports(s);
+  const p = ports(`${s}\n${siblingCss}\n${siblingJs}`);
   return {
     file: f, lines: s.split('\n').length, bytes: s.length,
     styleAttr: styleAttrs.length, styleBlockLines: styleBlocks.split('\n').length, inlineHandlers: count(s, /\son[a-z]+="/gi),
-    inlineScriptLines: scripts ? scripts.split('\n').length : 0, innerHTML: count(s, /\.innerHTML\s*[+=]/g), emoji: count(s, EMOJI),
+    inlineScriptLines: scripts ? scripts.split('\n').length : 0, innerHTML: count(`${s}\n${siblingJs}`, /\.innerHTML\s*[+=]/g), emoji: count(`${s}\n${siblingCss}\n${siblingJs}`, EMOJI),
     externalAssets: uniq([...s.matchAll(/<(?:script|link)[^>]+(?:src|href)="(https?:[^"]+)"/gi)].map((m) => new URL(m[1]).host)),
     literalColors: count(stripComments(styleBlocks), LITERAL_COLOR) + count(styleAttrs.join(';'), LITERAL_COLOR),
     usesTokens: /tokens\.css/.test(s.replace(/\/\*[\s\S]*?\*\//g, '')), usesComponents: /du-components\.css/.test(s), usesVendor: /shadcn-html/.test(s), usesRuntime: /du-runtime\.js/.test(s),

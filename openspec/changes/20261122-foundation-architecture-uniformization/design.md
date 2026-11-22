@@ -39,7 +39,7 @@ components/kits/avaliacao/        antes components/avaliacao-dashboard/
 components/kits/futuro-digital/   antes components/futuro-digital/
 lib/kits/avaliacao/               antes lib/avaliacao/
 lib/du/                           module du-connector
-recipes/                          ai, auth, postgres, vercel
+recipes/                          add-ai, add-auth, migrate-postgres, deploy-vercel
 ```
 
 ## 2. Mapa de migração
@@ -68,34 +68,9 @@ recipes/                          ai, auth, postgres, vercel
 
 ## 3. Manifesto
 
-`foundation.manifest.json` é lido por `foundation-check`. O catálogo continua em HTML estático, e a verificação falha se faltar uma entrada.
+`foundation.manifest.json` é lido por `foundation-contract.cjs`. O catálogo continua em HTML estático, e a verificação falha se faltar uma entrada.
 
-```json
-{
-  "schemaVersion": 1,
-  "blueprints": [
-    { "id": "cockpit", "name": "Cockpit", "spec": "public/blueprints/cockpit/README.md" }
-  ],
-  "kits": [
-    {
-      "id": "avaliacao",
-      "name": "Avaliação",
-      "blueprint": "cockpit",
-      "starter": false,
-      "parity": "partial",
-      "html": { "entry": "public/html/kits/avaliacao/index.html" },
-      "react": { "route": "/avaliacao-dashboard", "entry": "app/(site)/avaliacao-dashboard/page.tsx" },
-      "differences": ["React usa servidor e base de dados; HTML funciona offline"]
-    }
-  ],
-  "modules": [
-    { "id": "auth-pin-lock", "stack": "html", "path": "public/html/modules/auth-pin-lock" }
-  ],
-  "recipes": [
-    { "id": "postgres", "path": "recipes/postgres" }
-  ]
-}
-```
+**Esquema normativo:** [`execution/foundation.manifest.json`](./execution/foundation.manifest.json). Em caso de diferença entre este documento e `execution/`, prevalece `execution/`.
 
 ## 4. Contrato de Blueprint
 
@@ -110,7 +85,7 @@ Cada `README.md` tem no máximo uma página e define:
 
 | Blueprint | Regiões obrigatórias |
 |---|---|
-| **Dashboard** | `sidebar`, `topbar`, `content` |
+| **Dashboard** | `sidebar`, `topbar`, `page-header`, `content` |
 | **Cockpit** | `topbar`, `summary`, `content` |
 | **Website** | `header`, `hero`, `sections`, `footer` |
 
@@ -158,7 +133,7 @@ Cada `README.md` tem no máximo uma página e define:
 
 ## 9. Reversão
 
-Cada fase é um commit ou PR independente. `git revert` repõe a fase. Os movimentos usam `git mv` e ficam separados das alterações de conteúdo.
+Cada pacote é um commit independente, e `git revert` repõe-o. WP-40 é a exceção deliberada: move ficheiros e atualiza referências num só commit, porque o gate não passa entre os dois passos.
 
 ## 10. AI Council Verdict
 
@@ -198,9 +173,8 @@ Cada fase é um commit ou PR independente. `git revert` repõe a fase. Os movime
 
 ### Ronda 2 (estado atual)
 
-**Veredito atual:** **BLOQUEADO. Não executar os pacotes até fechar R1 a R9.**
+**Veredito da ronda 2:** BLOQUEADO. **R1 a R9 foram verificados no código e corrigidos nos pacotes. Aguarda a ronda 3.**
 **Fechados segundo os revisores:** B1 a B5, B7 a B14 e B16. **Corrigidos depois da ronda 2:** B6 (`public/assets` na baseline), B15 (regex) e B17 (`.gitignore`).
-**Limite:** os achados R1 a R9 vêm dos revisores e ainda não foram verificados de forma independente.
 
 | ID | Pacote | Problema | Correção proposta |
 |---|---|---|---|
