@@ -29,6 +29,14 @@ export function NavMain({
   sections: NavSection[];
 }) {
   const pathname = usePathname();
+  const [hash, setHash] = React.useState("");
+
+  React.useEffect(() => {
+    const syncHash = () => setHash(window.location.hash);
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    return () => window.removeEventListener("hashchange", syncHash);
+  }, [pathname]);
 
   return (
     <>
@@ -78,7 +86,7 @@ export function NavMain({
                             {item.items.map((subItem) => {
                               const [subPath, subHash] = subItem.url.split("#");
                               const isSubActive =
-                                pathname === subPath && (!subHash || typeof window === "undefined" || window.location.hash === `#${subHash}`);
+                                pathname === subPath && (!subHash || hash === `#${subHash}`);
 
                               return (
                                 <SidebarMenuSubItem key={subItem.title}>
