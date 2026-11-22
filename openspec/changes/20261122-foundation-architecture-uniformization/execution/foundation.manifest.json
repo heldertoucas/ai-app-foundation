@@ -29,7 +29,11 @@
       "id": "avaliacao", "name": "Avaliação", "blueprint": "cockpit", "starter": false, "parity": "partial", "gateFirst": true,
       "html": { "entries": ["public/html/kits/avaliacao/index.html"], "legacyEntries": ["public/html-kit/templates/du-avaliacao-dashboard.html"] },
       "react": { "routes": ["/avaliacao-dashboard", "/avaliacao-dashboard/trainer", "/avaliacao-dashboard/admin"], "entries": ["app/(cockpit)/avaliacao-dashboard/page.tsx"], "legacyEntries": ["app/(site)/avaliacao-dashboard/page.tsx"] },
-      "differences": ["React separa acesso, formador e administrador em rotas; HTML usa vistas numa só página"]
+      "differences": ["React separa acesso, formador e administrador em rotas; HTML usa vistas numa só página"],
+      "moduleExceptions": [
+        { "module": "auth-pin", "reason": "O Kit usa credenciais por perfil, hash e bloqueio temporário que o Module ainda não suporta" },
+        { "module": "data-table", "reason": "A tabela do Kit tem ações por linha e renderização DOM segura desde WP-22" }
+      ]
     },
     {
       "id": "website-starter", "name": "Website Starter", "blueprint": "website", "starter": true, "parity": "single-stack",

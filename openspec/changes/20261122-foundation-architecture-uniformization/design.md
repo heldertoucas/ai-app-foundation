@@ -188,4 +188,24 @@ Cada pacote é um commit independente, e `git revert` repõe-o. WP-40 é a exce�
 | **R8** | WP-32 | O `grep` final apanha os mockups | Excluir `public/html-kit/examples` |
 | **R9** | WP-36 | Sem lista de ficheiros | Definir globs ou a lista da auditoria |
 
+### Ronda 3 (estado atual)
+
+**Veredito atual:** **SEM BLOQUEADORES CONHECIDOS NA ESPECIFICAÇÃO. A execução começa só com o piloto de M0.**
+**Estado:** T1 a T9 foram verificados no código e corrigidos nos pacotes. Esta revisão final não voltou ao council.
+**Motivo do piloto:** as rondas seguem a encontrar falhas que só a execução confirma, e a maior parte dos patches continua NÃO PILOTADA.
+
+| ID | Pacote | Problema verificado | Correção |
+|---|---|---|---|
+| **T1** | WP-28 | Esc deixava de fechar a gaveta | Tratado no runtime |
+| **T2** | WP-28 | Gaveta fechada recebia foco | `visibility: hidden` |
+| **T3** | WP-25 | Telemetria ficava inacessível em telemóvel | Esconder só o texto |
+| **T4** | WP-45 | `$FILES` não divide em zsh | `git grep -z` com `xargs -0` |
+| **T5** | WP-07, 13 | Sandbox quebrava `reference.html` | Sandbox só nas 2 páginas CDN; storage protegido |
+| **T6** | WP-03 | `test-results` rastreado sujava a árvore | Deixa de ser rastreado |
+| **T7** | WP-56 | `auth-pin` não cobre perfis, hash e bloqueio | Exceção declarada no manifesto |
+| **T8** | WP-52 | `SessionHeader` não recebia o marcador | Ficheiro incluído no pacote |
+| **T9** | WP-36 | Cores do Futuro Digital sem mapeamento | Tokens, gradientes e sombras mapeados |
+
+**Risco residual aceite na especificação:** os endpoints internos de `next dev` correm antes de `proxy.ts`.
+
 **Concerns da ronda 2:** ver a revisão de proteção por Host, recuperação de WP-40, baselines idempotentes, foco do drawer, topbar móvel, handlers duplicados em Mission Control, escala tipográfica e alinhamento de `design.md` e `tasks.md` com os pacotes.

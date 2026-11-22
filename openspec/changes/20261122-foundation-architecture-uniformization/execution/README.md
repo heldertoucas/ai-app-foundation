@@ -51,7 +51,7 @@ Não reabra estas decisões. WP-08 regista-as formalmente.
 6. **Processos:** nunca termine um processo que não iniciou.
 7. **Vault:** nunca escreva diretamente no Vault. Use o ciclo de memória.
 8. **Âmbito:** altere apenas os ficheiros listados no pacote.
-9. **Base de dados:** antes de WP-02 estar concluído, nunca corra `pnpm test`. Para abrir a app, use sempre `bash "$T/dev-server.sh"` em segundo plano, nunca `pnpm dev`. Este script usa uma cópia descartável de `prisma/dev.db`.
+9. **Base de dados:** antes de WP-02 estar concluído, nunca corra `pnpm test`. Nunca use `pnpm dev` diretamente. Para um comando que precise da app, use `bash "$T/with-server.sh" <comando>`. Para verificação manual, use `bash "$T/dev-server.sh"` em segundo plano e pare com `bash "$T/stop-dev-server.sh"`. Ambos usam uma cópia descartável de `prisma/dev.db`.
 10. **Evidência:** só marque uma tarefa `[x]` depois de ver o resultado do comando de verificação.
 
 ## 4. Preparar a shell
@@ -172,6 +172,8 @@ Commit: <hash>
 | `tools/shell-setup.sh` | Define variáveis e a raiz |
 | `tools/make-baseline.sh` | Exporta uma baseline do commit atual, reutilizável em retry |
 | `tools/dev-server.sh` | Arranca a app em 4300 com base de dados descartável |
+| `tools/stop-dev-server.sh` | Para só o processo iniciado por `dev-server.sh` |
+| `tools/with-server.sh` | Corre um comando com a app ativa e para-a no fim |
 | `tools/normalize-font-sizes.mjs` | Ajusta tamanhos CSS à escala canónica |
 | `tools/externalize-html.mjs` | Remove inline CSS, JS e handlers |
 | `tools/compare-renders.cjs` | Compara duas páginas em 4 combinações |

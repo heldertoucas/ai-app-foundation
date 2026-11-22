@@ -102,12 +102,12 @@ const layerOf = (f) => {
 };
 const FORBIDDEN = {
   primitive: [/^@\/components\/(?!ui\/)/, /^@\/app/, /^@\/lib\/(?!utils)/],
-  web: [/^@\/components\/(dashboard|avaliacao|futuro)/, /^@\/app/],
-  dashboard: [/^@\/components\/(avaliacao|futuro)/, /^@\/app/],
-  catalog: [/^@\/components\/(avaliacao|futuro)/, /^@\/app/],
-  shell: [/^@\/components\/(dashboard|avaliacao|futuro)/, /^@\/app/],
-  'kit:avaliacao': [/^@\/components\/futuro/, /^@\/app/],
-  'kit:futuro-digital': [/^@\/components\/avaliacao/, /^@\/app/],
+  web: [/^@\/components\/(dashboard|avaliacao|futuro|kits)/, /^@\/app/],
+  dashboard: [/^@\/components\/(avaliacao|futuro|kits)/, /^@\/app/],
+  catalog: [/^@\/components\/(avaliacao|futuro|kits)/, /^@\/app/],
+  shell: [/^@\/components\/(dashboard|avaliacao|futuro|kits)/, /^@\/app/],
+  'kit:avaliacao': [/^@\/components\/(kits\/)?futuro/, /^@\/app/],
+  'kit:futuro-digital': [/^@\/components\/(kits\/)?avaliacao/, /^@\/app/],
   route: [],
 };
 const react = reactFiles.map((f) => {

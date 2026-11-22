@@ -65,7 +65,7 @@ A Module SHALL contain reusable executable behavior, and a Recipe SHALL contain 
 
 #### Scenario: Reusable HTML behavior
 - **WHEN** an HTML Kit needs a capability provided by a Module
-- **THEN** the Kit SHALL use that Module instead of reimplementing it
+- **THEN** the Kit SHALL use that Module or declare a `moduleExceptions` entry with the reason in the manifest
 
 ### Requirement: Backward-compatible paths
 The migration SHALL preserve access to former HTML template URLs.

@@ -45,6 +45,11 @@ if (process.argv.includes('--rollback')) {
   if (!fs.existsSync(headFile())) stop('no recorded move');
   const recorded = fs.readFileSync(headFile(), 'utf8').trim();
   if (git('rev-parse', 'HEAD').trim() !== recorded) stop('HEAD changed since the move; use git revert');
+  const allowed = ['public/html/', 'public/blueprints/', 'public/html-kit/', 'public/templates-index.html', CHECK, ROUTE, HEADER, CAPTURE, MANIFEST];
+  const changed = git('status', '--porcelain', '--untracked-files=all').split('\n').filter(Boolean)
+    .flatMap((line) => line.slice(3).split(' -> ')).map((p) => p.replace(/^"|"$/g, ''));
+  const foreign = changed.filter((p) => !allowed.some((a) => (a.endsWith('/') ? p.startsWith(a) : p === a)));
+  if (foreign.length) stop(`changes outside the move: ${foreign.join(', ')}`);
   rollback(recorded);
   fs.rmSync(headFile());
   console.log(`ROLLED BACK to ${recorded}`);

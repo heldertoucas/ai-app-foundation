@@ -92,7 +92,7 @@ const stripComments = (css) => css.replace(/\/\*[\s\S]*?\*\//g, '');
 const classNames = (css) => new Set([...stripComments(css).matchAll(/\.((?:ui|du)-[A-Za-z0-9_-]+)/g)].map((m) => m[1]));
 const coreClasses = new Set(coreFiles.flatMap((f) => [...classNames(read(f))]));
 const EMOJI = /\p{Emoji_Presentation}|\p{Extended_Pictographic}️/u;
-const SINKS = /\.innerHTML\s*[+=](?!=)|\.outerHTML\s*[+=](?!=)|insertAdjacentHTML|document\.write\s*\(/;
+const SINKS = /\.(?:inner|outer)HTML\s*(?:\+=|=(?!=))|insertAdjacentHTML|document\.write\s*\(/;
 const TYPE_SCALE = new Set([0.75, 0.875, 1, 1.125, 1.25, 1.5, 1.875, 2.25, 3]);
 const offScaleType = (css) => [...stripComments(css).matchAll(/font-size:\s*([\d.]+)(rem|px)/g)].some((m) => {
   const rem = m[2] === 'rem' ? Number(m[1]) : Number(m[1]) / 16;
@@ -102,6 +102,9 @@ const offScaleType = (css) => [...stripComments(css).matchAll(/font-size:\s*([\d
 for (const f of coreFiles) if (offScaleType(read(f))) htmlFinding(`${f}: font-size outside the canonical scale`);
 const catalogCss = String(manifest.catalog).replace(/\.html$/, '.css');
 if (has(catalogCss) && offScaleType(read(catalogCss))) htmlFinding(`${catalogCss}: font-size outside the canonical scale`);
+const catalogJs = String(manifest.catalog).replace(/\.html$/, '.js');
+if (has(catalogJs) && SINKS.test(read(catalogJs))) structureFinding(`${catalogJs}: unsafe HTML sink`);
+for (const f of [manifest.catalog, catalogJs]) if (has(f) && EMOJI.test(read(f))) structureFinding(`${f}: catalog emoji`);
 if (SINKS.test(read(`${coreDir}/du-runtime.js`))) htmlFinding('core runtime: unsafe HTML sink');
 for (const m of manifest.modules) {
   if (!m.stacks.includes('html')) continue;
@@ -126,6 +129,9 @@ for (const { kit, file } of htmlPages) {
   const text = markup.replace(/<[^>]+>/g, ' ');
   for (const m of `${html.match(/(?:localhost|127\.0\.0\.1):\d{2,5}/g)?.join(' ') || ''} ${text}`.matchAll(/(?:localhost|127\.0\.0\.1)?:(\d{4,5})\b/g)) if (!ASSIGNED_PORTS.has(m[1])) htmlFinding(`${label}: unassigned port ${m[1]}`);
 
+  for (const attr of html.matchAll(/data-du-on-(?:click|input)="([^"]*)"/g)) {
+    for (const m of attr[1].replace(/&quot;/g, '"').matchAll(/(?:localhost|127\.0\.0\.1)?:(\d{4,5})\b/g)) if (!ASSIGNED_PORTS.has(m[1])) htmlFinding(`${label}: unassigned port ${m[1]}`);
+  }
   const base = file.replace(/\.html$/, '');
   const localCss = has(`${base}.css`) ? read(`${base}.css`) : '';
   const localJs = has(`${base}.js`) ? read(`${base}.js`) : '';
