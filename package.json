@@ -10,7 +10,7 @@
     "lint": "pnpm typecheck",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "foundation:check": "node scripts/foundation-check.js && node scripts/foundation-contract.cjs",
+    "foundation:check": "node scripts/foundation-check.js && node scripts/foundation-contract.cjs --strict-html",
     "foundation:contract": "node scripts/foundation-contract.cjs",
     "foundation:audit": "mkdir -p .audit && node scripts/audit/static-audit.mjs . .audit/static.json && node scripts/audit/render-audit.cjs \"$PWD\" \"$PWD/.audit\" && node scripts/audit/grade.mjs .audit",
     "setup": "node -e \"if (!fs.existsSync('.env')) fs.copyFileSync('.env.example', '.env')\" && prisma db push --accept-data-loss && node scripts/ensure-wal.js && prisma generate && pnpm typecheck"
