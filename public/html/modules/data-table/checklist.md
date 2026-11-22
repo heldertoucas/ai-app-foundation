@@ -2,7 +2,7 @@
 
 - [ ] Passo 1: Incluir o script `datatable-fetch.js` no final do `<body>`:
   ```html
-  <script src="../recipes/datatable-fetch/datatable-fetch.js" defer></script>
+  <script src="../../modules/data-table/datatable-fetch.js" defer></script>
   ```
 - [ ] Passo 2: Definir a tabela HTML com o atributo `data-du-table-source="URL_DO_JSON"`:
   ```html

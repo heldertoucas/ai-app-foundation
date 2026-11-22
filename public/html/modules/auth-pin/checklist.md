@@ -4,7 +4,7 @@
 
 - [ ] Passo 1: Incluir o script `pin-lock.js` no `<head>` ou início do `<body>`:
   ```html
-  <script src="../recipes/auth-pin-lock/pin-lock.js" defer></script>
+  <script src="../../modules/auth-pin/pin-lock.js" defer></script>
   ```
 - [ ] Passo 2: Inicializar o lock indicando a hash ou PIN esperado e a duração da sessão:
   ```javascript

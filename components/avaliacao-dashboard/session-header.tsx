@@ -103,7 +103,7 @@ export function SessionHeader() {
 
           {/* Link para o template zero-build twin */}
           <a
-            href="/html-kit/templates/du-avaliacao-dashboard.html"
+            href="/html/kits/avaliacao/index.html"
             target="_blank"
             rel="noopener noreferrer"
             title="Abrir versão Gémea Zero-Build HTML5"

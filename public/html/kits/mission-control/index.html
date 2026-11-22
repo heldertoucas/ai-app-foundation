@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; font-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DU Mission Control Dashboard — HTML Foundation Standalone</title>
+  
+  <link rel="stylesheet" href="../../core/tokens.css">
+  <link rel="stylesheet" href="../../core/vendor/shadcn-html.all.css">
+  <link rel="stylesheet" href="../../core/du-components.css">
+  <link rel="stylesheet" href="index.css">
+
+  <!-- Micro-Runtime Inlined -->
+  <script src="index.js" defer></script>
+<script src="../../core/du-runtime.js" defer></script>
+</head>
+<body>
+
+  <div class="du-app-shell">
+    
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="du-sidebar">
+      <div class="du-sidebar-header">
+        <div class="du-stat-icon-wrapper x-s1">
+          <svg class="du-icon du-icon-lg" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div>
+          <div class="x-s2">Development Universe</div>
+          <div class="x-s3">Mission Control Cockpit</div>
+        </div>
+      </div>
+
+      <div class="du-sidebar-nav">
+        <!-- Group 1: Universe Platform -->
+        <div>
+          <div class="du-nav-section-title">Universe Platform</div>
+          <nav class="du-nav-group">
+            <button class="du-nav-item active" data-du-nav-target="view-overview" data-du-nav-title="1. System Overview">
+              <span class="du-nav-item-content">
+                <svg class="du-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                <span class="du-nav-label">1. System Overview</span>
+              </span>
+            </button>
+
+            <button class="du-nav-item" data-du-nav-target="view-analytics" data-du-nav-title="2. Analytics & Visuals">
+              <span class="du-nav-item-content">
+                <svg class="du-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                <span class="du-nav-label">2. Analytics & Visuals</span>
+              </span>
+              <span class="du-nav-badge">Telemetry</span>
+            </button>
+
+            <button class="du-nav-item" data-du-nav-target="view-projects" data-du-nav-title="3. Projects Directory">
+              <span class="du-nav-item-content">
+                <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                <span class="du-nav-label">3. Projects Directory</span>
+              </span>
+              <span class="du-nav-badge">18</span>
+            </button>
+
+            <button class="du-nav-item" data-du-nav-target="view-services" data-du-nav-title="4. Services & Ports Fleet">
+              <span class="du-nav-item-content">
+                <svg class="du-icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                <span class="du-nav-label">4. Services & Ports</span>
+              </span>
+              <span class="du-nav-badge ui-badge-status-live">4 Live</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Group 2: Memory & OpenSpec -->
+        <div>
+          <div class="du-nav-section-title">Memory & OpenSpec</div>
+          <nav class="du-nav-group">
+            <button class="du-nav-item" data-du-nav-target="view-memory" data-du-nav-title="5. Memory Governance">
+              <span class="du-nav-item-content">
+                <svg class="du-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                <span class="du-nav-label">5. Memory Governance</span>
+              </span>
+              <span class="du-nav-badge ui-badge-status-drift">12</span>
+            </button>
+
+            <button class="du-nav-item" data-du-nav-target="view-openspec" data-du-nav-title="6. OpenSpec Dashboard">
+              <span class="du-nav-item-content">
+                <svg class="du-icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                <span class="du-nav-label">6. OpenSpec Changes</span>
+              </span>
+              <span class="du-nav-badge">1 Active</span>
+            </button>
+
+            <button class="du-nav-item" data-du-nav-target="view-vault" data-du-nav-title="7. Vault Explorer">
+              <span class="du-nav-item-content">
+                <svg class="du-icon" viewBox="0 0 24 24"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+                <span class="du-nav-label">7. Vault Explorer</span>
+              </span>
+              <span class="du-nav-badge">Home</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      <div class="du-sidebar-footer">
+        <div class="x-s4">
+          <span class="x-s5"></span>
+          <span class="x-s6">SES-2026-LIVE</span>
+        </div>
+      </div>
+    </aside>
+    <button type="button" class="du-sidebar-backdrop" aria-label="Fechar menu"></button>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main class="du-main-layout">
+      
+      <!-- Top Bar -->
+      <header class="du-top-bar">
+        <button type="button" class="ui-btn ui-btn-ghost du-sidebar-toggle" data-du-sidebar-toggle aria-label="Abrir menu" aria-expanded="false">
+          <svg class="du-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="du-breadcrumb">
+          <span>Universe</span>
+          <span>/</span>
+          <span id="du-breadcrumb-title" class="du-breadcrumb-active">1. System Overview</span>
+        </div>
+
+        <div class="x-s7">
+          <div class="ui-badge ui-badge-status-live x-s8" data-du-hide-mobile>
+            <span class="x-s9"></span>
+            <span>4 Online</span>
+          </div>
+
+          <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-drawer-open="info-drawer" title="System Info & Telemetry Drawer" aria-label="Abrir telemetria">
+            <svg class="du-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <span data-du-hide-mobile>Telemetry Drawer</span>
+          </button>
+
+          <button class="du-command-bar" data-du-modal-open="du-command-dialog" aria-label="Search and open command dialog">
+            <svg class="du-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span data-du-hide-mobile>Search...</span>
+            <span class="du-command-shortcut" data-du-hide-mobile>Ctrl+K</span>
+          </button>
+
+          <button class="ui-btn ui-btn-outline ui-btn-sm" title="Toggle Dark/Light" aria-label="Alternar tema" data-du-on-click="[[&quot;duToggleTheme&quot;,[]]]">
+            <svg class="du-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Views Container -->
+      <div class="du-view-container">
+
+        <!-- ==================== VIEW 1: OVERVIEW ==================== -->
+        <section id="view-overview" class="du-view active">
+          <div class="x-s10">
+            <div>
+              <h1 class="x-s11">Visão Geral do Sistema</h1>
+              <p class="x-s12">Cockpit central para monitorização do workspace canónico, aplicações ativas e cofre de memória.</p>
+            </div>
+
+            <!-- Layout Switcher: Bento vs Master-Detail -->
+            <div class="du-status-chips-group">
+              <button class="du-status-chip active" id="btn-mode-bento" data-du-on-click="[[&quot;duSwitchOverviewMode&quot;,[&quot;bento&quot;]]]">
+                <svg class="du-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                <span>Bento Grid</span>
+              </button>
+              <button class="du-status-chip" id="btn-mode-masterdetail" data-du-on-click="[[&quot;duSwitchOverviewMode&quot;,[&quot;masterdetail&quot;]]]">
+                <svg class="du-icon" viewBox="0 0 24 24"><line x1="9" y1="3" x2="9" y2="21"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                <span>Master-Detail</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KPI Cards Row -->
+          <div class="du-bento-grid" data-fixture="true">
+            <div class="du-stat-card">
+              <div class="du-stat-header">
+                <span class="du-stat-title">Projects</span>
+                <div class="du-stat-icon-wrapper">
+                  <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                </div>
+              </div>
+              <div class="du-stat-value">18</div>
+              <div class="du-stat-footer">
+                <span class="du-stat-trend du-trend-up">↑ 18 Registered</span>
+                <span>4 running locally</span>
+              </div>
+            </div>
+
+            <div class="du-stat-card">
+              <div class="du-stat-header">
+                <span class="du-stat-title">Fleet Ports Probed</span>
+                <div class="du-stat-icon-wrapper">
+                  <svg class="du-icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                </div>
+              </div>
+              <div class="du-stat-value">4</div>
+              <div class="du-stat-footer">
+                <span class="du-stat-trend du-trend-up">100% In-House</span>
+                <span>:4300, :4000, :4210, Porta por atribuir</span>
+              </div>
+            </div>
+
+            <div class="du-stat-card">
+              <div class="du-stat-header">
+                <span class="du-stat-title">Memory Pipeline</span>
+                <div class="du-stat-icon-wrapper">
+                  <svg class="du-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                </div>
+              </div>
+              <div class="du-stat-value">12</div>
+              <div class="du-stat-footer">
+                <span class="du-stat-trend du-trend-neutral">● Staged</span>
+                <span>Ready for memory digest</span>
+              </div>
+            </div>
+
+            <div class="du-stat-card">
+              <div class="du-stat-header">
+                <span class="du-stat-title">Canonical Storage</span>
+                <div class="du-stat-icon-wrapper">
+                  <svg class="du-icon" viewBox="0 0 24 24"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+                </div>
+              </div>
+              <div class="du-stat-value">Synced</div>
+              <div class="du-stat-footer">
+                <span class="du-stat-trend du-trend-up">Dev/home</span>
+                <span>Obsidian vault active</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- MODE A: BENTO GRID (DEFAULT) -->
+          <div class="x-s13" id="overview-bento-layout">
+            <div class="x-s14">
+              
+              <!-- Dev Servers Quick Card -->
+              <div class="ui-card">
+                <div class="ui-card-header x-s15">
+                  <div>
+                    <h3 class="ui-card-title">Active Local Dev Servers</h3>
+                    <p class="ui-card-description">Zero-overhead port telemetry</p>
+                  </div>
+                  <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-nav-target="view-services">All Services →</button>
+                </div>
+                <div class="ui-card-content x-s16">
+                  <div class="x-s17">
+                    <div>
+                      <div class="x-s2">ai-app-foundation</div>
+                      <div class="x-s3">Port 4300 • Next.js 16</div>
+                    </div>
+                    <a class="ui-btn ui-btn-outline ui-btn-sm x-s18" href="http://localhost:4300" target="_blank">Open :4300 ↗</a>
+                  </div>
+
+                  <div class="x-s17">
+                    <div>
+                      <div class="x-s2">du-dashboard</div>
+                      <div class="x-s3">Port 4000 • Mission Control</div>
+                    </div>
+                    <a class="ui-btn ui-btn-outline ui-btn-sm x-s18" href="http://localhost:4000" target="_blank">Open :4000 ↗</a>
+                  </div>
+
+                  <div class="x-s17">
+                    <div>
+                      <div class="x-s2">newsletter-app (PRJ-0011)</div>
+                      <div class="x-s3">Port 4210 • Vite React</div>
+                    </div>
+                    <a class="ui-btn ui-btn-outline ui-btn-sm x-s18" href="http://localhost:4210" target="_blank">Open :4210 ↗</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Staged Memory Quick Card -->
+              <div class="ui-card">
+                <div class="ui-card-header x-s15">
+                  <div>
+                    <h3 class="ui-card-title">Memory Governance Candidates</h3>
+                    <p class="ui-card-description">Pending review in 08-system/governance</p>
+                  </div>
+                  <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-nav-target="view-memory">Review All →</button>
+                </div>
+                <div class="ui-card-content x-s16">
+                  <div class="x-s19">
+                    <div class="x-s20">
+                      <span class="x-s21">MEM-2026-09-04-001</span>
+                      <span class="ui-badge">pattern</span>
+                    </div>
+                    <div class="x-s22">SQLite WAL Single Connection Lock Handling</div>
+                  </div>
+
+                  <div class="x-s19">
+                    <div class="x-s20">
+                      <span class="x-s21">MEM-2026-09-03-002</span>
+                      <span class="ui-badge">constraint</span>
+                    </div>
+                    <div class="x-s22">Zero Docker requirement across municipal nodes</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- MODE B: MASTER-DETAIL SPLIT VIEW (TOGGLEABLE) -->
+          <div class="du-master-detail-container x-s23" id="overview-master-detail-layout">
+            
+            <!-- MASTER LIST -->
+            <div class="ui-card">
+              <div class="ui-card-header">
+                <h3 class="ui-card-title">Initiatives Master</h3>
+                <p class="ui-card-description">Select to inspect in detail</p>
+              </div>
+              <div class="ui-card-content du-master-list">
+                
+                <div class="du-master-item active" data-du-on-click="[[&quot;duSelectMasterItem&quot;,[{&quot;$this&quot;:true},&quot;DEV-001&quot;,&quot;ai-app-foundation&quot;,&quot;system&quot;,&quot;Active&quot;,&quot;:4300&quot;,&quot;Next.js 16 base foundation with shadcn/ui and SQLite WAL.&quot;,&quot;34&quot;]]]">
+                  <div class="x-s24">
+                    <span class="x-s2">ai-app-foundation</span>
+                    <span class="ui-badge ui-badge-status-live">:4300</span>
+                  </div>
+                  <div class="x-s25">
+                    <span>DEV-001</span>
+                    <span class="ui-badge">system</span>
+                  </div>
+                </div>
+
+                <div class="du-master-item" data-du-on-click="[[&quot;duSelectMasterItem&quot;,[{&quot;$this&quot;:true},&quot;PRJ-0021&quot;,&quot;du-dashboard&quot;,&quot;system&quot;,&quot;Active&quot;,&quot;:4000&quot;,&quot;Central multi-page cockpit and telemetry platform for Development Universe.&quot;,&quot;18&quot;]]]">
+                  <div class="x-s24">
+                    <span class="x-s2">du-dashboard</span>
+                    <span class="ui-badge ui-badge-status-live">:4000</span>
+                  </div>
+                  <div class="x-s25">
+                    <span>PRJ-0021</span>
+                    <span class="ui-badge">system</span>
+                  </div>
+                </div>
+
+                <div class="du-master-item" data-du-on-click="[[&quot;duSelectMasterItem&quot;,[{&quot;$this&quot;:true},&quot;PRJ-0005&quot;,&quot;app-avaliacao&quot;,&quot;professional&quot;,&quot;Active&quot;,&quot;Porta por atribuir&quot;,&quot;Plataforma Formação CML com rubric engine e relatórios pedagógicos.&quot;,&quot;27&quot;]]]">
+                  <div class="x-s24">
+                    <span class="x-s2">app-avaliacao</span>
+                    <span class="ui-badge ui-badge-status-live">Porta por atribuir</span>
+                  </div>
+                  <div class="x-s25">
+                    <span>PRJ-0005</span>
+                    <span class="ui-badge">professional</span>
+                  </div>
+                </div>
+
+                <div class="du-master-item" data-du-on-click="[[&quot;duSelectMasterItem&quot;,[{&quot;$this&quot;:true},&quot;PRJ-0011&quot;,&quot;newsletter-app&quot;,&quot;professional&quot;,&quot;Active&quot;,&quot;:4210&quot;,&quot;React + Vite client for municipal newsletter publishing.&quot;,&quot;12&quot;]]]">
+                  <div class="x-s24">
+                    <span class="x-s2">newsletter-app</span>
+                    <span class="ui-badge ui-badge-status-live">:4210</span>
+                  </div>
+                  <div class="x-s25">
+                    <span>PRJ-0011</span>
+                    <span class="ui-badge">professional</span>
+                  </div>
+                </div>
+
+                <div class="du-master-item" data-du-on-click="[[&quot;duSelectMasterItem&quot;,[{&quot;$this&quot;:true},&quot;PRJ-0022&quot;,&quot;agente-futurodigital&quot;,&quot;professional&quot;,&quot;Active&quot;,&quot;Copilot Studio&quot;,&quot;Agente de IA e orquestração Copilot Studio para Futuro Digital CML.&quot;,&quot;41&quot;]]]">
+                  <div class="x-s24">
+                    <span class="x-s2">agente-futurodigital</span>
+                    <span class="ui-badge">M365</span>
+                  </div>
+                  <div class="x-s25">
+                    <span>PRJ-0022</span>
+                    <span class="ui-badge">professional</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- DETAIL PANE -->
+            <div class="ui-card du-detail-pane">
+              <div class="ui-card-header x-s26">
+                <div>
+                  <div class="x-s27">
+                    <h3 class="ui-card-title x-s28" id="md-detail-name">ai-app-foundation</h3>
+                    <span id="md-detail-domain" class="ui-badge">system</span>
+                  </div>
+                  <div class="x-s29" id="md-detail-id">DEV-001</div>
+                </div>
+                <span id="md-detail-status" class="ui-badge ui-badge-status-live">Active</span>
+              </div>
+
+              <div class="ui-card-content x-s13">
+                <div>
+                  <div class="x-s30">Mission & Context</div>
+                  <p class="x-s31" id="md-detail-desc">Next.js 16 base foundation with shadcn/ui and SQLite WAL.</p>
+                </div>
+
+                <div class="x-s32">
+                  <div class="x-s33">
+                    <div class="x-s3">Telemetry Port</div>
+                    <div class="x-s34" id="md-detail-port">:4300</div>
+                  </div>
+                  <div class="x-s33">
+                    <div class="x-s3">Historical Sessions</div>
+                    <div class="x-s35" id="md-detail-sessions">34</div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="x-s36">Associated Repository Actions</div>
+                  <div class="x-s37">
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="pnpm dev">Copy Dev Command</button>
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="dev project show DEV-001">Show DU Project</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ==================== VIEW 2: ANALYTICS & VISUALIZATIONS ==================== -->
+        <section id="view-analytics" class="du-view">
+          <div>
+            <h1 class="x-s11">Analytics & Data Visualizations</h1>
+            <p class="x-s12">Zero-dependency SVG gauges, sparklines, and stacked capability meters.</p>
+          </div>
+
+          <div class="x-s38">
+            
+            <!-- Radial Health Gauge -->
+            <div class="ui-card">
+              <div class="ui-card-header">
+                <h3 class="ui-card-title">System Invariant Health</h3>
+                <p class="ui-card-description">Zero-Dependency SVG Gauge</p>
+              </div>
+              <div class="ui-card-content du-radial-gauge-container">
+                <div class="du-radial-gauge x-s39">
+                  <svg width="140" height="140" viewBox="0 0 140 140">
+                    <circle class="du-gauge-circle-bg" cx="70" cy="70" r="58" stroke-width="12"></circle>
+                    <circle class="du-gauge-circle-fill" cx="70" cy="70" r="58" stroke-width="12" stroke-dasharray="364.4" stroke-dashoffset="36.4"></circle>
+                  </svg>
+                  <div class="du-gauge-center">
+                    <span class="du-gauge-val">90%</span>
+                    <span class="du-gauge-label">Optimal</span>
+                  </div>
+                </div>
+                <div class="x-s40">14 Invariants Checked • 0 Violations</div>
+              </div>
+            </div>
+
+            <!-- Stacked Rule Capability Bar -->
+            <div class="ui-card">
+              <div class="ui-card-header">
+                <h3 class="ui-card-title">Target Capability Distribution</h3>
+                <p class="ui-card-description">Live vs Drift vs Missing Rules</p>
+              </div>
+              <div class="ui-card-content x-s41">
+                <div class="du-stacked-bar-container">
+                  <div class="du-stacked-bar-header">
+                    <span class="x-s42">Overall Target Coverage</span>
+                    <span class="x-s43">42 Total</span>
+                  </div>
+                  <div class="du-stacked-bar">
+                    <div class="du-bar-segment du-bar-live x-s44" title="Live: 34"></div>
+                    <div class="du-bar-segment du-bar-drift x-s45" title="Drift: 6"></div>
+                    <div class="du-bar-segment du-bar-missing x-s46" title="Missing: 2"></div>
+                  </div>
+                  <div class="du-stacked-legend">
+                    <div class="du-legend-item"><span class="du-legend-dot x-s47"></span>Live (34)</div>
+                    <div class="du-legend-item"><span class="du-legend-dot x-s48"></span>Drift (6)</div>
+                    <div class="du-legend-item"><span class="du-legend-dot x-s49"></span>Missing (2)</div>
+                  </div>
+                </div>
+
+                <div class="du-linear-meter">
+                  <div class="x-s50">
+                    <span>Context Capsule Headroom</span>
+                    <span class="x-s51">72% Headroom</span>
+                  </div>
+                  <div class="du-meter-track">
+                    <div class="du-meter-fill x-s52"></div>
+                  </div>
+                  <div class="x-s53">
+                    <span>28,450 tokens used</span>
+                    <span>100,000 budget</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Operational Velocity Sparkline -->
+            <div class="ui-card">
+              <div class="ui-card-header">
+                <h3 class="ui-card-title">DU Operational Velocity</h3>
+                <p class="ui-card-description">7-Day Session Progression</p>
+              </div>
+              <div class="ui-card-content x-s54">
+                <div>
+                  <div class="x-s55">24 <span class="x-s56">sessions</span></div>
+                  <div class="x-s57">+14% vs previous week</div>
+                </div>
+                <svg class="du-sparkline" width="100%" height="70" viewBox="0 0 200 70" preserveAspectRatio="none">
+                  <polygon class="du-sparkline-area" points="0,70 0,55 30,60 60,45 90,50 120,30 150,20 180,12 200,70"></polygon>
+                  <polyline class="du-sparkline-line" points="0,55 30,60 60,45 90,50 120,30 150,20 180,12"></polyline>
+                </svg>
+                <div class="x-s58">
+                  <span>09-05</span>
+                  <span>09-08</span>
+                  <span>Today</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 3: PROJECTS DIRECTORY ==================== -->
+        <section id="view-projects" class="du-view">
+          <div class="x-s10">
+            <div>
+              <h1 class="x-s11">Projects Directory</h1>
+              <p class="x-s12">Canonical initiatives registered in <code>08-system/registry/projects.json</code>.</p>
+            </div>
+
+            <!-- Status Filter Chips -->
+            <div class="du-status-chips-group" data-du-filter-target="projects-table">
+              <button class="du-status-chip active" data-du-status-filter="all">All (18)</button>
+              <button class="du-status-chip" data-du-status-filter="system">System</button>
+              <button class="du-status-chip" data-du-status-filter="professional">Professional</button>
+            </div>
+          </div>
+
+          <div class="du-table-wrapper">
+            <div class="du-table-toolbar">
+              <input type="text" placeholder="Search projects by name, ID, domain..." class="du-table-search-input" data-du-filter-target="projects-table">
+            </div>
+
+            <table id="projects-table" class="du-table">
+              <thead>
+                <tr>
+                  <th>Project / Repository</th>
+                  <th>Domain</th>
+                  <th>Status</th>
+                  <th>Telemetry Port</th>
+                  <th class="x-s59">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-status="system">
+                  <td>
+                    <div class="x-s42">ai-app-foundation</div>
+                    <div class="x-s60">DEV-001 • C:\Users\helder.toucas\Dev\ai-app-foundation</div>
+                  </td>
+                  <td><span class="ui-badge">system</span></td>
+                  <td><span class="ui-badge ui-badge-status-live">Active</span></td>
+                  <td class="x-s61">:4300</td>
+                  <td class="x-s59">
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-on-click="[[&quot;duOpenDossier&quot;,[&quot;DEV-001&quot;,&quot;ai-app-foundation&quot;,&quot;system&quot;,&quot;Next.js 16 base foundation with shadcn/ui and SQLite WAL.&quot;,&quot;C:\\Users\\helder.toucas\\Dev\\ai-app-foundation&quot;]]]">Dossier</button>
+                  </td>
+                </tr>
+
+                <tr data-status="system">
+                  <td>
+                    <div class="x-s42">du-dashboard</div>
+                    <div class="x-s60">PRJ-0021 • C:\Users\helder.toucas\Dev\du-dashboard</div>
+                  </td>
+                  <td><span class="ui-badge">system</span></td>
+                  <td><span class="ui-badge ui-badge-status-live">Active</span></td>
+                  <td class="x-s61">:4000</td>
+                  <td class="x-s59">
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-on-click="[[&quot;duOpenDossier&quot;,[&quot;PRJ-0021&quot;,&quot;du-dashboard&quot;,&quot;system&quot;,&quot;Central multi-page cockpit and telemetry platform for Development Universe.&quot;,&quot;C:\\Users\\helder.toucas\\Dev\\du-dashboard&quot;]]]">Dossier</button>
+                  </td>
+                </tr>
+
+                <tr data-status="professional">
+                  <td>
+                    <div class="x-s42">app-avaliacao</div>
+                    <div class="x-s60">PRJ-0005 • C:\Users\helder.toucas\Dev\app-avaliacao</div>
+                  </td>
+                  <td><span class="ui-badge">professional</span></td>
+                  <td><span class="ui-badge ui-badge-status-live">Active</span></td>
+                  <td class="x-s61">Porta por atribuir</td>
+                  <td class="x-s59">
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-on-click="[[&quot;duOpenDossier&quot;,[&quot;PRJ-0005&quot;,&quot;app-avaliacao&quot;,&quot;professional&quot;,&quot;Plataforma Formação CML com rubric engine e relatórios pedagógicos.&quot;,&quot;C:\\Users\\helder.toucas\\Dev\\app-avaliacao&quot;]]]">Dossier</button>
+                  </td>
+                </tr>
+
+                <tr data-status="professional">
+                  <td>
+                    <div class="x-s42">newsletter-app</div>
+                    <div class="x-s60">PRJ-0011 • C:\Users\helder.toucas\Dev\newsletter-app</div>
+                  </td>
+                  <td><span class="ui-badge">professional</span></td>
+                  <td><span class="ui-badge ui-badge-status-live">Active</span></td>
+                  <td class="x-s61">:4210</td>
+                  <td class="x-s59">
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-on-click="[[&quot;duOpenDossier&quot;,[&quot;PRJ-0011&quot;,&quot;newsletter-app&quot;,&quot;professional&quot;,&quot;React + Vite client for municipal newsletter publishing.&quot;,&quot;C:\\Users\\helder.toucas\\Dev\newsletter-app&quot;]]]">Dossier</button>
+                  </td>
+                </tr>
+
+                <tr data-status="professional">
+                  <td>
+                    <div class="x-s42">agente-futurodigital</div>
+                    <div class="x-s60">PRJ-0022 • C:\Users\helder.toucas\Dev\agente-futurodigital</div>
+                  </td>
+                  <td><span class="ui-badge">professional</span></td>
+                  <td><span class="ui-badge ui-badge-status-live">Active</span></td>
+                  <td class="x-s43">M365</td>
+                  <td class="x-s59">
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-on-click="[[&quot;duOpenDossier&quot;,[&quot;PRJ-0022&quot;,&quot;agente-futurodigital&quot;,&quot;professional&quot;,&quot;Agente de IA e orquestração Copilot Studio para Futuro Digital CML.&quot;,&quot;C:\\Users\\helder.toucas\\Dev\\agente-futurodigital&quot;]]]">Dossier</button>
+                  </td>
+                </tr>
+
+                <tr data-status="system">
+                  <td>
+                    <div class="x-s42">paperclip</div>
+                    <div class="x-s60">PRJ-0013 • C:\Users\helder.toucas\Dev\paperclip</div>
+                  </td>
+                  <td><span class="ui-badge">system</span></td>
+                  <td><span class="ui-badge ui-badge-status-drift">Standby</span></td>
+                  <td class="x-s43">Porta por atribuir</td>
+                  <td class="x-s59">
+                    <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-on-click="[[&quot;duOpenDossier&quot;,[&quot;PRJ-0013&quot;,&quot;paperclip&quot;,&quot;system&quot;,&quot;Municipal utility toolkit service.&quot;,&quot;C:\\Users\\helder.toucas\\Dev\\paperclip&quot;]]]">Dossier</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 4: SERVICES & PORTS ==================== -->
+        <section id="view-services" class="du-view">
+          <div>
+            <h1 class="x-s11">Services & Ports Fleet</h1>
+            <p class="x-s12">Realtime zero-overhead socket detection of local dev servers running across workspaces.</p>
+          </div>
+
+          <div class="x-s62">
+            
+            <!-- Port 4300 -->
+            <div class="ui-card">
+              <div class="ui-card-header x-s15">
+                <span class="ui-badge ui-badge-status-live x-s63">:4300 Online</span>
+                <a class="ui-btn ui-btn-outline ui-btn-sm x-s18" href="http://localhost:4300" target="_blank">Open ↗</a>
+              </div>
+              <div class="ui-card-content x-s64">
+                <div>
+                  <div class="x-s65">ai-app-foundation</div>
+                  <div class="x-s66">Next.js 16 Foundation Workspace</div>
+                </div>
+                <div class="x-s67">
+                  <span>pnpm dev</span>
+                  <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-copy="pnpm dev">Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Port 4000 -->
+            <div class="ui-card">
+              <div class="ui-card-header x-s15">
+                <span class="ui-badge ui-badge-status-live x-s63">:4000 Online</span>
+                <a class="ui-btn ui-btn-outline ui-btn-sm x-s18" href="http://localhost:4000" target="_blank">Open ↗</a>
+              </div>
+              <div class="ui-card-content x-s64">
+                <div>
+                  <div class="x-s65">du-dashboard</div>
+                  <div class="x-s66">Next.js Mission Control Server</div>
+                </div>
+                <div class="x-s67">
+                  <span>pnpm dev -p 4000</span>
+                  <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-copy="pnpm dev -p 4000">Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Port 4210 -->
+            <div class="ui-card">
+              <div class="ui-card-header x-s15">
+                <span class="ui-badge ui-badge-status-live x-s63">:4210 Online</span>
+                <a class="ui-btn ui-btn-outline ui-btn-sm x-s18" href="http://localhost:4210" target="_blank">Open ↗</a>
+              </div>
+              <div class="ui-card-content x-s64">
+                <div>
+                  <div class="x-s65">newsletter-app</div>
+                  <div class="x-s66">PRJ-0011 Vite Frontend</div>
+                </div>
+                <div class="x-s67">
+                  <span>npm run dev</span>
+                  <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-copy="npm run dev">Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Porta por atribuir -->
+            <div class="ui-card">
+              <div class="ui-card-header x-s15">
+                <span class="ui-badge ui-badge-status-live x-s63">Porta por atribuir</span>
+                <span class="ui-badge">Porta por atribuir</span>
+              </div>
+              <div class="ui-card-content x-s64">
+                <div>
+                  <div class="x-s65">app-avaliacao</div>
+                  <div class="x-s66">PRJ-0005 FastAPI / Uvicorn Server</div>
+                </div>
+                <div class="x-s67">
+                  <span>uvicorn main:app --reload</span>
+                  <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-copy="uvicorn main:app --reload">Copy</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 5: MEMORY GOVERNANCE ==================== -->
+        <section id="view-memory" class="du-view">
+          <div>
+            <h1 class="x-s11">Second Brain Memory Governance</h1>
+            <p class="x-s12">Candidate proposals awaiting review and promotion into the canonical Obsidian vault.</p>
+          </div>
+
+          <div class="ui-card">
+            <div class="ui-card-header x-s15">
+              <div>
+                <h3 class="ui-card-title">12 Staged Candidates</h3>
+                <p class="ui-card-description">Path: 08-system/governance/candidates/</p>
+              </div>
+              <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="dev memory digest">Copy Promotion Command</button>
+            </div>
+            <div class="ui-card-content x-s68">
+              
+              <div class="x-s69">
+                <div class="x-s70">
+                  <div class="x-s4">
+                    <span class="x-s71">MEM-2026-09-04-001</span>
+                    <span class="ui-badge">pattern</span>
+                  </div>
+                  <div class="x-s65">SQLite WAL Single-Connection Lock Handling</div>
+                  <div class="x-s72">Mandatory connection_limit=1&busy_timeout=10000 in Next.js Server Components to prevent database table locked exceptions.</div>
+                </div>
+                <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="dev memory review MEM-2026-09-04-001">Review</button>
+              </div>
+
+              <div class="x-s69">
+                <div class="x-s70">
+                  <div class="x-s4">
+                    <span class="x-s71">MEM-2026-09-03-002</span>
+                    <span class="ui-badge">constraint</span>
+                  </div>
+                  <div class="x-s65">Zero Docker requirement across municipal nodes</div>
+                  <div class="x-s72">Strict architectural invariant forbidding Docker dependencies so applications run bare-metal or on low-spec hardware.</div>
+                </div>
+                <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-copy="dev memory review MEM-2026-09-03-002">Review</button>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 6: OPENSPEC DASHBOARD ==================== -->
+        <section id="view-openspec" class="du-view">
+          <div>
+            <h1 class="x-s11">OpenSpec Changes Tracker</h1>
+            <p class="x-s12">Active specifications and tasks across Development Universe workspaces.</p>
+          </div>
+
+          <div class="x-s38">
+            
+            <div class="ui-card">
+              <div class="ui-card-header">
+                <div class="x-s24">
+                  <span class="ui-badge ui-badge-status-live">In Progress</span>
+                  <span class="x-s60">PRJ-0022</span>
+                </div>
+                <h3 class="ui-card-title x-s73">verify-staged-knowledge-sources</h3>
+                <p class="ui-card-description">agente-futurodigital knowledge base pipeline</p>
+              </div>
+              <div class="ui-card-content x-s74">
+                <div class="du-linear-meter">
+                  <div class="x-s50">
+                    <span>Task Completion</span>
+                    <span class="x-s51">0 / 5 Tasks (0%)</span>
+                  </div>
+                  <div class="du-meter-track">
+                    <div class="du-meter-fill x-s46"></div>
+                  </div>
+                </div>
+                <div class="x-s66">
+                  Artifacts: <code>proposal.md</code>, <code>specs/</code>, <code>design.md</code>, <code>tasks.md</code>
+                </div>
+              </div>
+            </div>
+
+            <div class="ui-card">
+              <div class="ui-card-header">
+                <div class="x-s24">
+                  <span class="ui-badge ui-badge-status-live">Completed</span>
+                  <span class="x-s60">PRJ-0024</span>
+                </div>
+                <h3 class="ui-card-title x-s73">du-html-foundation-kit</h3>
+                <p class="ui-card-description">Zero-build offline HTML/CSS/JS foundation kit</p>
+              </div>
+              <div class="ui-card-content x-s74">
+                <div class="du-linear-meter">
+                  <div class="x-s50">
+                    <span>Task Completion</span>
+                    <span class="x-s51">5 / 5 Tasks (100%)</span>
+                  </div>
+                  <div class="du-meter-track">
+                    <div class="du-meter-fill x-s75"></div>
+                  </div>
+                </div>
+                <div class="x-s66">
+                  Deployed in <code>public/html/</code> with starter templates.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 7: VAULT EXPLORER ==================== -->
+        <section id="view-vault" class="du-view">
+          <div>
+            <h1 class="x-s11">Second Brain Vault Explorer</h1>
+            <p class="x-s12">Direct navigation of the canonical Obsidian Second Brain vault tree.</p>
+          </div>
+
+          <div class="x-s76">
+            <!-- Tree Navigation -->
+            <div class="ui-card">
+              <div class="ui-card-header">
+                <h3 class="ui-card-title">Vault Folders</h3>
+              </div>
+              <div class="ui-card-content x-s77">
+                <button class="du-nav-item active">
+                  <span class="du-nav-item-content">
+                    <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>00-inbox</span>
+                  </span>
+                </button>
+                <button class="du-nav-item">
+                  <span class="du-nav-item-content">
+                    <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>01-daily</span>
+                  </span>
+                </button>
+                <button class="du-nav-item">
+                  <span class="du-nav-item-content">
+                    <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>02-projects</span>
+                  </span>
+                </button>
+                <button class="du-nav-item">
+                  <span class="du-nav-item-content">
+                    <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>03-knowledge</span>
+                  </span>
+                </button>
+                <button class="du-nav-item">
+                  <span class="du-nav-item-content">
+                    <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>04-decisions</span>
+                  </span>
+                </button>
+                <button class="du-nav-item">
+                  <span class="du-nav-item-content">
+                    <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>08-system</span>
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Note Reader Mockup -->
+            <div class="ui-card">
+              <div class="ui-card-header x-s15">
+                <div>
+                  <h3 class="ui-card-title">08-system/constraints/CON-0009.md</h3>
+                  <p class="ui-card-description">Status: ACTIVE • Scope: global</p>
+                </div>
+                <span class="ui-badge ui-badge-status-live">Canonical</span>
+              </div>
+              <div class="ui-card-content x-s78">
+                <h2 class="x-s79">Subagent Zero Direct Mutation Invariant</h2>
+                <p>No subagent or delegated process may perform ungrounded filesystem writes outside its designated workspace boundary.</p>
+                <div class="x-s80">
+                  <strong>Provenance:</strong> Originated from session <code>SES-2026-08-29-022</code> via memory candidate <code>MEM-0094</code>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Command Palette Modal -->
+  <dialog class="ui-dialog x-s81" id="du-command-dialog">
+    <div class="x-s82">
+      <h3 class="x-s83">Quick Navigation Palette</h3>
+      <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-on-click="[[&quot;duCloseClosest&quot;,[{&quot;$this&quot;:true},&quot;dialog&quot;]]]">✕</button>
+    </div>
+    <input class="du-table-search-input x-s84" id="du-command-input" type="text" placeholder="Type a destination...">
+    <div class="x-s85">
+      <button class="du-nav-item" data-du-nav-target="view-overview" data-du-on-click="[[&quot;duCloseModal&quot;,[&quot;du-command-dialog&quot;]]]">
+        <span class="du-nav-item-content">
+          <svg class="du-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          <span>1. System Overview</span>
+        </span>
+      </button>
+      <button class="du-nav-item" data-du-nav-target="view-analytics" data-du-on-click="[[&quot;duCloseModal&quot;,[&quot;du-command-dialog&quot;]]]">
+        <span class="du-nav-item-content">
+          <svg class="du-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span>2. Analytics & Visuals</span>
+        </span>
+      </button>
+      <button class="du-nav-item" data-du-nav-target="view-projects" data-du-on-click="[[&quot;duCloseModal&quot;,[&quot;du-command-dialog&quot;]]]">
+        <span class="du-nav-item-content">
+          <svg class="du-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span>3. Projects Directory</span>
+        </span>
+      </button>
+      <button class="du-nav-item" data-du-nav-target="view-services" data-du-on-click="[[&quot;duCloseModal&quot;,[&quot;du-command-dialog&quot;]]]">
+        <span class="du-nav-item-content">
+          <svg class="du-icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+          <span>4. Services & Ports</span>
+        </span>
+      </button>
+    </div>
+  </dialog>
+
+  <!-- Project Dossier Modal -->
+  <div id="dossier-modal" class="du-modal-overlay">
+    <div class="du-modal-card">
+      <div class="du-modal-header">
+        <div>
+          <h3 class="x-s86" id="dossier-name">Project Dossier</h3>
+          <span class="x-s60" id="dossier-id">DEV-001</span>
+        </div>
+        <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-modal-close>✕</button>
+      </div>
+      <div class="du-modal-body">
+        <div>
+          <span class="ui-badge" id="dossier-domain">system</span>
+        </div>
+        <div>
+          <div class="x-s87">Description</div>
+          <p class="x-s88" id="dossier-desc"></p>
+        </div>
+        <div>
+          <div class="x-s87">Local Path</div>
+          <code class="x-s89" id="dossier-path"></code>
+        </div>
+      </div>
+      <div class="du-modal-footer">
+        <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-modal-close>Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide-Over Information Drawer -->
+  <div id="info-drawer" class="du-drawer-overlay">
+    <div class="du-drawer">
+      <div class="du-drawer-header">
+        <div>
+          <div class="x-s4">
+            <h3 class="x-s86" id="drawer-title">System Telemetry</h3>
+            <span id="drawer-badge" class="ui-badge ui-badge-status-live">Live</span>
+          </div>
+          <div class="x-s90" id="drawer-subtitle">Live Fleet & Second Brain Status</div>
+        </div>
+        <button class="ui-btn ui-btn-ghost ui-btn-sm" data-du-drawer-close>✕</button>
+      </div>
+
+      <div id="drawer-content" class="du-drawer-body">
+        
+        <!-- Live Services Health Section -->
+        <div class="x-s16">
+          <div class="x-s91">Probed Fleet Sockets</div>
+          <div class="x-s92">
+            <div class="x-s93">
+              <div>
+                <div class="x-s94">ai-app-foundation</div>
+                <div class="x-s95">Port 4300 • HTTP 200 OK</div>
+              </div>
+              <span class="ui-badge ui-badge-status-live">Live</span>
+            </div>
+            <div class="x-s93">
+              <div>
+                <div class="x-s94">du-dashboard</div>
+                <div class="x-s95">Port 4000 • HTTP 200 OK</div>
+              </div>
+              <span class="ui-badge ui-badge-status-live">Live</span>
+            </div>
+            <div class="x-s93">
+              <div>
+                <div class="x-s94">newsletter-app</div>
+                <div class="x-s95">Port 4210 • HTTP 200 OK</div>
+              </div>
+              <span class="ui-badge ui-badge-status-live">Live</span>
+            </div>
+            <div class="x-s93">
+              <div>
+                <div class="x-s94">app-avaliacao</div>
+                <div class="x-s95">Porta por atribuir • HTTP 200 OK</div>
+              </div>
+              <span class="ui-badge ui-badge-status-live">Live</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- System Invariants Section -->
+        <div class="x-s16">
+          <div class="x-s91">Canonical Invariants</div>
+          <div class="x-s96">
+            <div class="x-s97">
+              <span class="x-s98">CON-0009</span>
+              <div class="x-s99">Subagent Zero Direct Mutation Invariant</div>
+            </div>
+            <div class="x-s97">
+              <span class="x-s98">CON-0012</span>
+              <div class="x-s99">Continuous Dogfooding & Operational Feedback Policy</div>
+            </div>
+            <div class="x-s97">
+              <span class="x-s98">PAT-0078</span>
+              <div class="x-s99">Tier-1 Repository Bootstrap & Architecture Invariants</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Terminal Shortcuts -->
+        <div class="x-s16">
+          <div class="x-s91">DU Commands</div>
+          <div class="x-s100">
+            <button class="ui-btn ui-btn-outline ui-btn-sm x-s101" data-du-copy="dev memory digest">
+              <span class="x-s63">dev memory digest</span>
+              <span>Copy</span>
+            </button>
+            <button class="ui-btn ui-btn-outline ui-btn-sm x-s101" data-du-copy="dev session audit">
+              <span class="x-s63">dev session audit</span>
+              <span>Copy</span>
+            </button>
+            <button class="ui-btn ui-btn-outline ui-btn-sm x-s101" data-du-copy="dev project list">
+              <span class="x-s63">dev project list</span>
+              <span>Copy</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="du-drawer-footer">
+        <span class="x-s60">SES-2026-LIVE • Dev/home</span>
+        <button class="ui-btn ui-btn-outline ui-btn-sm" data-du-drawer-close>Close</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
+

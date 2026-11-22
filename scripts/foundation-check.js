@@ -50,24 +50,24 @@ const foundProhibited = deps.filter(d => prohibited.some(p => d.includes(p)));
 check('Dependency budget / Zero SaaS', foundProhibited.length === 0, 'Prohibited SaaS dependencies found: ' + foundProhibited.join(', '));
 
 // 2. HTML Foundation Kit Checks (Symmetry & Parity)
-const htmlKitDir = path.join(__dirname, '../public/html-kit');
+const htmlKitDir = path.join(__dirname, '../public/html/core');
 check('HTML Kit Core Assets present', 
   fs.existsSync(path.join(htmlKitDir, 'tokens.css')) &&
   fs.existsSync(path.join(htmlKitDir, 'du-components.css')) &&
   fs.existsSync(path.join(htmlKitDir, 'du-runtime.js')) &&
   fs.existsSync(path.join(htmlKitDir, 'vendor/shadcn-html.all.css')),
-  'Missing core assets in public/html-kit/'
+  'Missing core assets in public/html/core/'
 );
 
 check('HTML Kit Starter Templates present',
-  fs.existsSync(path.join(htmlKitDir, 'templates/du-html-app-template.html')) &&
-  fs.existsSync(path.join(htmlKitDir, 'templates/template-app-shell.html')),
-  'Missing reference templates in public/html-kit/templates/'
+  fs.existsSync(path.join(htmlKitDir, '../../blueprints/dashboard/mockups/reference.html')) &&
+  fs.existsSync(path.join(htmlKitDir, '../kits/dashboard-starter/index.html')),
+  'Missing reference templates in public/html/kits/'
 );
 
 check('HTML Kit Recipes present',
-  fs.existsSync(path.join(htmlKitDir, 'recipes/sse-telemetry/recipe.json')),
-  'Missing recipes structure in public/html-kit/recipes/'
+  fs.existsSync(path.join(htmlKitDir, '../modules/live-telemetry/recipe.json')),
+  'Missing recipes structure in public/html/modules/'
 );
 
 // 3. Token Parity Verification (globals.css vs tokens.css)

@@ -10,11 +10,11 @@ const ALLOWED_COMMANDS = new Set([
   'pnpm dev',
   'pnpm start',
   'pnpm foundation:check',
-  'open public/html-kit/templates/du-avaliacao-dashboard.html',
-  'open public/html-kit/templates/du-dashboard.html',
-  'open public/html-kit/templates/starter-cockpit.html',
-  'open public/html-kit/templates/template-app-shell.html',
-  'open public/html-kit/templates/du-html-app-template.html',
+  'open public/html/kits/avaliacao/index.html',
+  'open public/html/kits/mission-control/index.html',
+  'open public/html/kits/cockpit-starter/index.html',
+  'open public/html/kits/dashboard-starter/index.html',
+  'open public/blueprints/dashboard/mockups/reference.html',
 ]);
 
 const OPEN_TERMINAL_SCRIPT = [

@@ -41,4 +41,5 @@ Ver o estado operacional e agir num único ecrã focado, sem dispersão de naveg
 - `avaliacao` (HTML + React)
 
 ## Mockups
-- `public/html/kits/cockpit-starter/index.html` (após M3; legado em `public/html-kit/templates/starter-cockpit.html`)
+- `public/blueprints/cockpit/mockups/overview.png`
+- `public/blueprints/cockpit/mockups/mission-control.html`

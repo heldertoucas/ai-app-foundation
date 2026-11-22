@@ -38,4 +38,4 @@ Apresentar, explicar e levar o visitante a uma ação clara.
 - `futuro-digital` (HTML + React)
 
 ## Mockups
-- `public/html/kits/futuro-digital/index.html` (após M3; legado em `public/html-kit/templates/du-futuro-digital.html`)
+- `public/blueprints/website/mockups/landing.png`

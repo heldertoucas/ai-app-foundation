@@ -2,7 +2,7 @@
 
 - [ ] Passo 1: Incluir o script `sse-client.js` no final do `<body>` do seu template HTML:
   ```html
-  <script src="../recipes/sse-telemetry/sse-client.js" defer></script>
+  <script src="../../modules/live-telemetry/sse-client.js" defer></script>
   ```
 - [ ] Passo 2: Inicializar o cliente com o endpoint de telemetria local:
   ```javascript

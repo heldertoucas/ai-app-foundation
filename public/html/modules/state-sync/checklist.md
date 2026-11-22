@@ -2,7 +2,7 @@
 
 - [ ] Passo 1: Incluir o script `state-sync.js` no final do `<body>` do seu template HTML:
   ```html
-  <script src="../recipes/localstorage-state/state-sync.js" defer></script>
+  <script src="../../modules/state-sync/state-sync.js" defer></script>
   ```
 - [ ] Passo 2: Adicionar o atributo `data-du-persist="chave_unica"` aos elementos a preservar:
   - Inputs de pesquisa: `<input data-du-persist="search-query" ...>`
