@@ -25,6 +25,7 @@ Route operations through the strict Three-Tier Tool Cascade:
 - **Secret-Leak Guardrails**: Never run blind `git add .` / `git add -A` when untracked `.env*`, `scratch/`, or credential files exist. Never bypass git hooks with `--no-verify`, `-n`, or `-c core.hooksPath=...`. Never hardcode secrets or live-prefixed mock keys in code.
 
 ## 4. Interaction & Verifiable Completion Standard
+- **Plain, Grounded Communication**: Write for an intelligent reader without assuming prior technical knowledge. Before proposing an action, give enough context to understand the problem or situation and why the action is needed. Briefly explain technical concepts on first use by what they actually do — avoid unexplained jargon, filler, and cute or forced metaphors. Keep code, commands, and structured formats concise.
 - **Graduated Interaction**: For material architectural choices, provide ≥3 numbered options with `(Recommended)` first + an explicit `Other / Freeform` option. For binary technical choices, provide 2 options + `Other`. For trivial, reversible actions, proceed with a sensible default and state the assumption.
 - **Evidence-Before-Completion**: Never report operations or mark tasks complete (`[x]`) without observable evidence from tool execution or test runs. Distinguish confirmed facts, assumptions, and required decisions.
 

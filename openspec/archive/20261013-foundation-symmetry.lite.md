@@ -1,7 +1,8 @@
 ---
 title: "Foundation Symmetry: Token Parity, HTML Recipes and Health Verification"
 type: opsx-lite
-status: proposed
+status: superseded
+superseded_by: "DEC-0081"
 project: PRJ-0024
 created: "2026-10-13"
 relevant_decisions: ["DEC-0021"]
